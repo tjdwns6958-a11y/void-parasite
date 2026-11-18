@@ -429,7 +429,7 @@ class G extends Phaser.Scene{
     else if(d>=60&&d<E.leapR&&m.cd<=0){m.st='wind';m.t=E.wind;m.ux=dx/d;m.uy=dy/d;s.setTint(0xffe066);const sh=this.make.image({x:0,y:4,key:'shadow',add:false}).setScale(1.7).setAlpha(.15);m.mks=[-14,0,14].map((ox,i)=>this.make.image({x:ox,y:i==1?-6:-4,key:'kslash',add:false}).setVisible(false));m.mksh=sh;m.mk=this.add.container(0,0,[sh,...m.mks]).setDepth(1.4);this.kland(m)}}}
   else if(m.st=='claw'){rot=Math.atan2(dy,dx);
    if(m.hits==0){sx=.88;sy=1.12;if(m.tm<=0){m.hits=1;m.tm=.16;s.clearTint();this.slash(m,dx,dy,d)}}
-   else if(m.hits==1){sx=1.2;sy=.85;if(m.tm<=0){m.hits=2;m.tm=.4;this.slash(m,dx,dy,d)}}
+   else if(m.hits==1){sx=1.2;sy=.85;if(m.tm<=0){m.hits=2;m.tm=.4;m.ca=null;this.slash(m,dx,dy,d)}}
    else{sx=1.1;sy=.9;if(m.tm<=0){m.st='chase';m.cq=2.2}}}
   else if(m.st=='spit'){sx=1.1;sy=.88+Math.sin(now/40)*.05;
    if(m.tm>.2){const lx=p.x+this.vx*.35,ly=p.y+this.vy*.35;m.a0=Math.atan2(ly-m.y,lx-m.x);this.steer(m,m.a0+Math.PI/2*(m.side||1),55,dt)}
