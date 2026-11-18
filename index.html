@@ -169,7 +169,8 @@ function gen(){
  for(let i=0;i<q.length;i++){const a=q[i];for(const[k,dr,dc]of D)if(a.d[k]){const b=at(a.r+dr,a.c+dc);if(!dist.has(b)){dist.set(b,dist.get(a)+1);q.push(b)}}}
  const far=Math.max(...dist.values()),exit=pick(rooms.filter(a=>dist.get(a)===far));
  const fr_=rooms.filter(a=>a!==start&&a!==exit).sort(()=>Math.random()-.5);
- ['haven','brood','brood','mine','mine','dark','swamp','swamp','flow','flow','lair'].forEach((t,i)=>{fr_[i].tr=t});
+ // 위험한 방(번식지·광산·소용돌이·소굴)은 시작방에서 2칸 이상 떨어진 곳부터 배정
+ const dgT=['brood','brood','mine','mine','flow','flow','lair'],sfT=['haven','dark','swamp','swamp'],farR=fr_.filter(a=>dist.get(a)>=2),nearR=fr_.filter(a=>dist.get(a)<2),ord=[...farR,...nearR];dgT.forEach((t,i)=>{ord[i].tr=t});ord.filter(a=>!a.tr).slice(0,sfT.length).forEach((a,i)=>{a.tr=sfT[i]});
  // 통로 종류: 기본은 동굴. 공허 균열·렉사이 땅굴은 한 방에 각각 1개까지만
  const has=(a,t)=>Object.keys(a.ct).some(k=>a.d[k]&&a.ct[k]==t),links=a=>D.filter(([k])=>a.d[k]).map(([k,dr,dc,o])=>[k,at(a.r+dr,a.c+dc),o]);
  for(const a of rooms)if(a.tr=='flow'&&!has(a,'rift')){const c=links(a).filter(([k,b])=>!has(b,'rift'));if(c.length){const[k,b,o]=pick(c);a.ct[k]=b.ct[o]='rift'}}
