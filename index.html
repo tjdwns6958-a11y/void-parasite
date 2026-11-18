@@ -276,7 +276,7 @@ class G extends Phaser.Scene{
   this.pl=this.physics.add.sprite(400,180,'idle','0_0').setVisible(false);this.ang=0;this.ph=0;this.zk=0;this.sp=[1,2,3,4].map(i=>({x:400-7*i,y:184}));this.sg=[4,3,2,1].map(i=>this.add.image(0,0,'ws'+i).setDepth(9)).reverse();this.hd=this.add.image(400,184,'wh').setDepth(10);this.bd=[this.hd,...this.sg];
   this.pl.body.setSize(24,24).setOffset(12,16);
   this.physics.add.collider(this.pl,this.walls);
-  this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(8,6,232,54,8).fillRoundedRect(640,6,154,124,8).setDepth(49);this.gfx=this.add.graphics().setDepth(50);this.rlb=null;
+  this.pnL=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(8,6,232,54,8).setDepth(49);this.pnR=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(640,6,154,124,8).setDepth(49);this.gfx=this.add.graphics().setDepth(50);this.gL=this.add.graphics().setDepth(50);this.gR=this.add.graphics().setDepth(50);this.hA={L:1,R:1};this.rlb=null;
   this.t1=this.add.text(16,10,'',ST({fontSize:'13px'})).setDepth(60);
   this.t2=this.add.text(784,10,'',ST({fontSize:'13px',align:'right'})).setOrigin(1,0).setDepth(60);
   this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
@@ -667,10 +667,10 @@ class G extends Phaser.Scene{
   this.hud();
  }
  hud(){
-  const g=this.gfx;g.clear();
-  g.fillStyle(0x3a2f57).fillRoundedRect(16,30,200,12,6);
-  g.fillStyle(0xd94f8c).fillRoundedRect(16,30,Math.max(0,200*this.en/this.emax),12,6);
-  g.fillStyle(0x3a2f57).fillRect(16,46,200,4);g.fillStyle(0x7cc4ff).fillRect(16,46,this.plv>=18?200:200*Math.min(1,this.xp/this.xpn()),4);
+  const g=this.gfx;g.clear();const GL=this.gL,GR=this.gR;GL.clear();GR.clear();
+  GL.fillStyle(0x3a2f57).fillRoundedRect(16,30,200,12,6);
+  GL.fillStyle(0xd94f8c).fillRoundedRect(16,30,Math.max(0,200*this.en/this.emax),12,6);
+  GL.fillStyle(0x3a2f57).fillRect(16,46,200,4);GL.fillStyle(0x7cc4ff).fillRect(16,46,this.plv>=18?200:200*Math.min(1,this.xp/this.xpn()),4);
   let kx=84,ky=280;const J=this.joy&&this.joy.isDown;
   if(J){const vx=this.joy.x-84,vy=this.joy.y-280,l=Math.hypot(vx,vy)||1,m=Math.min(l,50);kx+=vx/l*m;ky+=vy/l*m}
   g.fillStyle(0x241c38,.7).fillCircle(84,280,55);g.lineStyle(2,0x6b5a96).strokeCircle(84,280,55);
@@ -683,8 +683,8 @@ class G extends Phaser.Scene{
   if(this.exR&&this.cur!==this.lv.exit&&!(this.cur.tr!='haven'&&this.moltPts()>=3)){const ex=this.lv.exit,dx=ex.c-this.cur.c,dy=ex.r-this.cur.r,l=Math.hypot(dx,dy*1.6)||1,ux=dx/l,uy=dy*1.6/l,k=Math.min(320/Math.max(Math.abs(ux),.01),120/Math.max(Math.abs(uy),.01)),ax=400+ux*k,ay=180+uy*k,al=.6+.35*Math.sin(this.time.now/180),an=Math.atan2(uy,ux);g.fillStyle(0xff7aa8,al).fillTriangle(ax+Math.cos(an)*14,ay+Math.sin(an)*14,ax+Math.cos(an+2.5)*11,ay+Math.sin(an+2.5)*11,ax+Math.cos(an-2.5)*11,ay+Math.sin(an-2.5)*11);if(!this.exTx)this.exTx=this.add.text(0,0,'출구',ST({fontSize:'11px',color:'#ff9ac0',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.exTx.setVisible(true).setPosition(ax-Math.cos(an)*20,ay-Math.sin(an)*20).setAlpha(al)}else if(this.exTx)this.exTx.setVisible(false);
   for(const m of this.lv.rooms){
    const c=m===this.cur?0xece6f7:m===this.lv.exit&&(m.seen||this.exR)?0xe0457b:m.seen?0xa65cff:0x3a2f57;
-   g.fillStyle(c).fillRect(722+m.c*16,58+m.r*16,14,14);if((m.seen||m.tr=='haven')&&m.tr)g.fillStyle(TR[m.tr][1]).fillRect(726+m.c*16,62+m.r*16,6,6)}
-  const CC={hole:0xa07850,rift:0xc070ff,gate:0xff7a9a,cave:0x8a7ab0},Lv=this.lv;for(const m of Lv.rooms){const e=Lv.at(m.r,m.c+1),so=Lv.at(m.r+1,m.c);if(m.d.E&&(m.seen||e.seen))g.fillStyle(CC[m.ct.E]).fillRect(736+m.c*16,63+m.r*16,2,4);if(m.d.S&&(m.seen||so.seen))g.fillStyle(CC[m.ct.S]).fillRect(727+m.c*16,72+m.r*16,4,2)}
+   GR.fillStyle(c).fillRect(722+m.c*16,58+m.r*16,14,14);if((m.seen||m.tr=='haven')&&m.tr)GR.fillStyle(TR[m.tr][1]).fillRect(726+m.c*16,62+m.r*16,6,6)}
+  const CC={hole:0xa07850,rift:0xc070ff,gate:0xff7a9a,cave:0x8a7ab0},Lv=this.lv;for(const m of Lv.rooms){const e=Lv.at(m.r,m.c+1),so=Lv.at(m.r+1,m.c);if(m.d.E&&(m.seen||e.seen))GR.fillStyle(CC[m.ct.E]).fillRect(736+m.c*16,63+m.r*16,2,4);if(m.d.S&&(m.seen||so.seen))GR.fillStyle(CC[m.ct.S]).fillRect(727+m.c*16,72+m.r*16,4,2)}
   for(const f of this.cur.food)if(f.on&&f.p>0){
    g.fillStyle(0x3a2f57).fillRect(f.spr.x-14,f.spr.y-24,28,5);g.fillStyle(0x7be0a8).fillRect(f.spr.x-14,f.spr.y-24,28*Math.min(1,f.p),5)}
   const dk=this.cur.tr=='dark';for(const m of this.cur.en)if(m.lvT)m.lvT.setVisible(false);
@@ -693,6 +693,10 @@ class G extends Phaser.Scene{
    g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy-1,w+2,6);if(m.lvT&&m.k!='vdl'){const df=m.lv-this.plv,lc=df>=2?'#ff7a7a':df<=-2?'#a0a0b8':'#ffffff';m.lvT.setVisible(true).setPosition(m.spr.x-w/2-3,yy+2);if(m.lvc!==lc){m.lvT.setColor(lc);m.lvc=lc}}g.fillStyle(m.k=='gna'?0x7cc4ff:m.k=='rek'?0xc070ff:m.k=='vdl'?0xffe066:0xff4a6a).fillRect(m.spr.x-w/2,yy,w*r,4);if(!m.k||m.k=='rek'){const hv=Math.max(0,(m.hg??70)/100);g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy+5,w+2,4);g.fillStyle(m.hg<40?0xff7a2a:0xffd060).fillRect(m.spr.x-w/2,yy+6,w*hv,2)}}
   this.t1.setText('Lv.'+this.plv+'   에너지 '+Math.ceil(this.en)+' / '+this.emax);
   {const mt=this.org+this.mn-this.mb;this.t2.setText('구역 1 / 3\n유기물 '+this.org+' · 무기물 '+this.mn+'\n'+(this.moltPts()>=3?'탈피 가능 (둥지에서)':'탈피 재료 '+Math.min(mt,15)+' / 15'))}
+  // HUD 패널 아래에 플레이어·몬스터가 있으면 패널을 투명하게 (가려진 적이 안 보이던 문제)
+  {const occ=(x0,y0,x1,y1)=>{const p=this.pl;if(p.x>x0-12&&p.x<x1+12&&p.y>y0-12&&p.y<y1+18)return 1;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible&&!(m.k=='rek'&&m.st=='under')&&m.x>x0-14&&m.x<x1+14&&m.y>y0-14&&m.y<y1+22)return 1;return 0};
+   const tl=occ(8,6,240,60)?.22:1,tr=occ(640,6,794,130)?.22:1,k=.18;this.hA.L+=(tl-this.hA.L)*k;this.hA.R+=(tr-this.hA.R)*k;
+   this.pnL.setAlpha(this.hA.L);this.gL.setAlpha(this.hA.L);this.t1.setAlpha(this.hA.L);this.pnR.setAlpha(this.hA.R);this.gR.setAlpha(this.hA.R);this.t2.setAlpha(this.hA.R)}
  }
 }
 new Phaser.Game({type:Phaser.AUTO,parent:'game',width:C.W,height:C.H,backgroundColor:'#120e1a',
