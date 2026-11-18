@@ -424,7 +424,7 @@ class G extends Phaser.Scene{
    if(hg>=70&&d>300)m.st='idle';if(hg<40){let b=null,bd=d*.8;for(const f of this.cur.food)if(f.on&&f.spr&&(f.t=='s'||f.t=='l'||f.t=='h')){const q=Math.hypot(f.x-m.x,f.y-m.y);if(q<bd){bd=q;b=f}}if(b){m.st='hunt';m.prey=b;m.tm=8}}if(Math.random()<dt*.5)m.side*=-1;
    const ofs=(m.side||1)*(d>E.leapR?.55:m.cd>0?1.45:.35),an=Math.atan2(dy,dx)+ofs,v=E.chase*hm*(d>E.leapR?1:m.cd>0?.85:.7);
    this.steer(m,an,v,dt);rot=Math.atan2(dy,dx);
-   if(!m.lt){if(d<46&&m.cq<=0){m.st='claw';m.tm=.32;m.hits=0;s.setTint(0xff5a5a)}
+   if(!m.lt){if(d<46&&m.cq<=0){m.st='claw';m.tm=.4;m.hits=0;s.setTint(0xff5a5a);m.ca=Math.atan2(dy,dx);{const wg=this.add.graphics().setDepth(1.6);wg.fillStyle(0xff5a5a,.5).slice(m.x,m.y,52,m.ca-.9,m.ca+.9,false).fillPath();wg.lineStyle(2,0xff8a8a,.9).beginPath().arc(m.x,m.y,52,m.ca-.9,m.ca+.9,false).strokePath();this.tweens.add({targets:wg,alpha:{from:.35,to:1},duration:400,onComplete:()=>wg.destroy()})}}
     else if(d>=170&&d<330&&m.cw<=0){m.st='spit';m.tm=.6;m.lk=0;m.ux=dx/d;m.uy=dy/d;m.a0=Math.atan2(dy,dx);s.setTint(0xb070ff);m.aim=[-.22,0,.22].map(o=>this.add.rectangle(m.x,m.y,170,2,0xc070ff,.35).setOrigin(0,.5).setRotation(m.a0+o).setDepth(1.4))}
     else if(d>=60&&d<E.leapR&&m.cd<=0){m.st='wind';m.t=E.wind;m.ux=dx/d;m.uy=dy/d;s.setTint(0xffe066);const sh=this.make.image({x:0,y:4,key:'shadow',add:false}).setScale(1.7).setAlpha(.15);m.mks=[-14,0,14].map((ox,i)=>this.make.image({x:ox,y:i==1?-6:-4,key:'kslash',add:false}).setVisible(false));m.mksh=sh;m.mk=this.add.container(0,0,[sh,...m.mks]).setDepth(1.4);this.kland(m)}}}
   else if(m.st=='claw'){rot=Math.atan2(dy,dx);
@@ -506,9 +506,9 @@ class G extends Phaser.Scene{
   m.vx=(m.vx||0)+(mx-(m.vx||0))*Math.min(1,dt*6);m.vy=(m.vy||0)+(my-(m.vy||0))*Math.min(1,dt*6);
   m.x=Phaser.Math.Clamp(m.x+m.vx*dt,50,750);m.y=Phaser.Math.Clamp(m.y+m.vy*dt,50,310);
   s.setPosition(m.x,m.y+Math.sin(now/120+m.x*.03)*2).setRotation(Math.atan2(m.vy,m.vx)+Math.PI/2).setScale(1.3*(1+Math.sin(now/45+m.x*.1)*.25),1.3)}
- slash(m,dx,dy,d){const a=Math.atan2(dy,dx),deg=a*180/Math.PI;this.steer(m,a,600,1/60);
+ slash(m,dx,dy,d){const a=m.ca??Math.atan2(dy,dx),deg=a*180/Math.PI;this.steer(m,a,600,1/60);
   const arc=this.add.arc(m.x+Math.cos(a)*16,m.y+Math.sin(a)*16,24,deg-65,deg+65,false,0xffd0e0,.6).setDepth(12);this.tweens.add({targets:arc,alpha:0,scale:1.3,duration:180,onComplete:()=>arc.destroy()});
-  if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<54){const iso=!this.cur.obs.some(o=>Math.hypot((o[0]+.5)*C.T-this.pl.x,(o[1]+.5)*C.T-this.pl.y)<75)&&this.zone(this.pl.x,this.pl.y+4)!=2;
+  if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<48&&Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(this.pl.y-m.y,this.pl.x-m.x)-a))<.9){const iso=!this.cur.obs.some(o=>Math.hypot((o[0]+.5)*C.T-this.pl.x,(o[1]+.5)*C.T-this.pl.y)<75)&&this.zone(this.pl.x,this.pl.y+4)!=2;
    this.inv=0;this.hurt(Math.round(C.E.claw*(m.df||1)*(iso?1.5:1)),'카직스의 할퀴기');m.hg=Math.min(100,(m.hg||0)+8);if(iso)this.pop('고립! 엄폐물 없음',this.pl.x,this.pl.y)}}
  fire(x,y,a,m){const tr=m&&m.lv>=13?2:m&&m.lv>=7?1:0,o=this.add.image(x,y,'spike').setDepth(11).setRotation(a).setTint([0xffffff,0xffc0ff,0xff90d0][tr]);(this.prj=this.prj||[]).push({o,x,y,a,v:[140,155,170][tr],t:1.8,age:0,vmax:[430,475,520][tr],acc:[950,1050,1150][tr],df:m?m.df:1});
   const f=this.add.circle(x,y,9,0xd090ff,.7).setDepth(11);this.tweens.add({targets:f,scale:.2,alpha:0,duration:180,onComplete:()=>f.destroy()})}
