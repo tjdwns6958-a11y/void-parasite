@@ -261,7 +261,7 @@ class G extends Phaser.Scene{
    for(let d=0;d<4;d++){
     this.anims.create({key:'w'+d,frames:[0,1,2,3,4,5].map(f=>({key:'walk',frame:d+'_'+f})),frameRate:C.WF,repeat:-1});
     this.anims.create({key:'i'+d,frames:[0,1,2,3].map(f=>({key:'idle',frame:d+'_'+f})),frameRate:C.IF,repeat:-1})}}
-  this.hvT=null;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
+  this.hvT=null;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
   this.lv=gen();
   this.fl=this.add.tileSprite(400,180,800,360,'floor').setDepth(0);
   this.walls=this.physics.add.staticGroup();this.dec=[];
@@ -362,8 +362,8 @@ class G extends Phaser.Scene{
  blk(x,y,m){return this.cur.obs.some(([c,r])=>Math.abs(x-(c+.5)*C.T)<m&&Math.abs(y-(r+.5)*C.T)<m)}
  mv(o,mx,my,m){const x=Phaser.Math.Clamp(o.x+mx,60,740),y=Phaser.Math.Clamp(o.y+my,60,300);
   if(!this.blk(x,y,m)){o.x=x;o.y=y}else if(!this.blk(x,o.y,m))o.x=x;else if(!this.blk(o.x,y,m))o.y=y}
- hurt(d){if(this.inv>0)return;this.inv=.5;this.en-=d*this.dmt;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(100,.004)}
- kill(m){m.on=0;const x=m.x,y=m.y;const hs=this.deathFx(m);if(m.mk){m.mk.destroy();m.mk=null}if(m.lsh){m.lsh.destroy();m.lsh=null}if(m.ring){m.ring.destroy();m.ring=null}if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}const R=({rek:C.R,gna:C.G,vdl:C.V})[m.k]||C.E,z=(m.sz||1)*(1+.1*((m.lv||1)-1)),e=Math.round(R.e*z),o=Math.round((R.o||0)*z),mi=Math.round((R.m||0)*z);if(m.lvT){m.lvT.destroy();m.lvT=null}
+ hurt(d,src){if(this.inv>0)return;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};this.en-=d*this.dmt;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(100,.004)}
+ kill(m){m.on=0;this.kc=(this.kc||0)+1;const x=m.x,y=m.y;const hs=this.deathFx(m);if(m.mk){m.mk.destroy();m.mk=null}if(m.lsh){m.lsh.destroy();m.lsh=null}if(m.ring){m.ring.destroy();m.ring=null}if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}const R=({rek:C.R,gna:C.G,vdl:C.V})[m.k]||C.E,z=(m.sz||1)*(1+.1*((m.lv||1)-1)),e=Math.round(R.e*z),o=Math.round((R.o||0)*z),mi=Math.round((R.m||0)*z);if(m.lvT){m.lvT.destroy();m.lvT=null}
   const L=m.lv||1,xp=Math.round(({rek:18,gna:6,vdl:4}[m.k]||12)*(1+.15*(L-1))*Phaser.Math.Clamp(1+.2*(L-this.plv),.4,1.6));this.gainXp(xp);
   const vd=m.k=='vdl';if(vd){this.en=Math.min(this.emax,this.en+e);this.org+=o;this.mn+=mi}
   else{const k=m.k,sx=hs.scaleX*(k=='rek'||k=='gna'?1:1.12),sy=hs.scaleY*(k=='rek'?.5:k=='gna'?1:.65);this.cur.food.push({t:'h',x,y,p:0,on:1,c:-1,r:-1,spr:hs,tex:k=='gna'?'gnac':k=='rek'?'rek':'kha',rot:k=='gna'?0:hs.rotation,sx,sy,hv:{e,o,m:mi},ready:this.time.now+700,die:this.time.now+45000})}
@@ -412,7 +412,7 @@ class G extends Phaser.Scene{
     for(let i=0;i<4;i++){const an=i/4*6.283+.4,b=this.add.circle(m.x,m.y+8,2.5,0x8a7aa0,.6).setDepth(8);this.tweens.add({targets:b,x:m.x+Math.cos(an)*26,y:m.y+8+Math.sin(an)*12,alpha:0,duration:300,onComplete:()=>b.destroy()})}}}
   else if(m.st=='leap'){this.mv(m,m.ux*E.leapV*dt,m.uy*E.leapV*dt,30);m.t-=dt;rot=Math.atan2(m.uy,m.ux);const q=1-Math.max(m.t,0)/E.leapT,h=Math.sin(Math.PI*q);m.oy=-h*24;sx=1.15+.1*h;sy=1.2+.12*h;
    if(m.lsh)m.lsh.setPosition(m.x,m.y+10).setScale(1.4-.5*h).setAlpha(1-.4*h);
-   if(!m.hit&&d<30){m.hit=1;this.hurt(Math.round(E.dmg*(m.df||1)));m.hg=Math.min(100,m.hg+12)}
+   if(!m.hit&&d<30){m.hit=1;this.hurt(Math.round(E.dmg*(m.df||1)),'카직스의 도약');m.hg=Math.min(100,m.hg+12)}
    if(m.t<=0){m.st='rec';m.tm=.55;m.oy=0;if(m.mk){const mk=m.mk;m.mk=null;m.mks=null;this.dec.push(mk);this.tweens.add({targets:mk,alpha:0,duration:180,onComplete:()=>mk.destroy()})}if(m.lsh){m.lsh.destroy();m.lsh=null}for(let i=0;i<6;i++){const b=this.add.circle(m.x,m.y+6,2.5,0x8a7aa0,.8).setDepth(8);this.tweens.add({targets:b,x:m.x+(Math.random()-.5)*40,y:m.y+6+(Math.random()-.3)*14,alpha:0,duration:450,onComplete:()=>b.destroy()})}}}
   else if(m.st=='rec'){rot=Math.atan2(m.uy,m.ux);sx=1.2;sy=.74+Math.sin(now/45)*.05;if(m.tm<=0){m.st='back';m.tm=.45}}
   else if(m.st=='flee'){let best=null,bs=-1e9;for(const c of this.cur.obs.filter(o=>o[2]>=1).concat(this.cur.zn.filter(z=>z[2]==2))){const cx=(c[0]+.5)*C.T,cy=(c[1]+.5)*C.T,sc=Math.hypot(cx-p.x,cy-p.y)-Math.hypot(cx-m.x,cy-m.y)*.5;if(sc>bs){bs=sc;best=[cx,cy]}}
@@ -438,9 +438,9 @@ class G extends Phaser.Scene{
   else if(m.st=='warn'){s.setPosition(m.x+(Math.random()-.5)*4,m.y).setScale(1.2,1.1);
    if(m.tm<=0){if(m.ring){m.ring.destroy();m.ring=null}m.st='up';m.tm=R.up;m.rest=0;s.setTexture('rek').setDepth(9).setScale(1.5).setRotation(Math.atan2(dy,dx)+Math.PI/2);this.tweens.add({targets:s,scale:1,duration:250});
     this.cameras.main.shake(150,.006);for(let i=0;i<8;i++){const a=i/8*6.283,b=this.add.circle(m.x,m.y,3,0x8a7aa0).setDepth(12);this.tweens.add({targets:b,x:m.x+Math.cos(a)*40,y:m.y+Math.sin(a)*40,alpha:0,duration:400,onComplete:()=>b.destroy()})}
-    if(d<46){this.hurt(Math.round(R.dmg*(m.df||1)));m.hg=Math.min(100,m.hg+15)}const q=m.prey;if(q&&q.on&&Math.hypot(q.x-m.x,q.y-m.y)<44)this.rekEat(m,q);else this.exc(m)}}
+    if(d<46){this.hurt(Math.round(R.dmg*(m.df||1)),'렉사이의 솟구치기');m.hg=Math.min(100,m.hg+15)}const q=m.prey;if(q&&q.on&&Math.hypot(q.x-m.x,q.y-m.y)<44)this.rekEat(m,q);else this.exc(m)}}
   else if(m.st=='up'){
-   if(!m.rest&&d<220){this.steer(m,Math.atan2(dy,dx),45,dt,26);s.setRotation(Math.atan2(dy,dx)+Math.PI/2);if(d<34&&m.cd<=0){m.cd=1.2;this.hurt(Math.round(R.bite*(m.df||1)));m.hg=Math.min(100,m.hg+8);s.setScale(1.15,.9);this.time.delayedCall(120,()=>{if(m.spr)m.spr.setScale(1)})}}
+   if(!m.rest&&d<220){this.steer(m,Math.atan2(dy,dx),45,dt,26);s.setRotation(Math.atan2(dy,dx)+Math.PI/2);if(d<34&&m.cd<=0){m.cd=1.2;this.hurt(Math.round(R.bite*(m.df||1)),'렉사이의 물기');m.hg=Math.min(100,m.hg+8);s.setScale(1.15,.9);this.time.delayedCall(120,()=>{if(m.spr)m.spr.setScale(1)})}}
    else s.setRotation(s.rotation+Math.sin(now/300)*.01);
    s.setPosition(m.x,m.y);if(m.rest&&pm&&d<sense)m.tm=Math.min(m.tm,.2);
    if(m.tm<=0){m.st='dig';m.tm=.5}}
@@ -468,7 +468,7 @@ class G extends Phaser.Scene{
   for(const q of this.vp){q.a+=(a.vd||1)*75/Math.max(30,q.r)*dt;q.r-=12*dt;if(q.r<22){q.r=190+Math.random()*60;q.a=Math.random()*6.283}q.o.setPosition(400+Math.cos(q.a)*q.r,180+Math.sin(q.a)*q.r*.75).setAlpha(Math.min(.7,q.r/120))}
   a.vs=(a.vs||0)-dt;if(a.vq==null)a.vq=6;if(a.vs<=0){a.vs=6;if(a.vq>0&&a.en.filter(e=>e.on&&e.k=='vdl').length<5){a.vq--;if(a.vq==0)this.time.delayedCall(2500,()=>{if(this.cur===a&&!a.en.some(e=>e.on&&e.k=='vdl'))this.pop('소용돌이가 잠잠해졌다',400,150)});const e={k:'vdl',x:400,y:180,hp:C.V.hp,st:'orbit',on:1,or:70+Math.random()*90,oa:Math.random()*6.283,cd:.8};e.spr=this.add.image(400,180,'vdl').setDepth(12);this.lvl(e);e.lvT=this.add.text(400,180,'Lv.'+e.lv,ST({fontSize:'10px',fontStyle:'bold'})).setOrigin(1,.5).setDepth(60);a.en.push(e);this.tweens.add({targets:e.spr,alpha:{from:0,to:1},duration:400})}}}
  vdlAI(m,dt,p){const V=C.V,now=this.time.now,s=m.spr,a=this.cur;m.cd=(m.cd||0)-dt;m.tm=(m.tm||0)-dt;const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,w=this.flowAt(m.x,m.y);let mx,my;
-  if(m.st=='dive'){const an=Math.atan2(dy,dx)+Math.sin(now/90+m.x*.05)*.5;mx=Math.cos(an)*V.v+w[0]*V.fl*.5;my=Math.sin(an)*V.v+w[1]*V.fl*.5;if(d<18){this.hurt(Math.round(V.dmg*(m.df||1)));m.st='orbit';m.cd=2.2;m.tm=0}else if(d>260)m.st='orbit'}
+  if(m.st=='dive'){const an=Math.atan2(dy,dx)+Math.sin(now/90+m.x*.05)*.5;mx=Math.cos(an)*V.v+w[0]*V.fl*.5;my=Math.sin(an)*V.v+w[1]*V.fl*.5;if(d<18){this.hurt(Math.round(V.dmg*(m.df||1)),'보이드링 무리');m.st='orbit';m.cd=2.2;m.tm=0}else if(d>260)m.st='orbit'}
   else{if(m.tm<=0||m.wx==null){m.tm=1.5+Math.random()*1.5;const an=Math.random()*6.283,r=110+Math.random()*70;m.wx=400+Math.cos(an)*r;m.wy=180+Math.sin(an)*r*.72}
    const ex=m.wx-m.x,ey=m.wy-m.y,ed=Math.hypot(ex,ey)||1;mx=ex/ed*Math.min(80,ed*2)+w[0]*V.fl;my=ey/ed*Math.min(80,ed*2)+w[1]*V.fl;
    const cx=m.x-400,cy=(m.y-180)/.75,cr=Math.hypot(cx,cy)||1;if(cr<85){mx+=cx/cr*95;my+=cy/cr*95*.75}
@@ -479,7 +479,7 @@ class G extends Phaser.Scene{
  slash(m,dx,dy,d){const a=Math.atan2(dy,dx),deg=a*180/Math.PI;this.steer(m,a,600,1/60);
   const arc=this.add.arc(m.x+Math.cos(a)*16,m.y+Math.sin(a)*16,24,deg-65,deg+65,false,0xffd0e0,.6).setDepth(12);this.tweens.add({targets:arc,alpha:0,scale:1.3,duration:180,onComplete:()=>arc.destroy()});
   if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<54){const iso=!this.cur.obs.some(o=>Math.hypot((o[0]+.5)*C.T-this.pl.x,(o[1]+.5)*C.T-this.pl.y)<75)&&this.zone(this.pl.x,this.pl.y+4)!=2;
-   this.inv=0;this.hurt(Math.round(C.E.claw*(m.df||1)*(iso?1.5:1)));m.hg=Math.min(100,(m.hg||0)+8);if(iso)this.pop('고립! 엄폐물 없음',this.pl.x,this.pl.y)}}
+   this.inv=0;this.hurt(Math.round(C.E.claw*(m.df||1)*(iso?1.5:1)),'카직스의 할퀴기');m.hg=Math.min(100,(m.hg||0)+8);if(iso)this.pop('고립! 엄폐물 없음',this.pl.x,this.pl.y)}}
  fire(x,y,a,m){const tr=m&&m.lv>=13?2:m&&m.lv>=7?1:0,o=this.add.image(x,y,'spike').setDepth(11).setRotation(a).setTint([0xffffff,0xffc0ff,0xff90d0][tr]);(this.prj=this.prj||[]).push({o,x,y,a,v:[140,155,170][tr],t:1.8,age:0,vmax:[430,475,520][tr],acc:[950,1050,1150][tr],df:m?m.df:1});
   const f=this.add.circle(x,y,9,0xd090ff,.7).setDepth(11);this.tweens.add({targets:f,scale:.2,alpha:0,duration:180,onComplete:()=>f.destroy()})}
  prjU(dt,p){if(!this.prj||!this.prj.length)return;for(const q of this.prj){q.t-=dt;q.age+=dt;q.v=Math.min(q.vmax||280,q.v+(q.acc||380)*dt);
@@ -491,7 +491,7 @@ class G extends Phaser.Scene{
   this.prj=this.prj.filter(q=>q.t>0)}
  boom(x,y,p,df){const r=this.add.circle(x,y,30,0xb060ff,.25).setStrokeStyle(2,0xe0b0ff).setDepth(11).setScale(.2);this.tweens.add({targets:r,scale:1,alpha:0,duration:280,onComplete:()=>r.destroy()});
   for(let i=0;i<6;i++){const an=Math.random()*6.283,b=this.add.rectangle(x,y,5,2,0xe0b0ff).setRotation(an).setDepth(11);this.tweens.add({targets:b,x:x+Math.cos(an)*26,y:y+Math.sin(an)*26,alpha:0,duration:300,onComplete:()=>b.destroy()})}
-  if(Math.hypot(p.x-x,p.y-y)<32){this.hurt(Math.round(C.E.spd*(df||1)));this.slow=1.2}}
+  if(Math.hypot(p.x-x,p.y-y)<32){this.hurt(Math.round(C.E.spd*(df||1)),'카직스의 공허 가시');this.slow=1.2}}
  pop(t,x,y){const o=this.add.text(x,y-30,t,ST({fontSize:'13px',color:'#ffb070',fontStyle:'bold'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:o,y:y-60,alpha:0,duration:1100,onComplete:()=>o.destroy()})}
  rekEat(m,q){q.on=0;if(q.spr){q.spr.destroy();q.spr=null}if(q.lvT){q.lvT.destroy();q.lvT=null}m.hg=Math.min(100,(m.hg||0)+(q.k=='gna'?45:q.t=='l'?55:35));m.prey=null;m.rest=1;m.tm=C.R.up+.6;
   for(let i=0;i<8;i++){const b=this.add.circle(q.x+(Math.random()-.5)*20,q.y+(Math.random()-.5)*20,2.2,q.k=='gna'?0x9fd8ff:0x7be0a8).setDepth(12);this.tweens.add({targets:b,alpha:0,scale:.2,y:b.y-14,duration:500,onComplete:()=>b.destroy()})}}
@@ -576,13 +576,14 @@ class G extends Phaser.Scene{
  exc(m){const t=this.add.text(m.x,m.y-26,'!',ST({fontSize:'18px',color:'#ffe066',fontStyle:'bold'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:t,y:m.y-40,alpha:0,duration:700,onComplete:()=>t.destroy()})}
  devour(m,f){f.on=0;f.spr.destroy();f.spr=null;m.st='eat';m.tm=1.4;m.prey=null;m.hg=Math.min(100,(m.hg||0)+(f.t=='l'?55:f.t=='h'?45:35));
   for(let i=0;i<5;i++){const b=this.add.circle(f.x+(Math.random()-.5)*16,f.y+(Math.random()-.5)*16,2,0x7be0a8).setDepth(12);this.tweens.add({targets:b,alpha:0,scale:.2,y:b.y-10,duration:450,onComplete:()=>b.destroy()})}}
- end(a,b,c){
+ end(a,b,c,tip){
   this.over=true;this.pl.setVelocity(0,0);this.pl.anims.stop();
   this.add.rectangle(400,180,800,360,0x120e1a,.82).setDepth(200);
   this.add.text(400,120,a,ST({fontSize:'32px',fontStyle:'bold'})).setOrigin(.5).setDepth(201);
   this.add.text(400,170,b,ST({fontSize:'15px',color:'#a99fc2'})).setOrigin(.5).setDepth(201);
   this.add.text(400,240,c,ST({fontSize:'18px',color:'#12091f',fontStyle:'bold',backgroundColor:'#a65cff',padding:{x:28,y:12}})).setOrigin(.5).setDepth(201)
    .setInteractive().on('pointerdown',()=>this.scene.restart());
+  if(tip)this.add.text(400,300,tip,ST({fontSize:'12px',color:'#8f86a8'})).setOrigin(.5).setDepth(201);
  }
  update(t,ms){
   if(this.over)return;
@@ -627,7 +628,7 @@ class G extends Phaser.Scene{
   this.req=0;this.foe(dt,p);this.prjU(dt,p);
   // 에너지/종료
   this.en-=C.DRAIN*this.drm*dt;
-  if(this.en<=0){this.en=0;const n=L.rooms.filter(r=>r.seen).length;return this.end('에너지 고갈','방문한 방 '+n+' / 16 · 유기물 '+this.org+' · 무기물 '+this.mn,'다시 시작')}
+  if(this.en<=0){this.en=0;this.hud();const n=L.rooms.filter(r=>r.seen).length,lh=this.lastHit,byHit=lh&&this.time.now-lh.t<1500,tm=Math.round((this.time.now-this.t0)/1000);return this.end(byHit?lh.src+'에 쓰러졌다':'굶주림으로 쓰러졌다','생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+n+' / 16','다시 시작',byHit?null:'에너지는 시간이 지나면 줄어든다 — 먹이를 꾸준히 섭취할 것')}
   if(this.cur===L.exit&&Math.hypot(p.x-400,p.y-180)<26)return this.end('1구역 돌파','프로토타입은 여기까지입니다. 2구역은 다음 단계에서 열립니다.','새 구역');
   this.hud();
  }
