@@ -262,7 +262,7 @@ class G extends Phaser.Scene{
    for(let d=0;d<4;d++){
     this.anims.create({key:'w'+d,frames:[0,1,2,3,4,5].map(f=>({key:'walk',frame:d+'_'+f})),frameRate:C.WF,repeat:-1});
     this.anims.create({key:'i'+d,frames:[0,1,2,3].map(f=>({key:'idle',frame:d+'_'+f})),frameRate:C.IF,repeat:-1})}}
-  this.hvT=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
+  this.hvT=null;this.qtx=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
   this.lv=gen();
   this.fl=this.add.tileSprite(400,180,800,360,'floor').setDepth(0);
   this.walls=this.physics.add.staticGroup();this.dec=[];
@@ -280,7 +280,7 @@ class G extends Phaser.Scene{
   this.input.on('pointerdown',p=>{if(this.over)return;if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
    if(Phaser.Math.Distance.Between(p.x,p.y,728,288)<60){this.eat=p;this.req=1}else if(p.x<420&&(!this.joy||!this.joy.isDown))this.joy=p});
   this.input.on('pointerup',p=>{if(this.joy===p)this.joy=null;if(this.eat===p)this.eat=null});
-  this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,E,ONE,TWO,THREE,FOUR,ENTER,ESC');
+  this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,E,ONE,TWO,THREE,FOUR,ENTER,ESC,SHIFT');
   this.enter(this.lv.start);
  }
  enter(a){
@@ -593,7 +593,7 @@ class G extends Phaser.Scene{
   const J=this.joy;
   if(J&&J.isDown){const vx=J.x-84,vy=J.y-280,l=Math.hypot(vx,vy);fr=Math.min(1,Math.max(0,(l-6)/38));if(l>0){ix=vx/l;iy=vy/l}}
   const kx=(k.RIGHT.isDown||k.D.isDown)-(k.LEFT.isDown||k.A.isDown),ky=(k.DOWN.isDown||k.S.isDown)-(k.UP.isDown||k.W.isDown);
-  if(kx||ky){const l=Math.hypot(kx,ky);ix=kx/l;iy=ky/l;fr=1}
+  if(kx||ky){const l=Math.hypot(kx,ky);ix=kx/l;iy=ky/l;fr=k.SHIFT.isDown?Math.min(1,60/(this.spd*C.T)):1}
   // 가속/감속
   this.slow=(this.slow||0)-dt;if(this.slow>0&&Math.random()<.2){const b=this.add.circle(p.x+(Math.random()-.5)*20,p.y,1.8,0xc070ff,.7).setDepth(12);this.tweens.add({targets:b,y:p.y+14,alpha:0,duration:400,onComplete:()=>b.destroy()})}const sp=this.spd*C.T*(this.slow>0?.6:1);this.vx=p.body.velocity.x;this.vy=p.body.velocity.y;const kk=Math.min(1,dt*22);this.jx+=(ix*fr-this.jx)*kk;this.jy+=(iy*fr-this.jy)*kk;const fw=this.flowAt(p.x,p.y),tx=this.jx*sp+fw[0],ty=this.jy*sp+fw[1],dx=tx-this.vx,dy=ty-this.vy,l2=Math.hypot(dx,dy),m=sp/C.ACC*dt;
   if(l2<=m){this.vx=tx;this.vy=ty}else{this.vx+=dx/l2*m;this.vy+=dy/l2*m}
@@ -606,6 +606,7 @@ class G extends Phaser.Scene{
   const spd=Math.hypot(this.vx,this.vy);
   
   
+  {const rk=a.en.some(m=>m.on&&m.k=='rek'),qt=rk&&fr>.05&&spd>8&&spd<=70;if(rk&&!this.qtx)this.qtx=this.add.text(16,64,'',ST({fontSize:'11px',fontStyle:'bold'})).setDepth(61);if(this.qtx){this.qtx.setVisible(rk);if(rk)this.qtx.setText(qt?'● 조용히 이동 중 — 렉사이가 못 느낀다':spd>70?'○ 발소리가 땅을 울린다 (천천히: 조이스틱 반만 / Shift)':'').setColor(qt?'#7be0a8':'#ff9ac0')}}
   this.worm(dt,t,spd,sp);const zk=this.zone(p.x,p.y+4);if(zk!==this.zk){this.zk=zk;this.pt=0;this.bd.forEach(o=>{o.setAlpha(zk==2?.55:1);if(zk==3)o.setTint(0x9ee0a0);else o.clearTint()})}if(zk==3){this.en-=1.5*dt;this.pt=(this.pt||0)-dt;if(this.pt<=0)this.tox(p)}
   this.bt=(this.bt||0)-dt;if(this.bt<=0&&a.pl&&a.pl.length){this.bt=.22;const l=pick(pick(a.pl).lb),an=Math.random()*6.283,rr=Math.random()*.7,b=this.add.circle(l.x+Math.cos(an)*l.rx*rr,l.y+Math.sin(an)*l.ry*rr,1.5+Math.random()*2,0xb6ff7a,.8).setDepth(.65);this.tweens.add({targets:b,scale:1.8,alpha:0,duration:700,onComplete:()=>b.destroy()})}
   // 땅굴 진입
