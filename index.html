@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 수치 (config) =====
-const C={W:800,H:360,T:40,SPD:3,ACC:.11,EN:100,DRAIN:.5,WF:10,IF:4,N:4,E:{n:4,hd:1.0,hp:40,claw:8,spv:260,spd:6,dmg:10,chase:100,aggro:240,leapR:150,wind:.5,leapT:.25,leapV:380,rest:2,e:10,o:4},BITE:{dmg:10,cd:.6,range:64},R:{hd:.8,hp:60,dmg:15,bite:8,sense:260,erupt:.6,up:2.4,v:85,e:14,o:4,m:4},G:{hp:26,v:24,e:6,m:5},V:{fl:.6,hp:14,dmg:4,v:150,orb:70,aggro:140,e:4,o:1},
+const C={W:800,H:360,T:40,SPD:3,ACC:.11,EN:100,DRAIN:.5,WF:10,IF:4,N:4,E:{n:4,hd:1.0,hp:40,claw:6,spv:260,spd:6,dmg:10,chase:100,aggro:240,leapR:150,wind:.5,leapT:.25,leapV:380,rest:2,e:10,o:4},BITE:{dmg:10,cd:.6,range:64},R:{hd:.8,hp:60,dmg:12,bite:6,sense:260,erupt:.75,up:2.4,v:85,e:14,o:4,m:4},G:{hp:26,v:24,e:6,m:5},V:{fl:.6,hp:14,dmg:4,v:150,orb:70,aggro:140,e:4,o:1},
  F:{s:{e:5,o:2,m:0,n:12,t:1},l:{e:15,o:5,m:0,n:3,t:1.5},c:{e:0,o:0,m:4,n:4,t:1},h:{e:0,o:0,m:0,n:0,t:1.4}}};
 const SCS=['#7be0a8','#c0a0ff','#ffd060','#ff7a9a'],SCN=[0x7be0a8,0xc0a0ff,0xffd060,0xff7a9a],SNM=['속도','무게','에너지 효율','공격력'];
 const FF='system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
@@ -394,13 +394,13 @@ class G extends Phaser.Scene{
    if(hg>=70&&d>300)m.st='idle';if(hg<40){let b=null,bd=d*.8;for(const f of this.cur.food)if(f.on&&f.spr&&(f.t=='s'||f.t=='l'||f.t=='h')){const q=Math.hypot(f.x-m.x,f.y-m.y);if(q<bd){bd=q;b=f}}if(b){m.st='hunt';m.prey=b;m.tm=8}}if(Math.random()<dt*.5)m.side*=-1;
    const ofs=(m.side||1)*(d>E.leapR?.55:m.cd>0?1.45:.35),an=Math.atan2(dy,dx)+ofs,v=E.chase*hm*(d>E.leapR?1:m.cd>0?.85:.7);
    this.steer(m,an,v,dt);rot=Math.atan2(dy,dx);
-   if(!m.lt){if(d<46&&m.cq<=0){m.st='claw';m.tm=.28;m.hits=0;s.setTint(0xff5a5a)}
+   if(!m.lt){if(d<46&&m.cq<=0){m.st='claw';m.tm=.32;m.hits=0;s.setTint(0xff5a5a)}
     else if(d>=170&&d<330&&m.cw<=0){m.st='spit';m.tm=.6;m.lk=0;m.ux=dx/d;m.uy=dy/d;m.a0=Math.atan2(dy,dx);s.setTint(0xb070ff);m.aim=[-.22,0,.22].map(o=>this.add.rectangle(m.x,m.y,170,2,0xc070ff,.35).setOrigin(0,.5).setRotation(m.a0+o).setDepth(1.4))}
     else if(d>=60&&d<E.leapR&&m.cd<=0){m.st='wind';m.t=E.wind;m.ux=dx/d;m.uy=dy/d;s.setTint(0xffe066);const sh=this.make.image({x:0,y:4,key:'shadow',add:false}).setScale(1.7).setAlpha(.15);m.mks=[-14,0,14].map((ox,i)=>this.make.image({x:ox,y:i==1?-6:-4,key:'kslash',add:false}).setVisible(false));m.mksh=sh;m.mk=this.add.container(0,0,[sh,...m.mks]).setDepth(1.4);this.kland(m)}}}
   else if(m.st=='claw'){rot=Math.atan2(dy,dx);
    if(m.hits==0){sx=.88;sy=1.12;if(m.tm<=0){m.hits=1;m.tm=.16;s.clearTint();this.slash(m,dx,dy,d)}}
    else if(m.hits==1){sx=1.2;sy=.85;if(m.tm<=0){m.hits=2;m.tm=.4;this.slash(m,dx,dy,d)}}
-   else{sx=1.1;sy=.9;if(m.tm<=0){m.st='chase';m.cq=1.6}}}
+   else{sx=1.1;sy=.9;if(m.tm<=0){m.st='chase';m.cq=2.2}}}
   else if(m.st=='spit'){sx=1.1;sy=.88+Math.sin(now/40)*.05;
    if(m.tm>.2){const lx=p.x+this.vx*.35,ly=p.y+this.vy*.35;m.a0=Math.atan2(ly-m.y,lx-m.x);this.steer(m,m.a0+Math.PI/2*(m.side||1),55,dt)}
    else if(!m.lk){m.lk=1;if(m.aim)m.aim.forEach(r=>r.setFillStyle(0xffffff,.75))}
@@ -423,7 +423,7 @@ class G extends Phaser.Scene{
   s.setScale(sx,sy).setPosition(m.x+(m.ox||0),m.y+(m.oy||0))}
   const L=this.cur.en.filter(m=>m.on&&m.spr&&m.k!='vdl'&&!(m.k=='rek'&&m.st!='up'));for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const A=L[i],B=L[j],ex=B.x-A.x,ey=B.y-A.y,ed=Math.hypot(ex,ey);if(ed>0&&ed<26){const q=(26-ed)*.25;this.mv(A,-ex/ed*q,-ey/ed*q,28);this.mv(B,ex/ed*q,ey/ed*q,28)}}}
  rekAI(m,dt,p){const R=C.R,now=this.time.now,dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,s=m.spr;m.tm=(m.tm||0)-dt;m.cd=(m.cd||0)-dt;m.hg=Math.max(0,(m.hg??70)-R.hd*dt);const hg=m.hg,sense=R.sense*(hg>=70?.5:hg<40?1.2:1);
-  const pm=Math.hypot(this.vx,this.vy)>35;if(m.hp<(m.mh||R.hp)*.3&&m.st=='up'){m.st='dig';m.tm=.3;m.heal=1}if(m.heal&&m.st=='under'){m.hp=Math.min(m.mh||R.hp,m.hp+3*dt);if(m.hp>=(m.mh||R.hp)*.7)m.heal=0} // 땅울림 감지: 움직이는 대상만 느낀다
+  const pm=Math.hypot(this.vx,this.vy)>70;if(m.hp<(m.mh||R.hp)*.3&&m.st=='up'){m.st='dig';m.tm=.3;m.heal=1}if(m.heal&&m.st=='under'){m.hp=Math.min(m.mh||R.hp,m.hp+3*dt);if(m.hp>=(m.mh||R.hp)*.7)m.heal=0} // 땅울림 감지: 움직이는 대상만 느낀다
   if(m.st=='under'){
    if(!m.heal&&pm&&d<sense){m.lx=p.x+this.vx*.5;m.ly=p.y+this.vy*.5;m.trk=1.2}else m.trk=(m.trk||0)-dt;
    let tx,ty,v;if(m.trk>0){tx=m.lx;ty=m.ly;v=R.v;m.prey=null}
@@ -444,7 +444,7 @@ class G extends Phaser.Scene{
    else s.setRotation(s.rotation+Math.sin(now/300)*.01);
    s.setPosition(m.x,m.y);if(m.rest&&pm&&d<sense)m.tm=Math.min(m.tm,.2);
    if(m.tm<=0){m.st='dig';m.tm=.5}}
-  else if(m.st=='dig'){s.setScale(1,Math.max(.3,.5+m.tm)).setPosition(m.x,m.y);if(m.tm<=0){m.st='under';m.cd=1.5;m.tm=0;s.setTexture('mound').setDepth(1.6).setScale(1).setRotation(0)}}}
+  else if(m.st=='dig'){s.setScale(1,Math.max(.3,.5+m.tm)).setPosition(m.x,m.y);if(m.tm<=0){m.st='under';m.cd=3.5;m.tm=0;s.setTexture('mound').setDepth(1.6).setScale(1).setRotation(0)}}}
  gnaAI(m,dt,p){const G=C.G,now=this.time.now,s=m.spr;m.tm=(m.tm||0)-dt;let sx=1,sy=1;
   const th=m.st=='curl'?null:this.threat(m.x,m.y,140,m,1);
   if(m.st=='curl'){sy=1+Math.sin(now/90)*.04;s.setRotation(0);if(m.tm<=0){m.st='idle';s.setTexture('gna')}}
@@ -478,8 +478,8 @@ class G extends Phaser.Scene{
   s.setPosition(m.x,m.y+Math.sin(now/120+m.x*.03)*2).setRotation(Math.atan2(m.vy,m.vx)+Math.PI/2).setScale(1.3*(1+Math.sin(now/45+m.x*.1)*.25),1.3)}
  slash(m,dx,dy,d){const a=Math.atan2(dy,dx),deg=a*180/Math.PI;this.steer(m,a,600,1/60);
   const arc=this.add.arc(m.x+Math.cos(a)*16,m.y+Math.sin(a)*16,24,deg-65,deg+65,false,0xffd0e0,.6).setDepth(12);this.tweens.add({targets:arc,alpha:0,scale:1.3,duration:180,onComplete:()=>arc.destroy()});
-  if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<54){const iso=!this.cur.en.some(o=>o!==m&&o.on&&o.k!='gna'&&Math.hypot(o.x-this.pl.x,o.y-this.pl.y)<160);
-   this.inv=0;this.hurt(Math.round(C.E.claw*(m.df||1)*(iso?1.5:1)));m.hg=Math.min(100,(m.hg||0)+8);if(iso)this.pop('고립! 피해 증가',this.pl.x,this.pl.y)}}
+  if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<54){const iso=!this.cur.obs.some(o=>Math.hypot((o[0]+.5)*C.T-this.pl.x,(o[1]+.5)*C.T-this.pl.y)<75)&&this.zone(this.pl.x,this.pl.y+4)!=2;
+   this.inv=0;this.hurt(Math.round(C.E.claw*(m.df||1)*(iso?1.5:1)));m.hg=Math.min(100,(m.hg||0)+8);if(iso)this.pop('고립! 엄폐물 없음',this.pl.x,this.pl.y)}}
  fire(x,y,a,m){const tr=m&&m.lv>=13?2:m&&m.lv>=7?1:0,o=this.add.image(x,y,'spike').setDepth(11).setRotation(a).setTint([0xffffff,0xffc0ff,0xff90d0][tr]);(this.prj=this.prj||[]).push({o,x,y,a,v:[140,155,170][tr],t:1.8,age:0,vmax:[430,475,520][tr],acc:[950,1050,1150][tr],df:m?m.df:1});
   const f=this.add.circle(x,y,9,0xd090ff,.7).setDepth(11);this.tweens.add({targets:f,scale:.2,alpha:0,duration:180,onComplete:()=>f.destroy()})}
  prjU(dt,p){if(!this.prj||!this.prj.length)return;for(const q of this.prj){q.t-=dt;q.age+=dt;q.v=Math.min(q.vmax||280,q.v+(q.acc||380)*dt);
