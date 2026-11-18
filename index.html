@@ -460,7 +460,7 @@ class G extends Phaser.Scene{
   s.setScale(sx,sy).setPosition(m.x+(m.ox||0),m.y+(m.oy||0))}
   const L=this.cur.en.filter(m=>m.on&&m.spr&&m.k!='vdl'&&!(m.k=='rek'&&m.st!='up'));for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const A=L[i],B=L[j],ex=B.x-A.x,ey=B.y-A.y,ed=Math.hypot(ex,ey);if(ed>0&&ed<26){const q=(26-ed)*.25;this.mv(A,-ex/ed*q,-ey/ed*q,28);this.mv(B,ex/ed*q,ey/ed*q,28)}}}
  rekAI(m,dt,p){const R=C.R,now=this.time.now,dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,s=m.spr;m.tm=(m.tm||0)-dt;m.cd=(m.cd||0)-dt;m.hg=Math.max(0,(m.hg??70)-R.hd*dt);const hg=m.hg,sense=R.sense*(hg>=70?.5:hg<40?1.2:1);
-  const pm=Math.hypot(this.vx,this.vy)>70;if(m.hp<(m.mh||R.hp)*.3&&m.st=='up'){m.st='dig';m.tm=.3;m.heal=1}if(m.heal&&m.st=='under'){m.hp=Math.min(m.mh||R.hp,m.hp+3*dt);if(m.hp>=(m.mh||R.hp)*.7)m.heal=0} // 땅울림 감지: 움직이는 대상만 느낀다
+  const pm=Math.hypot(this.vx,this.vy)>70;if(m.hp<(m.mh||R.hp)*.3&&m.st=='up'&&!m.hl){m.st='dig';m.tm=.3;m.heal=1;m.hl=1}if(m.heal&&m.st=='under'){m.hp=Math.min(m.mh||R.hp,m.hp+3*dt);if(m.hp>=(m.mh||R.hp)*.7)m.heal=0} // 땅울림 감지: 움직이는 대상만 느낀다
   if(m.st=='under'){
    if(!m.heal&&pm&&d<sense){m.lx=p.x+this.vx*.5;m.ly=p.y+this.vy*.5;m.trk=1.2}else m.trk=(m.trk||0)-dt;
    let tx,ty,v;if(m.trk>0){tx=m.lx;ty=m.ly;v=R.v;m.prey=null}
