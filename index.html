@@ -236,7 +236,7 @@ function gen(){
  for(const a of rooms){const t=a.tr,dd=dist.get(a)||0,_dd=(a.dd=dd),rocks=a.obs.filter(o=>o[2]==0),rg=new Set(rocks.map(o=>o[3])).size,cover=a.obs.filter(o=>o[2]>=1).concat(a.zn.filter(z=>z[2]==2));
   const ns=a.food.filter(f=>f.t=='s').length,nl=a.food.filter(f=>f.t=='l').length,nc=a.food.filter(f=>f.t=='c').length;
   // 제르사이 유생: 결정이 있는 바위 지대 (결정 3개당 1마리)
-  const ng=t=='mine'?3+rnd(2):(rg>=2&&a!==start?Math.min(3,Math.floor(nc/3)):0);
+  const ng=t=='mine'?3+rnd(2):(rg>=2&&a!==start&&t!='haven'?Math.min(3,Math.floor(nc/3)):0);
   for(let i=0;i<ng;i++){const p=spot(a,rocks);if(p)P(a,{k:'gna',...p,hp:C.G.hp,sz:1})}
   if(a===start||t=='haven')continue;
   // 렉사이: 유생이 2마리 이상 사는 바위 지대에만
