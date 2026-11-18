@@ -400,11 +400,16 @@ class G extends Phaser.Scene{
   if(inB&&!this.inBp){for(let i=0;i<10;i++){const o=this.add.circle(p.x,p.y,1.6,0xe0a0ff,.9).setDepth(12),an=Math.random()*6.283;this.tweens.add({targets:o,x:p.x+Math.cos(an)*26,y:p.y+Math.sin(an)*18-10,alpha:0,duration:700,onComplete:()=>o.destroy()})}}
   this.inBp=inB}
  pz(){if(this.over||this.molt||this.tr)return;this.paused=!this.paused;if(this.paused){if(this.hint){this.hint.destroy();this.hint=null}this.physics.pause();this.tweens.pauseAll();this.time.paused=true;
-   const o=[];o.push(this.add.rectangle(400,180,800,360,0x0d0818,.78).setDepth(300).setInteractive());o.push(this.add.text(400,92,'일시정지',ST({fontSize:'26px',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
-   const tm=Math.round((this.time.now-this.t0)/1000);o.push(this.add.text(400,128,'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  방 '+this.lv.rooms.filter(r=>r.seen).length+' / 16',ST({fontSize:'13px',color:'#a99fc2'})).setOrigin(.5).setDepth(301));
-   const b1=this.add.text(320,190,'계속하기',ST({fontSize:'17px',color:'#12091f',fontStyle:'bold',backgroundColor:'#a65cff',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>this.pz());
-   const b2=this.add.text(480,190,'처음부터',ST({fontSize:'17px',color:'#ece6f7',fontStyle:'bold',backgroundColor:'#3a2f57',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>{this.paused=false;this.time.paused=false;this.scene.restart()});o.push(b1,b2);
-   o.push(this.add.text(400,262,this.sys.game.device.input.touch?'조이스틱: 이동 (반만 밀면 살금살금)  ·  섭취 버튼: 탭 = 물기, 누르고 있기 = 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금  ·  Space: 물기/섭취  ·  E: 탈피  ·  P·Esc: 일시정지',ST({fontSize:'12px',color:'#8f86a8'})).setOrigin(.5).setDepth(301));this.pzo=o}
+   const o=[];o.push(this.add.rectangle(400,180,800,360,0x0d0818,.78).setDepth(300).setInteractive());o.push(this.add.text(400,62,'일시정지',ST({fontSize:'26px',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
+   const tm=Math.round((this.time.now-this.t0)/1000);o.push(this.add.text(400,94,'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  방 '+this.lv.rooms.filter(r=>r.seen).length+' / 16',ST({fontSize:'13px',color:'#a99fc2'})).setOrigin(.5).setDepth(301));
+   const b1=this.add.text(320,140,'계속하기',ST({fontSize:'17px',color:'#12091f',fontStyle:'bold',backgroundColor:'#a65cff',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>this.pz());
+   const b2=this.add.text(480,140,'처음부터',ST({fontSize:'17px',color:'#ece6f7',fontStyle:'bold',backgroundColor:'#3a2f57',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>{this.paused=false;this.time.paused=false;this.scene.restart()});o.push(b1,b2);
+   {const g=this.add.graphics().setDepth(301);o.push(g);const row=(y,items)=>{let x=400-items.reduce((a,it)=>a+it[2],0)/2;for(const[c,lb,w,sz]of items){g.fillStyle(c,1).fillRect(x,y-(sz||12)/2,sz||12,sz||12);o.push(this.add.text(x+(sz||12)+5,y,lb,ST({fontSize:'11px',color:'#c9c0de'})).setOrigin(0,.5).setDepth(301));x+=w}};
+    o.push(this.add.text(400,190,'지도 보는 법',ST({fontSize:'12px',color:'#8f86a8',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
+    row(214,[[0xece6f7,'지금 있는 방',100],[0xa65cff,'가 본 방',82],[0x3a2f57,'안 가 본 방',94],[0xe0457b,'출구',58]]);
+    row(238,[[TR.haven[1],'둥지',54,7],[TR.brood[1],'번식지',64,7],[TR.mine[1],'광맥',54,7],[TR.swamp[1],'독 늪',58,7],[TR.flow[1],'소용돌이',74,7],[TR.lair[1],'포식자 둥지',90,7],[TR.dark[1],'암흑',52,7]]);
+    row(262,[[0x8a7ab0,'동굴 통로',84,6],[0xa07850,'렉사이 땅굴',96,6],[0xc070ff,'공허 균열',86,6]])}
+   o.push(this.add.text(400,322,this.sys.game.device.input.touch?'조이스틱: 이동 (반만 밀면 살금살금)  ·  섭취 버튼: 탭 = 물기, 누르고 있기 = 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금  ·  Space: 물기/섭취  ·  E: 탈피  ·  P·Esc: 일시정지',ST({fontSize:'12px',color:'#8f86a8'})).setOrigin(.5).setDepth(301));this.pzo=o}
   else{this.physics.resume();this.tweens.resumeAll();this.time.paused=false;(this.pzo||[]).forEach(x=>x.destroy());this.pzo=null}}
  bite(){const p=this.pl,an=this.ang,fx=Math.cos(an),fy=Math.sin(an);this.bcd=C.BITE.cd;
   const e=this.add.circle(p.x+fx*34,p.y+fy*34,20,0xffffff,.55).setDepth(12);this.tweens.add({targets:e,alpha:0,scale:1.6,duration:160,onComplete:()=>e.destroy()});
