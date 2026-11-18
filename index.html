@@ -597,6 +597,8 @@ class G extends Phaser.Scene{
   this.slow=(this.slow||0)-dt;if(this.slow>0&&Math.random()<.2){const b=this.add.circle(p.x+(Math.random()-.5)*20,p.y,1.8,0xc070ff,.7).setDepth(12);this.tweens.add({targets:b,y:p.y+14,alpha:0,duration:400,onComplete:()=>b.destroy()})}const sp=this.spd*C.T*(this.slow>0?.6:1);this.vx=p.body.velocity.x;this.vy=p.body.velocity.y;const kk=Math.min(1,dt*22);this.jx+=(ix*fr-this.jx)*kk;this.jy+=(iy*fr-this.jy)*kk;const fw=this.flowAt(p.x,p.y),tx=this.jx*sp+fw[0],ty=this.jy*sp+fw[1],dx=tx-this.vx,dy=ty-this.vy,l2=Math.hypot(dx,dy),m=sp/C.ACC*dt;
   if(l2<=m){this.vx=tx;this.vy=ty}else{this.vx+=dx/l2*m;this.vy+=dy/l2*m}
   p.setVelocity(this.vx,this.vy);
+  // 모서리 미끄러짐: 한 축으로 밀다 바위 모서리에 살짝 걸리면 옆으로 비켜 지나감
+  {const B=p.body,bl=B.blocked,hx=Math.abs(this.jx)>Math.abs(this.jy)*1.4,hy=Math.abs(this.jy)>Math.abs(this.jx)*1.4;if(fr>.3&&(hx&&(this.jx>0?bl.right:bl.left)||hy&&(this.jy>0?bl.down:bl.up))){const sx=hx?Math.sign(this.jx):0,sy=hy?Math.sign(this.jy):0;let sd=0;for(let k=2;k<=14&&!sd;k+=2)for(const s of [1,-1]){const ox=hy?s*k:sx*3,oy=hx?s*k:sy*3;if(!this.physics.overlapRect(B.x+ox,B.y+oy,B.width,B.height,false,true).length){sd=s;break}}if(sd){const v=sp*.9;if(hx)p.setVelocity(sx*sp*.4,sd*v);else p.setVelocity(sd*v,sy*sp*.4)}}}
   // 방향 (경계 10도 떨림 방지)
   if(fr>.05){const ang=(Math.atan2(iy,ix)*180/Math.PI+360)%360,cu=(90+90*this.dir)%360,df=Math.abs(((ang-cu+540)%360)-180);
    if(df>57)this.dir=Math.round(((ang-90+360)%360)/90)%4}
