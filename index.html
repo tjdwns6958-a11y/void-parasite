@@ -261,7 +261,7 @@ class G extends Phaser.Scene{
    for(let d=0;d<4;d++){
     this.anims.create({key:'w'+d,frames:[0,1,2,3,4,5].map(f=>({key:'walk',frame:d+'_'+f})),frameRate:C.WF,repeat:-1});
     this.anims.create({key:'i'+d,frames:[0,1,2,3].map(f=>({key:'idle',frame:d+'_'+f})),frameRate:C.IF,repeat:-1})}}
-  this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
+  this.hvT=null;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
   this.lv=gen();
   this.fl=this.add.tileSprite(400,180,800,360,'floor').setDepth(0);
   this.walls=this.physics.add.staticGroup();this.dec=[];
@@ -642,9 +642,11 @@ class G extends Phaser.Scene{
   g.fillStyle(0xa65cff).fillCircle(kx,ky,22);
   g.fillStyle(this.eat&&this.eat.isDown?0xc98bff:0xa65cff).fillCircle(728,288,46);
   if(this.cur.tr=='haven'){const ok=this.moltPts()>=3;g.fillStyle(ok?0x7be0a8:0x3a2f57,ok?.75+.2*Math.sin(this.time.now/200):.8).fillCircle(636,296,30);this.mtx.setVisible(true).setColor(ok?'#12091f':'#a99fc2')}else this.mtx.setVisible(false);
+  if(this.cur.tr!='haven'&&this.moltPts()>=3){const hv=this.lv.rooms.find(r=>r.tr=='haven');if(hv){const dx=hv.c-this.cur.c,dy=hv.r-this.cur.r,l=Math.hypot(dx,dy*1.6)||1,ux=dx/l,uy=dy*1.6/l,k=Math.min(320/Math.max(Math.abs(ux),.01),120/Math.max(Math.abs(uy),.01)),ax=400+ux*k,ay=180+uy*k,al=.6+.35*Math.sin(this.time.now/180),an=Math.atan2(uy,ux);
+   g.fillStyle(0x7be0a8,al).fillTriangle(ax+Math.cos(an)*14,ay+Math.sin(an)*14,ax+Math.cos(an+2.5)*11,ay+Math.sin(an+2.5)*11,ax+Math.cos(an-2.5)*11,ay+Math.sin(an-2.5)*11);if(!this.hvT)this.hvT=this.add.text(0,0,'둥지',ST({fontSize:'11px',color:'#7be0a8',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.hvT.setVisible(true).setPosition(ax-Math.cos(an)*20,ay-Math.sin(an)*20).setAlpha(al)}}else if(this.hvT)this.hvT.setVisible(false);
   for(const m of this.lv.rooms){
    const c=m===this.cur?0xece6f7:m.seen?(m===this.lv.exit?0xe0457b:0xa65cff):0x3a2f57;
-   g.fillStyle(c).fillRect(722+m.c*16,58+m.r*16,14,14);if(m.seen&&m.tr)g.fillStyle(TR[m.tr][1]).fillRect(726+m.c*16,62+m.r*16,6,6)}
+   g.fillStyle(c).fillRect(722+m.c*16,58+m.r*16,14,14);if((m.seen||m.tr=='haven')&&m.tr)g.fillStyle(TR[m.tr][1]).fillRect(726+m.c*16,62+m.r*16,6,6)}
   const CC={hole:0xa07850,rift:0xc070ff,gate:0xff7a9a,cave:0x8a7ab0},Lv=this.lv;for(const m of Lv.rooms){const e=Lv.at(m.r,m.c+1),so=Lv.at(m.r+1,m.c);if(m.d.E&&(m.seen||e.seen))g.fillStyle(CC[m.ct.E]).fillRect(736+m.c*16,63+m.r*16,2,4);if(m.d.S&&(m.seen||so.seen))g.fillStyle(CC[m.ct.S]).fillRect(727+m.c*16,72+m.r*16,4,2)}
   for(const f of this.cur.food)if(f.on&&f.p>0){
    g.fillStyle(0x3a2f57).fillRect(f.spr.x-14,f.spr.y-24,28,5);g.fillStyle(0x7be0a8).fillRect(f.spr.x-14,f.spr.y-24,28*Math.min(1,f.p),5)}
