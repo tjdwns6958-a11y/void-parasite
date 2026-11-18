@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 프로토타입 (1~4단계)</title>
+<title>공허 기생충 v27</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -28,7 +28,7 @@ const SCS=['#7be0a8','#c0a0ff','#ffd060','#ff7a9a'],SCN=[0x7be0a8,0xc0a0ff,0xffd
 const FF='system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
 const ST=o=>Object.assign({fontFamily:FF,resolution:2,color:'#ece6f7'},o);
 const rnd=n=>Math.random()*n|0,pick=a=>a[rnd(a.length)];
-const TR={coral:['공허 산호 숲 (산호는 물어서 부술 수 있다 · 가시 산호충)',0xff8a70],watch:['심연의 감시탑 (빛줄기에 닿으면 들킨다 · 그림자로 다닐 것)',0x78c8d8],haven:['둥지 (안전 · 적 없음)',0xffe9a0],brood:['번식지 (먹이 많음 · 카직스 주의)',0xff9ec0],mine:['광맥 동굴 (무기물)',0xb4b4c8],dark:['암흑 구역 (시야 제한)',0xffffff],swamp:['독 늪 (웅덩이 · 대 유충)',0x8fe070],flow:['공허의 소용돌이 (몸이 휩쓸린다 · 보이드링 무리)',0xa08cff],lair:['포식자 둥지 (보물 + 카직스)',0xff7a6a]};
+const TR={coral:['공허 산호 숲 (산호는 물어서 부술 수 있다 · 가시 산호충)',0xff8a70],watch:['심연의 감시탑 (빛줄기에 닿으면 들킨다 · 그림자로 다닐 것)',0x78c8d8],haven:['둥지 (안전 · 적 없음)',0xffe9a0],brood:['번식지 (먹이 많음 · 카직스 주의)',0xff9ec0],mine:['광맥 동굴 (무기물)',0xb4b4c8],dark:['암흑 구역 (시야 제한)',0xffffff],swamp:['독 늪 (웅덩이 · 대 유충)',0x8fe070],flow:['공허의 소용돌이 (몸이 휩쓸린다 · 보이드링 무리)',0xa08cff],lair:['포식자 둥지 (보물 + 카직스)',0xff7a6a],void:['공허의 가장자리 — 바깥으로 이어지는 틈',0x8a78c8]};
 
 const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98bff'},LCN={p:0xff7a9a,c:0x9fd8ff,v:0xc98bff},LRS={p:'유기물',c:'무기물',v:'공허 정수'},LK=['p','c','v'],
  LCOST={p:[20,40,60],c:[16,32,48],v:[2,4,6]},LMAX=5,
@@ -359,7 +359,7 @@ class G extends Phaser.Scene{
    for(let d=0;d<4;d++){
     this.anims.create({key:'w'+d,frames:[0,1,2,3,4,5].map(f=>({key:'walk',frame:d+'_'+f})),frameRate:C.WF,repeat:-1});
     this.anims.create({key:'i'+d,frames:[0,1,2,3].map(f=>({key:'idle',frame:d+'_'+f})),frameRate:C.IF,repeat:-1})}}
-  this.hvT=null;this.seenP={};this.seenM={};this.mcard=null;this.mxS=0;{const mq=window.matchMedia('(orientation: portrait)'),ap=()=>{if(!this.paused&&!this.over&&!this.molt&&!this.tr)this.pz()},oh=()=>{if(mq.matches)ap()};mq.addEventListener('change',oh);this.game.events.on('hidden',ap);this.game.events.on('blur',ap);this.events.once('shutdown',()=>{mq.removeEventListener('change',oh);this.game.events.off('hidden',ap);this.game.events.off('blur',ap)})}this.paused=false;this.pzo=null;this.input.keyboard.off('keydown-P');this.input.keyboard.off('keydown-ESC');this.input.keyboard.on('keydown-P',()=>this.pz());this.input.keyboard.on('keydown-ESC',()=>{if(!this.molt)this.pz()});this.vig=null;this.loW=0;this.qtx=null;this.eye=null;this.inBp=false;this.bl=[];this.bsp=[];this.bol=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lin={p:0,c:0,v:0};this.spO=0;this.spM=0;this.spV=0;this.ve=0;this.feast=0;this.cry=0;this.fam=[];this.pprj=[];this.hasteT=0;this.spitCd=0;this.cryS=null;this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
+  this.hvT=null;this.seenP={};this.seenM={};this.mcard=null;this.mxS=0;{const mq=window.matchMedia('(orientation: portrait)'),ap=()=>{if(!this.paused&&!this.over&&!this.molt&&!this.tr)this.pz()},oh=()=>{if(mq.matches)ap()};mq.addEventListener('change',oh);this.game.events.on('hidden',ap);this.game.events.on('blur',ap);this.events.once('shutdown',()=>{mq.removeEventListener('change',oh);this.game.events.off('hidden',ap);this.game.events.off('blur',ap)})}this.paused=false;this.pzo=null;this.treeO=null;this.rgT=null;this.rgL=null;this.rwNm=null;this.sil=0;this.boss=false;this.rwo=[];this.input.keyboard.off('keydown-T');this.input.keyboard.on('keydown-T',()=>{if(this.treeO)this.treeClose();else this.treeOpen()});this.input.keyboard.off('keydown-ENTER');this.input.keyboard.on('keydown-ENTER',()=>{if(this.treeO)this.treeClose()});this.input.keyboard.off('keydown-P');this.input.keyboard.off('keydown-ESC');this.input.keyboard.on('keydown-P',()=>this.pz());this.input.keyboard.on('keydown-ESC',()=>{if(!this.molt)this.pz()});this.vig=null;this.loW=0;this.qtx=null;this.eye=null;this.inBp=false;this.bl=[];this.bsp=[];this.bol=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lin={p:0,c:0,v:0};this.spO=0;this.spM=0;this.spV=0;this.ve=0;this.feast=0;this.cry=0;this.fam=[];this.pprj=[];this.hasteT=0;this.spitCd=0;this.cryS=null;this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
   this.zi=1;this.zt0=this.time.now;this.eprj=[];this.lit=0;this.litW=0;this.bmD=null;this.bmG=null;this.litTx=null;
   this.lv=gen(1);
   this.fl=this.add.tileSprite(400,180,800,360,'floor').setDepth(0);
@@ -374,8 +374,9 @@ class G extends Phaser.Scene{
   this.etx=this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
   this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 버튼: 탭하면 물기 · 먹이 곁에서 누르고 있으면 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금\nSpace: 물기 (먹이 곁에서 누르고 있으면 섭취)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
+  if(!window.__vpNoTree)this.time.delayedCall(30,()=>this.treeOpen(1));
   this.input.addPointer(2);
-  this.input.on('pointerdown',p=>{if(this.over)return;if(this.paused)return;if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
+  this.input.on('pointerdown',p=>{if(this.over)return;if(this.treeO){this.treeTap(p.x,p.y);return}if(this.paused)return;if(!this.molt&&p.x>662&&p.x<788&&p.y>132&&p.y<168){this.treeOpen();return}if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
    if(Phaser.Math.Distance.Between(p.x,p.y,728,288)<60){this.eat=p;this.req=1}else if(p.x<420&&(!this.joy||!this.joy.isDown))this.joy=p});
   this.input.on('pointerup',p=>{if(this.joy===p)this.joy=null;if(this.eat===p)this.eat=null});
   this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,E,ONE,TWO,THREE,FOUR,ENTER,ESC,SHIFT');
@@ -461,14 +462,16 @@ class G extends Phaser.Scene{
   if(this.cur.vt){const w=this.flowAt(f.x,f.y);this.mv(f,w[0]*dt*.6,w[1]*dt*.6,30)}
   s.setPosition(f.x+ox,f.y+oy).setScale(sx,sy)}
  los(x1,y1,x2,y2){if(this.zone(x2,y2+4)==2)return false;const n=Math.ceil(Math.hypot(x2-x1,y2-y1)/16);for(let i=1;i<n;i++)if(this.blk(x1+(x2-x1)*i/n,y1+(y2-y1)*i/n,22))return false;return true}
- blk(x,y,m){return this.cur.obs.some(([c,r])=>Math.abs(x-(c+.5)*C.T)<m&&Math.abs(y-(r+.5)*C.T)<m)||(this.cur.cor?this.cur.cor.some(o=>o.on&&Math.abs(x-(o.c+.5)*C.T)<m&&Math.abs(y-(o.r+.5)*C.T)<m):false)}
- mv(o,mx,my,m){const x=Phaser.Math.Clamp(o.x+mx,60,740),y=Phaser.Math.Clamp(o.y+my,60,300);
-  if(!this.blk(x,y,m)){o.x=x;o.y=y}else if(!this.blk(x,o.y,m))o.x=x;else if(!this.blk(o.x,y,m))o.y=y}
+ blk(x,y,m,nc){return this.cur.obs.some(([c,r])=>Math.abs(x-(c+.5)*C.T)<m&&Math.abs(y-(r+.5)*C.T)<m)||(!nc&&this.cur.cor?this.cur.cor.some(o=>o.on&&Math.abs(x-(o.c+.5)*C.T)<m&&Math.abs(y-(o.r+.5)*C.T)<m):false)}
+ mv(o,mx,my,m,nc){const x=Phaser.Math.Clamp(o.x+mx,60,740),y=Phaser.Math.Clamp(o.y+my,60,300);
+  // 이미 장애물과 겹쳐 있으면(산호가 다시 자란 경우 등) 빠져나올 수 있게 그대로 움직인다
+  if(this.blk(o.x,o.y,m,nc)){o.x=x;o.y=y;return}
+  if(!this.blk(x,y,m,nc)){o.x=x;o.y=y}else if(!this.blk(x,o.y,m,nc))o.x=x;else if(!this.blk(o.x,y,m,nc))o.y=y}
  hurt(d,src,m){if(this.inv>0)return;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
   let cb=1;if(L.c>=2&&this.cry>0){this.cry--;this.shard();cb=.4;this.dtx(this.pl.x,this.pl.y-22,'수정이 막았다','#9fd8ff')}
   const dd=d*this.dmt*cb;this.en-=dd;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(100,.004);
   if(L.c>=1&&m&&m.on&&dd>0){const rd=dd/cb*(L.c>=3?.75:.4),kd=this.dmgM(m,rd);this.dtx(m.x,m.y-18,'반사 '+Math.round(rd),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
- kill(m){m.on=0;this.kc=(this.kc||0)+1;const x=m.x,y=m.y;const hs=this.deathFx(m);if(m.mk){m.mk.destroy();m.mk=null}if(m.lsh){m.lsh.destroy();m.lsh=null}if(m.ring){m.ring.destroy();m.ring=null}if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}const R=MON(m.k),z=(m.sz||1)*(1+.1*((m.lv||1)-1)),e=Math.round(R.e*z),o=Math.round((R.o||0)*z),mi=Math.round((R.m||0)*z);if(m.lvT){m.lvT.destroy();m.lvT=null}
+ kill(m){if(m.k=='rw')return this.rwDie(m);m.on=0;this.kc=(this.kc||0)+1;const x=m.x,y=m.y;const hs=this.deathFx(m);if(m.mk){m.mk.destroy();m.mk=null}if(m.lsh){m.lsh.destroy();m.lsh=null}if(m.ring){m.ring.destroy();m.ring=null}if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}const R=MON(m.k),z=(m.sz||1)*(1+.1*((m.lv||1)-1)),e=Math.round(R.e*z),o=Math.round((R.o||0)*z),mi=Math.round((R.m||0)*z);if(m.lvT){m.lvT.destroy();m.lvT=null}
   const L=m.lv||1,xp=Math.round(({rek:18,gna:6,vdl:4,spn:10,lsp:6,qn:70,wd:70}[m.k]||12)*(1+.15*(L-1))*Phaser.Math.Clamp(1+.2*(L-this.plv),.4,1.6));this.gainXp(xp);if(m.k=='qn'||m.k=='wd'){this.ess(2);this.en=Math.min(this.emax,this.en+20);this.dtx(x,y-40,'정예 처치! 정수 +2 · 에너지 +20','#ffe066');if(m.k=='qn')for(const c of this.cur.cor||[])if(c.on&&c.tmp)c.tmp=1}
   const vd=m.k=='vdl'||m.k=='lsp',vv=m.k=='vdl';if(vd){this.en=Math.min(this.emax,this.en+e);this.org+=o;this.mn+=mi;if(vv){this.ve++;if(this.lin.v>=1)this.en=Math.min(this.emax,this.en+8);if(this.lin.v>=3&&this.fam.length<2)this.famAdd(x,y)}}
   else{const k=m.k,sx=hs.scaleX*(k=='rek'||k=='gna'?1:1.12),sy=hs.scaleY*(k=='rek'?.5:k=='gna'?1:.65);this.cur.food.push({t:'h',x,y,p:0,on:1,c:-1,r:-1,spr:hs,tex:({gna:'gnac',rek:'rek',spn:'spn',qn:'qn',wd:'wd'})[k]||'kha',rot:k=='gna'?0:hs.rotation,sx,sy,hv:{e,o,m:mi},ready:this.time.now+700,die:this.time.now+45000})}
@@ -497,7 +500,7 @@ class G extends Phaser.Scene{
   this.eye.setVisible(inB);if(inB)this.eye.setPosition(this.hd.x+3,this.hd.y-1).setAlpha(.6+.4*Math.sin(t*6));
   if(inB&&!this.inBp){for(let i=0;i<10;i++){const o=this.add.circle(p.x,p.y,1.6,0xe0a0ff,.9).setDepth(12),an=Math.random()*6.283;this.tweens.add({targets:o,x:p.x+Math.cos(an)*26,y:p.y+Math.sin(an)*18-10,alpha:0,duration:700,onComplete:()=>o.destroy()})}}
   this.inBp=inB}
- pz(){if(this.over||this.molt||this.tr)return;this.paused=!this.paused;if(this.paused){if(this.hint){this.hint.destroy();this.hint=null}this.physics.pause();this.tweens.pauseAll();this.time.paused=true;
+ pz(){if(this.over||this.molt||this.tr||this.treeO)return;this.paused=!this.paused;if(this.paused){if(this.hint){this.hint.destroy();this.hint=null}this.physics.pause();this.tweens.pauseAll();this.time.paused=true;
    const o=[];o.push(this.add.rectangle(400,180,800,360,0x0d0818,.78).setDepth(300).setInteractive());o.push(this.add.text(400,62,'일시정지',ST({fontSize:'26px',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
    const tm=Math.round((this.time.now-this.t0)/1000);o.push(this.add.text(400,94,this.zi+'구역  ·  생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  방 '+this.lv.rooms.filter(r=>r.seen).length+' / 16',ST({fontSize:'13px',color:'#a99fc2'})).setOrigin(.5).setDepth(301));
    const b1=this.add.text(320,140,'계속하기',ST({fontSize:'17px',color:'#12091f',fontStyle:'bold',backgroundColor:'#a65cff',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>this.pz());
@@ -509,11 +512,12 @@ class G extends Phaser.Scene{
     row(262,[[0x8a7ab0,'동굴 통로',84,6],[0xa07850,'렉사이 땅굴',96,6],[0xc070ff,'공허 균열',86,6]])}
    o.push(this.add.text(400,322,this.sys.game.device.input.touch?'조이스틱: 이동 (반만 밀면 살금살금)  ·  섭취 버튼: 탭 = 물기, 누르고 있기 = 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금  ·  Space: 물기/섭취  ·  E: 탈피  ·  P·Esc: 일시정지',ST({fontSize:'12px',color:'#8f86a8'})).setOrigin(.5).setDepth(301));this.pzo=o}
   else{this.physics.resume();this.tweens.resumeAll();this.time.paused=false;(this.pzo||[]).forEach(x=>x.destroy());this.pzo=null}}
- bite(){const p=this.pl,an=this.ang,fx=Math.cos(an),fy=Math.sin(an);this.bcd=C.BITE.cd;let hit=0;
+ bite(){const p=this.pl,an=this.ang,fx=Math.cos(an),fy=Math.sin(an);this.bcd=C.BITE.cd;let hit=0;if(this.sil>0){this.bcd=.3;this.dtx(p.x,p.y-24,'침묵 — 물 수 없다','#b0a0d0');return}this.rwNoise();
+  for(const q of this.rwo||[])if(q.on){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<C.BITE.range&&(dx*fx+dy*fy)/(d||1)>.2){q.on=0;q.o.destroy();this.en=Math.min(this.emax,this.en+6);this.dtx(q.x,q.y-14,'무(無)를 삼켰다 · 에너지 +6','#c8b8ff');hit=1}}
   const e=this.add.circle(p.x+fx*34,p.y+fy*34,20,0xffffff,.55).setDepth(12);this.tweens.add({targets:e,alpha:0,scale:1.6,duration:160,onComplete:()=>e.destroy()});
   for(const m of this.cur.en)if(m.on){const dx=m.x-p.x,dy=m.y-p.y,d=Math.hypot(dx,dy);
-   if(d<C.BITE.range&&(dx*fx+dy*fy)/(d||1)>.3&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))){let dg=this.bdmg;if(m.k=='gna'){if(m.st=='curl')dg/=2;m.st='curl';m.tm=1.4;m.spr.setTexture('gnac').setRotation(0);for(const o of this.cur.en)if(o.on&&o.k=='gna'&&o!==m&&o.st!='curl'&&Math.hypot(o.x-m.x,o.y-m.y)<130){o.st='curl';o.tm=1.2;o.spr.setTexture('gnac').setRotation(0)}}hit=1;{const L=this.lin,mh=m.mh||MON(m.k).hp;if(L.p>=3&&m.hp<=mh*(m.k=='qn'||m.k=='wd'?.12:.25)){this.gulp(m);continue}m.bc=(m.bc||0)+1;if(L.p>=1&&m.bc%2==0){m.bl=3;this.dtx(m.x,m.y-14,'찢기','#ff7a9a')}}dg*=this.dmul(m,1);m.hp-=dg;if(this.lin.p>=2)this.en=Math.min(this.emax,this.en+dg*.15);m.spr.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.spr)m.spr.clearTint()});
-    if(d>0&&!({spn:1,qn:1,wd:1})[m.k])this.mv(m,dx/d*18,dy/d*18,30);
+   if(d<C.BITE.range+(m.k=='rw'?40:0)&&(dx*fx+dy*fy)/(d||1)>.3&&!m.gone&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))){let dg=this.bdmg;if(m.k=='gna'){if(m.st=='curl')dg/=2;m.st='curl';m.tm=1.4;m.spr.setTexture('gnac').setRotation(0);for(const o of this.cur.en)if(o.on&&o.k=='gna'&&o!==m&&o.st!='curl'&&Math.hypot(o.x-m.x,o.y-m.y)<130){o.st='curl';o.tm=1.2;o.spr.setTexture('gnac').setRotation(0)}}hit=1;{const L=this.lin,mh=m.mh||MON(m.k).hp;if(L.p>=3&&m.hp<=mh*(m.k=='qn'||m.k=='wd'?.12:m.k=='rw'?.06:.25)){this.gulp(m);continue}m.bc=(m.bc||0)+1;if(L.p>=1&&m.bc%2==0){m.bl=3;this.dtx(m.x,m.y-14,'찢기','#ff7a9a')}}dg*=this.dmul(m,1);m.hp-=dg;if(this.lin.p>=2)this.en=Math.min(this.emax,this.en+dg*.15);m.spr.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.spr)m.spr.clearTint()});
+    if(d>0&&!({spn:1,qn:1,wd:1,rw:1})[m.k])this.mv(m,dx/d*18,dy/d*18,30);
     if(m.hp<=0){this.kill(m);if(this.lin.p>=2)this.feed()}}}{let bo=null,bq=C.BITE.range;for(const o of this.cur.cor||[])if(o.on){const dx=(o.c+.5)*C.T-p.x,dy=(o.r+.5)*C.T-p.y,d=Math.hypot(dx,dy);if(d<bq&&(dx*fx+dy*fy)/(d||1)>.3){bq=d;bo=o}}if(bo){this.corHit(bo,1);hit=1}}if(!hit&&this.lin.v>=2)this.spit()}
  foe(dt,p){const now=this.time.now;for(const m of this.cur.en)if(m.on){if(m.k){this[m.k+'AI'](m,dt,p);continue}const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,E=C.E,s=m.spr;m.cd-=dt;m.cq=(m.cq||0)-dt;m.cw=(m.cw||0)-dt;m.tm=(m.tm||0)-dt;let rot=null,sx=1,sy=1;m.hg=Math.max(0,(m.hg??70)-E.hd*(m.ag?.35:1)*dt);const hg=m.hg,hm=hg<15?1.25:1;m.fcd=(m.fcd||0)-dt;
   if(m.hp<(m.mh||E.hp)*.3&&m.st!='flee'&&m.st!='leap'&&m.st!='wind'&&m.fcd<=0){m.st='flee';m.tm=6;s.clearTint();if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}if(m.mk){m.mk.destroy();m.mk=null}this.pop('후퇴',m.x,m.y)}
@@ -730,7 +734,7 @@ class G extends Phaser.Scene{
  shard(){const p=this.pl;for(const m of this.cur.en)if(m.on&&!(m.k=='rek'&&m.st=='under')&&Math.hypot(m.x-p.x,m.y-p.y)<64)this.dmgM(m,6);
   for(let i=0;i<10;i++){const an=i/10*6.283,b=this.add.rectangle(p.x,p.y,5,2,0x9fd8ff).setRotation(an).setDepth(12);this.tweens.add({targets:b,x:p.x+Math.cos(an)*60,y:p.y+Math.sin(an)*60,alpha:0,duration:320,onComplete:()=>b.destroy()})}}
  sdmg(){return 8+1.2*(this.plv-1)}
- spit(){if(this.spitCd>0)return;const p=this.pl;let b=null,bd=200;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible!==false&&!(m.k=='rek'&&m.st!='up')){const d=Math.hypot(m.x-p.x,m.y-p.y);if(d>=36&&d<bd&&(m.k=='spn'&&m.st=='hide'?this.spnLos(m,p,1):this.los(p.x,p.y,m.x,m.y))){bd=d;b=m}}if(!b)return;
+ spit(){if(this.spitCd>0||this.sil>0)return;this.rwNoise();const p=this.pl;let b=null,bd=200;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible!==false&&!m.gone&&!(m.k=='rek'&&m.st!='up')){const d=Math.hypot(m.x-p.x,m.y-p.y);if(d>=36&&d<bd&&(m.k=='spn'&&m.st=='hide'?this.spnLos(m,p,1):this.los(p.x,p.y,m.x,m.y))){bd=d;b=m}}if(!b)return;
   this.spitCd=1.5;const a=Math.atan2(b.y-p.y,b.x-p.x);this.ang=a;const o=this.add.circle(p.x,p.y,4,0xc070ff,1).setStrokeStyle(1.5,0xf0c8ff).setDepth(11);this.pprj.push({o,x:p.x,y:p.y,a,v:310,t:.9,tg:b})}
  pprjU(dt){this.spitCd=Math.max(0,(this.spitCd||0)-dt);this.hasteT=Math.max(0,(this.hasteT||0)-dt);if(!this.pprj.length)return;
   for(const q of this.pprj){q.t-=dt;if(q.tg&&q.tg.on){const df=Phaser.Math.Angle.Wrap(Math.atan2(q.tg.y-q.y,q.tg.x-q.x)-q.a);q.a+=Phaser.Math.Clamp(df,-2.5*dt,2.5*dt)}
@@ -766,6 +770,7 @@ class G extends Phaser.Scene{
   else if(e.k=='spn'){e.st=e.home&&e.home.on?'hide':'out';e.wu=0;e.bn=0;e.cd=Math.max(e.cd||0,.8);e.spr=this.add.image(e.x,e.y,'spn').setDepth(8.7)}
   else if(e.k=='lsp'){e.wu=0;e.cd=Math.max(e.cd||0,1);e.spr=this.add.image(e.x,e.y,'lsp').setDepth(41).setScale(1.3)}
   else if(e.k=='qn'){e.st=e.st=='idle'?'idle':'fight';e.spr=this.add.image(e.x,e.y,'qn').setDepth(9)}
+  else if(e.k=='rw'){e.spr=this.add.image(e.x,e.y,'rw').setDepth(9).setAlpha(0).setScale(1.2);e.lvT.setVisible(false)}
   else if(e.k=='wd'){e.st=e.st=='idle'?'idle':'track';e.fa=e.fa||0;e.spr=this.add.image(e.x,e.y,'wd').setDepth(9).setRotation(e.fa)}
   else{e.st='idle';e.t=0;e.spr=this.add.image(e.x,e.y,'kha').setDepth(9)}}
  ess(n,x,y){this.ve+=n;if(this.lin.v>=1)this.en=Math.min(this.emax,this.en+8*n);if(x!=null)this.dtx(x,y,'정수 +'+n,'#c98bff')}
@@ -791,7 +796,7 @@ class G extends Phaser.Scene{
     o.on=1;o.hp=3;this.corMk(o,true);for(const m of a.en)if(m.on&&m.k=='spn'&&!m.home&&m.st=='out'&&Math.hypot(m.x-x,m.y-y)<30){m.home=o;m.st='hide';m.x=x;m.y=y}}}
   if(rm)a.cor=a.cor.filter(o=>o.on||!o.tmp)}
  // 받는 피해 배율: 숨은 산호충 ×0.5 · 감시자 등(약점) ×1.6 / 앞껍질 ×0.5
- dmul(m,bt){if(m.k=='spn'&&m.st=='hide')return .5;
+ dmul(m,bt){if(m.k=='rw'){if(m.gone)return 0;return m.st=='tired'?1.6:1}if(m.k=='spn'&&m.st=='hide')return .5;
   if(m.k=='wd'){const p=this.pl,df=Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(p.y-m.y,p.x-m.x)-m.fa)),now=this.time.now;
    if(df>1.9){if(!(m.wkT>now)){m.wkT=now+600;this.dtx(m.x,m.y-34,'약점!','#ffb070')}return 1.6}
    if(df<1.1&&bt){if(!(m.wkT>now)){m.wkT=now+900;this.dtx(m.x,m.y-34,'단단한 앞껍질','#a0a0b8')}return .5}}return 1}
@@ -824,7 +829,7 @@ class G extends Phaser.Scene{
  // 산호 여왕 (정예): 거리를 두고 맴돌다 7.5초마다 분홍 원 1초 예고 → 산호 감옥 + 감옥 벽에 가시 산호충 소환 · 붙으면 물기
  qnAI(m,dt,p){const Q=C.QN,s=m.spr,now=this.time.now;m.cd-=dt;m.tm=(m.tm||0)-dt;m.bc2=(m.bc2||0)-dt;const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1;
   if(m.st=='idle'){if(d<330){m.st='fight';this.exc(m);m.cd=Math.min(m.cd,2)}}
-  else if(m.st=='fight'){const w=d<125?-1:d>200?1:0;if(Math.random()<dt*.4)m.side=-(m.side||1);const an=Math.atan2(dy,dx)+(w<0?.6:.35)*(m.side||1);if(w)this.mv(m,Math.cos(an)*w*44*dt,Math.sin(an)*w*44*dt,26);
+  else if(m.st=='fight'){const w=d<125?-1:d>200?1:0;if(Math.random()<dt*.4)m.side=-(m.side||1);const an=Math.atan2(dy,dx)+(w<0?.6:.35)*(m.side||1);if(w){const ox=m.x,oy=m.y;this.mv(m,Math.cos(an)*w*44*dt,Math.sin(an)*w*44*dt,26,1);if(Math.hypot(m.x-ox,m.y-oy)<44*dt*.3){m.stk=(m.stk||0)+dt;if(m.stk>.6){m.side=-(m.side||1);m.stk=0}}else m.stk=0}
    if(d<46&&m.bc2<=0){m.st='bite';m.tm=.45;s.setTint(0xff6a8a);const ca=m.ba=Math.atan2(dy,dx),wg=this.add.graphics().setDepth(1.6);wg.fillStyle(0xff5a7a,.45).slice(m.x,m.y,60,ca-.8,ca+.8,false).fillPath();wg.lineStyle(2,0xff8aa0,.9).beginPath().arc(m.x,m.y,60,ca-.8,ca+.8,false).strokePath();this.tweens.add({targets:wg,alpha:{from:.35,to:1},duration:450,onComplete:()=>wg.destroy()})}
    else if(m.cd<=0&&d<360){m.st='cast';m.tm=1;m.cx=p.x;m.cy=p.y;m.ring=this.add.ellipse(p.x,p.y,150,136).setStrokeStyle(3,0xff8ad8,.9).setDepth(1.5);this.tweens.add({targets:m.ring,scale:{from:1.35,to:1},alpha:{from:.3,to:1},duration:900})}}
   else if(m.st=='bite'){if(m.tm<=0){s.clearTint();m.st='fight';m.bc2=1.5;const r=this.add.circle(m.x+Math.cos(m.ba)*26,m.y+Math.sin(m.ba)*26,16,0xffd0e8,.5).setDepth(12);this.tweens.add({targets:r,alpha:0,scale:1.5,duration:180,onComplete:()=>r.destroy()});if(d<60&&Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy,dx)-m.ba))<.95)this.hurt(Math.round(Q.dmg*(m.df||1)),'산호 여왕의 물기',m)}}
@@ -872,6 +877,149 @@ class G extends Phaser.Scene{
   for(const m of a.en)if(m.on&&m.k=='lsp'&&m.spr)G.fillStyle(0xffe066,.16).fillCircle(m.spr.x,m.spr.y,16);
   if(lit&&!this.lit){for(const m of a.en)if(m.on&&!m.k&&(m.st=='idle'||m.st=='hunt'||m.st=='eat')){m.st='chase';m.prey=null;m.side=Math.random()<.5?1:-1;this.exc(m)}}
   this.lit=lit;if(!this.litTx)this.litTx=this.add.text(0,0,'빛에 노출됨',ST({fontSize:'10px',color:'#ffe066',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.litTx.setVisible(!!lit).setPosition(p.x,p.y-26)}
+ // ===== 진화 나무 (시작 설명서 + 플레이 중 퀘스트창) =====
+ treeOpen(st){if(this.treeO||this.over||this.molt||this.tr||this.paused)return;
+  this.paused=true;this.physics.pause();this.tweens.pauseAll();this.time.paused=true;this.joy=null;this.eat=null;if(this.pl)this.pl.setVelocity(0,0);
+  const O=this.treeO=[];O.st=st;O.sel=null;O.tx=[];const A=o=>{O.push(o);return o};
+  A(this.add.rectangle(400,180,800,360,0x0b0716,.92).setDepth(320).setInteractive());
+  A(this.add.text(20,12,'진화 나무',ST({fontSize:'20px',fontStyle:'bold'})).setDepth(321));
+  A(this.add.text(20,40,'먹은 것에 따라 몸이 3갈래로 분화한다\n재료를 모아 둥지(초록 방)에서 탈피하면 한 단계',ST({fontSize:'11px',color:'#a99fc2',lineSpacing:3})).setDepth(321));
+  A(this.add.text(782,14,st?'화면을 누르면 시작 ▶':(this.sys.game.device.input.touch?'닫기 ✕':'닫기 ✕  (T)'),ST({fontSize:'13px',fontStyle:'bold',color:st?'#12091f':'#ece6f7',backgroundColor:st?'#a65cff':'#3a2f57',padding:{x:10,y:6}})).setOrigin(1,0).setDepth(321));
+  O.g=A(this.add.graphics().setDepth(321));this.treeDraw()}
+ treePos(k,j){const cx=400,cy=204;return k=='p'?[cx,cy-48*(j+1)]:k=='c'?[cx+84*(j+1),cy+27*(j+1)]:[cx-84*(j+1),cy+27*(j+1)]}
+ treeDraw(){const O=this.treeO,g=O.g;g.clear();O.tx.forEach(t=>t.destroy());O.tx=[];
+  const T=(x,y,s,o,ox,oy)=>{const t=this.add.text(x,y,s,ST(o)).setOrigin(ox??.5,oy??.5).setDepth(322);O.tx.push(t);return t},cx=400,cy=204;
+  for(const k of LK){const t=this.lin[k];let px=cx,py=cy;
+   for(let j=0;j<3;j++){const[x,y]=this.treePos(k,j),own=j<t;g.lineStyle(own?4:2,LCN[k],own?1:.35).lineBetween(px,py,x,y);px=x;py=y}
+   for(let j=0;j<3;j++){const[x,y]=this.treePos(k,j),own=j<t,nx=j==t,ok=nx&&this.nodeOk(k),sel=O.sel&&O.sel[0]==k&&O.sel[1]==j;
+    if(ok)g.fillStyle(LCN[k],.28).fillCircle(x,y,18);
+    g.fillStyle(own?LCN[k]:0x1c1430,1).fillCircle(x,y,10);g.lineStyle(sel?3:2,own||nx?LCN[k]:0x4a3e66,1).strokeCircle(x,y,sel?13:10);
+    if(own)T(x,y,'✓',{fontSize:'11px',fontStyle:'bold',color:'#12091f'});else T(x,y,String(j+1),{fontSize:'10px',fontStyle:'bold',color:nx?'#ece6f7':'#6a5e86'});
+    const col=own?LCS[k]:nx?'#ece6f7':'#7d7196';
+    if(k=='p')T(x+18,y,ND[k][j][0],{fontSize:'12px',fontStyle:'bold',color:col},0,.5);else T(x,y+20,ND[k][j][0],{fontSize:'12px',fontStyle:'bold',color:col})}
+   const lk=this.nodeLock(k),hd=LN[k]+' · '+LRS[k],pr=t>=3?'완성':lk===''?'탈피 가능!':lk;
+   if(k=='p')T(cx-18,cy-48*3,hd+'\n'+pr,{fontSize:'11px',color:LCS[k],align:'right',lineSpacing:2},1,.5);
+   else{const[x,y]=this.treePos(k,2);T(k=='c'?x+20:x-20,y-12,hd+'\n'+pr,{fontSize:'11px',color:LCS[k],align:k=='c'?'left':'right',lineSpacing:2},k=='c'?0:1,.5)}}
+  g.fillStyle(0x241c38,1).fillCircle(cx,cy,20);g.lineStyle(2,0xc98bff,1).strokeCircle(cx,cy,20);T(cx,cy-4,'나',{fontSize:'13px',fontStyle:'bold'});T(cx,cy+9,'탈피 '+this.molts+'/'+LMAX,{fontSize:'8px',color:'#a99fc2'});
+  g.fillStyle(0x1a1330,1).fillRoundedRect(16,312,768,44,8);let a,b;
+  if(O.sel){const[k,j]=O.sel,t=this.lin[k];a=LN[k]+' '+(j+1)+'단계 · '+ND[k][j][0];b=ND[k][j][1]+'   —   '+(j<t?'획득함':j==t?(this.nodeOk(k)?'재료가 모였다 — 둥지에서 탈피하면 얻는다':this.nodeLock(k)):'앞 단계를 먼저 얻어야 한다')}
+  else{a='포식 = 유기물 (유충·몬스터 껍질)    갑각 = 무기물 (결정·유생·렉사이 껍질)    공허 = 공허 정수 (껍질·보이드링·산호·정예)';b='3단계는 다른 계통 1단계가 있어야 열린다 · 탈피는 최대 5번, 할수록 필요한 재료가 늘어난다 · 동그라미를 누르면 자세한 설명'}
+  T(28,323,a,{fontSize:'11px',fontStyle:'bold',color:'#ece6f7'},0,.5);T(28,343,b,{fontSize:'10px',color:'#a99fc2',wordWrap:{width:750}},0,.5)}
+ treeTap(x,y){const O=this.treeO;if(!O)return;let best=null,bd=22;for(const k of LK)for(let j=0;j<3;j++){const[nx,ny]=this.treePos(k,j),d=Math.hypot(nx-x,ny-y);if(d<bd){bd=d;best=[k,j]}}
+  if(best){O.sel=best;this.treeDraw();return}if(y>308&&!O.st)return;this.treeClose()}
+ treeClose(){const O=this.treeO;if(!O)return;O.tx.forEach(t=>t.destroy());O.forEach(o=>o.destroy());this.treeO=null;this.paused=false;this.physics.resume();this.tweens.resumeAll();this.time.paused=false}
+ // ===== 보스: 공허를 걷는 자 =====
+ rwTex(){if(this.textures.exists('rw'))return;let sd=12345;const R=()=>{sd=sd*16807%2147483647;return sd/2147483647};
+  const body=(x,half)=>{sd=12345;
+   for(let y=20;y<72;y++){const w=6+(y-20)*.42+Math.sin(y*.45)*1.3,fd=y>56?(y-56)/16:0;
+    for(let i=Math.floor(28-w);i<=Math.ceil(28+w);i++){const r1=R(),r2=R();if(half=='L'&&i>=28||half=='R'&&i<28)continue;if(fd>0&&r1<fd*.95)continue;
+     const yy=y+(i>=28?-3:0),edge=Math.abs(i-28)>w-1.3;x.fillStyle=edge?'#7a4ac0':r2<.05?'#ffffff':r2<.12?'#b8a0ff':r2<.2?'#2a1a48':'#0b0516';x.fillRect(i,yy,1,1)}}
+   if(!half)for(let y=18;y<70;y++){x.fillStyle='#000000';x.fillRect(28,y-1,1,1);x.fillStyle='rgba(224,160,255,.8)';x.fillRect(27,y,1,1);x.fillRect(29,y-2,1,1)}
+   const sh=(cx,cy,f)=>{x.fillStyle='#2a1448';x.fillRect(cx-6,cy,12,4);x.fillStyle='#5a2e8e';x.fillRect(cx-5,cy-1,10,3);x.fillStyle='#9a6ad0';x.fillRect(cx-4+f,cy-2,6,2);x.fillStyle='#e0c8ff';x.fillRect(cx-2+f,cy-3,3,1)};
+   if(half!='R')sh(17,24,-1);if(half!='L')sh(40,20,1);
+   if(half!='L'){for(let j=-9;j<=9;j++)for(let i=-7;i<=7;i++){const d=i*i/49+j*j/81;if(d>1)continue;x.fillStyle=d>.8?'#4a3e5e':j<-3&&i<0?'#f4f0fa':d>.5?'#a89ec0':'#d8d0e8';x.fillRect(29+i,11+j,1,1)}
+    x.fillStyle='#000000';x.fillRect(23,10,13,2);x.fillStyle='#b070ff';x.fillRect(25,10,9,1)}};
+  tex(this,'rw',56,72,2,x=>body(x));tex(this,'rwL',56,72,2,x=>body(x,'L'));tex(this,'rwR',56,72,2,x=>body(x,'R'));
+  tex(this,'rwb',44,18,2,x=>{for(let i=0;i<60;i++){const t=i/59,a=Math.PI*(.15+.7*t),cx=22-Math.cos(a)*18,cy=16-Math.sin(a)*13,w=2.2*Math.sin(t*Math.PI)+.5;disc(x,cx,cy,w,'#d8b0ff');x.fillStyle='#ffffff';x.fillRect(Math.round(cx),Math.round(cy-w+.5),1,1)}});
+  tex(this,'rwo',14,14,2,x=>{disc(x,7,7,6,'#e0c8ff');disc(x,7,7,5,'#000000');x.fillStyle='#8a5ad0';x.fillRect(4,4,2,1);x.fillStyle='#ffffff';x.fillRect(9,9,1,1)})}
+ bossStart(){this.lv.rooms.forEach(m=>{m.food.forEach(f=>{if(f.spr){f.spr.destroy();f.spr=null}});m.en.forEach(e=>{for(const k of['spr','lvT','ring','mk','lsh'])if(e[k]){e[k].destroy();e[k]=null}if(e.aim){e.aim.forEach(r=>r.destroy());e.aim=null}})});
+  (this.prj||[]).forEach(q=>q.o.destroy());this.prj=[];this.rwTex();
+  this.zi=3;this.boss=true;this.exR=0;this.exT=0;this.zt0=this.time.now;if(this.exTx)this.exTx.setVisible(false);if(this.hvT)this.hvT.setVisible(false);
+  const room={r:0,c:0,d:{N:0,S:0,W:0,E:0},ct:{},hp:{},obs:[],zn:[],food:[],en:[],seen:1,tr:'void',dd:5};
+  for(const[c,r]of[[3,2],[16,2],[3,6],[16,6],[8,7],[11,7]])room.food.push({t:'s',c,r,p:0,on:1});
+  const lv=Math.min(18,this.plv+2),MH=Math.round(520+60*this.plv);
+  room.en.push({k:'rw',x:400,y:150,on:1,mh:MH,hp:MH,lv,df:1+.06*(lv-1),st:'intro',tm:2.6,chain:0,echo:0,cd:1});
+  this.lv={rooms:[room],start:room,exit:null,at:(r,c)=>r==0&&c==0?room:null};
+  const p=this.pl;p.setPosition(400,292);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.sp.forEach((q,i)=>{q.x=400;q.y=292+7*(i+1)});this.en=Math.min(this.emax,this.en+40);this.inv=2;this.rwo=[];
+  this.enter(room);
+  for(const[x,y,sc]of[[110,92,.8],[690,96,.9],[118,282,.7],[684,286,.85]]){const im=this.add.image(x,y,'rift').setDepth(1).setTint(0x9a70ff).setAlpha(.45).setScale(sc);this.dec.push(im);this.tweens.add({targets:im,alpha:{from:.25,to:.6},duration:1400+Math.random()*600,yoyo:true,repeat:-1})}
+  const ov=this.add.rectangle(400,180,800,360,0x000000,1).setDepth(150);this.tweens.add({targets:ov,alpha:0,duration:1400,onComplete:()=>ov.destroy()});
+  const t1=this.add.text(400,118,'공허의 가장자리',ST({fontSize:'24px',fontStyle:'bold',color:'#e8d0ff'})).setOrigin(.5).setDepth(151),t2=this.add.text(400,152,'바깥으로 이어지는 틈 앞에, 무언가가 서 있다 · 에너지 +40',ST({fontSize:'13px',color:'#b8aed2'})).setOrigin(.5).setDepth(151);
+  this.tweens.add({targets:[t1,t2],alpha:0,delay:2600,duration:700,onComplete:()=>{t1.destroy();t2.destroy()}})}
+ rwNoise(){if(!this.boss||!this.cur)return;const m=this.cur.en.find(e=>e.on&&e.k=='rw');if(!m||m.gone||m.st=='echo'||m.st=='intro')return;if(Math.hypot(this.pl.x-m.x,this.pl.y-m.y)<230&&m.echo<5)m.echo++}
+ rwBar(g,m){const r=Math.max(0,m.hp/m.mh);g.fillStyle(0x0d0818,.8).fillRoundedRect(296,6,208,40,6);g.fillStyle(0x3a2f57).fillRect(302,22,196,6);g.fillStyle(m.st=='tired'?0xffe066:0xb070ff).fillRect(302,22,196*r,6);
+  if(!this.rwNm)this.rwNm=this.add.text(400,14,'공허를 걷는 자',ST({fontSize:'10px',fontStyle:'bold',color:'#e0c8ff'})).setOrigin(.5).setDepth(61);
+  for(let i=0;i<5;i++)g.fillStyle(i<m.echo?0xff6af0:0x3a2f57,.95).fillCircle(372+i*14,37,3.2)}
+ rwAI(m,dt,p){const s=m.spr,now=this.time.now,P2=m.hp<m.mh*.6,P3=m.hp<m.mh*.3,dmg=v=>Math.round(v*(m.df||1));m.tm-=dt;m.cd-=dt;
+  if(!m.bld){m.bld=this.add.image(m.x+50,m.y-20,'rwb').setDepth(9.5);m.ba=0}
+  if(m.st!='throw'&&m.st!='split'){m.ba+=dt*1.2;m.bld.setPosition(m.x+Math.cos(m.ba)*58,m.y-6+Math.sin(m.ba)*22).setRotation(m.ba+1.6).setVisible(!m.gone&&m.st!='intro').setAlpha(m.st=='tired'?.4:1)}
+  switch(m.st){
+  case 'intro':s.setAlpha(Math.min(1,Math.max(0,1-m.tm/2.6)));if(m.tm<=0){m.st='idle';m.cd=.8;this.exc(m)}break;
+  case 'idle':s.setPosition(m.x,m.y+Math.sin(now/500)*3);
+   if(m.echo>=5){this.rwEcho(m);break}
+   if(m.cd<=0){
+    if(m.chain>=4){m.st='tired';m.tm=3.2;m.chain=0;s.setTint(0x6a5a90);this.dtx(m.x,m.y-86,'지쳤다 — 지금 물 것!','#ffe066');break}
+    if(P2&&m.needSplit){m.needSplit=0;this.rwSplit(m);break}
+    if(P3&&!m.thr&&Math.random()<.5){this.rwThrow(m);break}
+    if(Math.random()<(P2?.3:.22)&&!this.rwo.some(q=>q.on)){this.rwOrb(m);m.cd=.6;break}
+    this.rwWalk(m)}break;
+  case 'walk':if(m.tm<=0){const q=m.wt;m.x=q.x;m.y=q.y;m.gone=0;s.setPosition(m.x,m.y).setAlpha(1);m.chain++;
+    if(q.rf){const rf=q.rf;this.tweens.add({targets:rf,alpha:0,scaleX:.3,duration:900,onComplete:()=>rf.destroy()})}if(q.rg)q.rg.destroy();m.wt=null;
+    const sl=this.add.ellipse(m.x,m.y+44,124,77,0xe0b0ff,.4).setDepth(12);this.tweens.add({targets:sl,alpha:0,scale:1.2,duration:260,onComplete:()=>sl.destroy()});this.cameras.main.shake(90,.004);
+    if(((p.x-m.x)/62)**2+((p.y-m.y-44)/38)**2<1)this.hurt(dmg(14),'공허를 걷는 자의 칼날',m);
+    m.st='idle';m.cd=P3?.35:.6}break;
+  case 'tired':s.setPosition(m.x,m.y+6+Math.sin(now/300)*1.5);if(m.tm<=0){s.clearTint();m.st='idle';m.cd=.5;if(P2)m.needSplit=1}break;
+  case 'echo':if(m.tm<=0){if(m.rg){m.rg.destroy();m.rg=null}const b=this.add.circle(m.x,m.y+20,140,0xc070ff,.35).setDepth(12);this.tweens.add({targets:b,alpha:0,scale:1.15,duration:350,onComplete:()=>b.destroy()});this.cameras.main.shake(160,.006);
+    if(Math.hypot(p.x-m.x,p.y-m.y-20)<140)this.hurt(dmg(18),'메아리',m);m.echo=0;m.st='idle';m.cd=.8}break;
+  case 'split':this.rwSplitU(m,dt,p);break;
+  case 'throw':this.rwThrowU(m,dt,p);break}
+  if(m.st!='split'&&m.st!='intro')s.setVisible(!m.gone);
+  // 구석의 틈에서 유충이 흘러나온다 (보스전 에너지 공급)
+  m.fd=(m.fd??6)-dt;if(m.fd<=0){m.fd=11;const fo=this.cur.food.filter(f=>f.on).length;if(fo<5)for(let i=0;i<2;i++){const[cx,cy]=pick([[110,92],[690,96],[118,282],[684,286]]),f={t:'s',x:cx+(Math.random()-.5)*20,y:cy+(Math.random()-.5)*14,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(f.x,f.y,'f_s').setDepth(5);this.cur.food.push(f)}}
+  this.rwOrbU(dt,p)}
+ rwWalk(m){const p=this.pl;let tx=400,ty=150;for(let i=0;i<24;i++){const a=Math.random()*6.283,r=70+Math.random()*50;tx=Phaser.Math.Clamp(p.x+Math.cos(a)*r,110,690);ty=Phaser.Math.Clamp(p.y+Math.sin(a)*r*.7-44,92,236);if(Math.hypot(tx-m.x,ty-m.y)>120)break}
+  const T=m.hp<m.mh*.3?.55:.75;m.st='walk';m.tm=T;m.gone=1;
+  const gh=this.add.image(m.x,m.spr.y,'rw').setDepth(8.9).setAlpha(.85).setScale(1.2);this.tweens.add({targets:gh,scaleX:.05,alpha:0,duration:260,onComplete:()=>gh.destroy()});
+  const old=this.add.image(m.x,m.y+10,'rift').setDepth(1.2).setTint(0x9a70ff).setAlpha(.7);this.dec.push(old);this.tweens.add({targets:old,alpha:0,duration:2600,onComplete:()=>old.destroy()});
+  const rf=this.add.image(tx,ty+8,'rift').setDepth(5.5).setTint(0xe0a0ff).setScale(.2);this.tweens.add({targets:rf,scaleX:1.3,scaleY:1.7,duration:T*1000});
+  const rg=this.add.ellipse(tx,ty+44,124,77).setStrokeStyle(2,0xff5a7a,.95).setFillStyle(0xff3b4f,.12).setDepth(1.5);this.tweens.add({targets:rg,alpha:{from:.35,to:1},duration:T*1000});
+  m.wt={x:tx,y:ty,rf,rg}}
+ rwEcho(m){m.st='echo';m.tm=1.1;m.rg=this.add.circle(m.x,m.y+20,140).setStrokeStyle(3,0xff5a7a,.95).setFillStyle(0xff3b4f,.1).setDepth(1.5).setScale(.3);this.tweens.add({targets:m.rg,scale:1,duration:1050});this.dtx(m.x,m.y-86,'메아리!','#ff9ac0')}
+ rwOrb(m){const o=this.add.image(m.x,m.y-10,'rwo').setDepth(11);this.tweens.add({targets:o,scale:{from:.9,to:1.2},duration:400,yoyo:true,repeat:-1});this.rwo.push({o,x:m.x,y:m.y-10,v:62,t:7,on:1});this.dtx(m.x,m.y-86,'무의 구체','#c8b8ff')}
+ rwOrbU(dt,p){for(const q of this.rwo){if(!q.on)continue;q.t-=dt;const a=Math.atan2(p.y-q.y,p.x-q.x);q.x+=Math.cos(a)*q.v*dt;q.y+=Math.sin(a)*q.v*dt;q.o.setPosition(q.x,q.y);
+   if(Math.random()<.3){const b=this.add.circle(q.x,q.y,1.5,0x8a5ad0,.7).setDepth(10.5);this.tweens.add({targets:b,alpha:0,duration:300,onComplete:()=>b.destroy()})}
+   if(Math.hypot(p.x-q.x,p.y-q.y)<15){q.on=0;q.o.destroy();this.sil=2.6;this.dtx(p.x,p.y-28,'침묵 — 2.6초 동안 물기·섭취 불가','#b0a0d0');this.hurt(3,'무의 구체',null)}
+   else if(q.t<=0){q.on=0;const o=q.o;this.tweens.add({targets:o,alpha:0,scale:.2,duration:300,onComplete:()=>o.destroy()})}}
+  this.rwo=this.rwo.filter(q=>q.on)}
+ rwSplit(m){m.st='split';m.ss=0;m.tm=1.1;m.sa=Math.random()*Math.PI;m.sd=Math.random()<.5?1:-1;m.spr.setVisible(false);m.gone=0;
+  m.hL=this.add.image(m.x,m.y,'rwL').setDepth(9).setScale(1.2);m.hR=this.add.image(m.x,m.y,'rwR').setDepth(9).setScale(1.2);m.ln=this.add.graphics().setDepth(8.8);m.bld.setVisible(false);
+  this.dtx(400,62,'몸이 갈라진다 — 가운데 틈(초록 원)으로!','#c9f7dd')}
+ rwSplitU(m,dt,p){const cx=400,cy=196,R=150,g=m.ln,V=.55;g.clear();const pos=()=>[[cx+Math.cos(m.sa)*R,cy+Math.sin(m.sa)*R*V],[cx-Math.cos(m.sa)*R,cy-Math.sin(m.sa)*R*V]];
+  g.lineStyle(2,0x7be0a8,.85).strokeEllipse(cx,cy,56,32);
+  if(m.ss==0){const k=1-Math.max(0,m.tm)/1.1,[a,b]=pos();m.hL.setPosition(Phaser.Math.Linear(m.x,b[0],k),Phaser.Math.Linear(m.y,b[1]-40,k));m.hR.setPosition(Phaser.Math.Linear(m.x,a[0],k),Phaser.Math.Linear(m.y,a[1]-40,k));
+   for(let t=-1;t<=1.001;t+=.04){if(Math.abs(t)*R<28)continue;const x=cx+Math.cos(m.sa)*R*t,y=cy+Math.sin(m.sa)*R*V*t;if(Math.round(t*25)%2)g.fillStyle(0xff5a7a,.85).fillRect(x-1.5,y-1.5,3,3)}
+   if(m.tm<=0){m.ss=1;m.tm=4.4}}
+  else if(m.ss==1){m.sa+=m.sd*.85*dt;const[a,b]=pos();m.hR.setPosition(a[0],a[1]-40);m.hL.setPosition(b[0],b[1]-40);m.x=a[0];m.y=a[1]-40;
+   for(const sg of[-1,1]){const x0=cx+Math.cos(m.sa)*28*sg,y0=cy+Math.sin(m.sa)*28*V*sg,x1=cx+Math.cos(m.sa)*R*sg,y1=cy+Math.sin(m.sa)*R*V*sg;g.lineStyle(8,0x8a3aff,.35).lineBetween(x0,y0,x1,y1);g.lineStyle(3,0xe8d0ff,.95).lineBetween(x0,y0,x1,y1)}
+   const ux=Math.cos(m.sa),uy=Math.sin(m.sa)*V,L=Math.hypot(ux,uy),nx=ux/L,ny=uy/L,rx=p.x-cx,ry=p.y-cy,t=rx*nx+ry*ny,dd=Math.abs(rx*ny-ry*nx);
+   if(Math.abs(t)>28*L&&Math.abs(t)<R*L&&dd<9)this.hurt(Math.round(12*(m.df||1)),'어긋난 몸 사이의 선',m);
+   if(m.tm<=0){m.ss=2;m.tm=.7}}
+  else{const k=Math.min(1,dt*6);m.hL.setPosition(Phaser.Math.Linear(m.hL.x,400,k),Phaser.Math.Linear(m.hL.y,150,k));m.hR.setPosition(Phaser.Math.Linear(m.hR.x,400,k),Phaser.Math.Linear(m.hR.y,150,k));m.x=m.hR.x;m.y=m.hR.y;
+   if(m.tm<=0){m.hL.destroy();m.hR.destroy();m.ln.destroy();m.hL=m.hR=m.ln=null;m.x=400;m.y=150;m.spr.setPosition(m.x,m.y).setVisible(true);m.st='idle';m.cd=.6}}}
+ rwThrow(m){m.st='throw';m.thr=1;m.tm=.6;m.ts=0;const p=this.pl;m.tx0=m.bld.x;m.ty0=m.bld.y;m.tx1=p.x;m.ty1=p.y;const c=m.tc=[(m.tx0+m.tx1)/2+(m.ty1-m.ty0)*.4,(m.ty0+m.ty1)/2-(m.tx1-m.tx0)*.4],g=m.tg=this.add.graphics().setDepth(1.6);
+  for(let i=0;i<=26;i++){const t=i/26,x=(1-t)**2*m.tx0+2*(1-t)*t*c[0]+t*t*m.tx1,y=(1-t)**2*m.ty0+2*(1-t)*t*c[1]+t*t*m.ty1;if(i%2==0)g.fillStyle(0xff5a7a,.9).fillRect(x-1.5,y-1.5,3,3)}}
+ rwThrowU(m,dt,p){if(m.ts==0){if(m.tm<=0){m.ts=1;m.tt=0;if(m.tg){m.tg.destroy();m.tg=null}}return}
+  m.tt+=dt/1.5;const t=m.tt<.5?m.tt*2:2-m.tt*2,c=m.tc,x=(1-t)**2*m.tx0+2*(1-t)*t*c[0]+t*t*m.tx1,y=(1-t)**2*m.ty0+2*(1-t)*t*c[1]+t*t*m.ty1;m.bld.setPosition(x,y).setRotation(m.tt*25).setVisible(true).setAlpha(1);
+  if(Math.hypot(p.x-x,p.y-y)<18)this.hurt(Math.round(12*(m.df||1)),'떨어진 칼날',m);
+  if(m.tt>=1){m.st='idle';m.cd=.4;this.time.delayedCall(6000,()=>{m.thr=0})}}
+ rwDie(m){m.on=0;m.gone=1;this.kc=(this.kc||0)+1;const x=m.x,y=m.y;if(m.lvT){m.lvT.destroy();m.lvT=null}if(m.bld){m.bld.destroy();m.bld=null}
+  for(const k of['hL','hR','ln','rg','tg'])if(m[k]){m[k].destroy();m[k]=null}if(m.wt){if(m.wt.rf)m.wt.rf.destroy();if(m.wt.rg)m.wt.rg.destroy();m.wt=null}
+  this.rwo.forEach(q=>{if(q.on){q.on=0;q.o.destroy()}});this.rwo=[];if(this.rwNm){this.rwNm.destroy();this.rwNm=null}
+  if(m.spr){m.spr.destroy();m.spr=null}
+  const L=this.add.image(x,y,'rwL').setDepth(9).setScale(1.2),Rr=this.add.image(x,y,'rwR').setDepth(9).setScale(1.2);
+  this.tweens.add({targets:L,x:x-44,alpha:0,angle:-8,duration:1700,ease:'Quad.in'});this.tweens.add({targets:Rr,x:x+44,y:y-6,alpha:0,angle:8,duration:1700,ease:'Quad.in'});
+  for(let i=0;i<60;i++){const b=this.add.rectangle(x+(Math.random()-.5)*50,y+(Math.random()-.5)*110,2,2,[0xffffff,0xb8a0ff,0x8a5ad0][i%3]).setDepth(13);this.tweens.add({targets:b,x:b.x+(Math.random()-.5)*170,y:b.y+(Math.random()-.5)*90,alpha:0,duration:1400+Math.random()*900,onComplete:()=>b.destroy()})}
+  const rf=this.add.image(x,y+10,'rift').setDepth(5.5).setTint(0xffffff).setScale(.3);this.tweens.add({targets:rf,scaleX:2.2,scaleY:3,duration:1800,ease:'Sine.out'});this.cameras.main.shake(400,.006);
+  this.gainXp(200);this.dtx(x,y-90,'공허를 걷는 자를 쓰러뜨렸다','#ffe066');
+  this.time.delayedCall(2400,()=>{if(!this.over)this.ending()})}
+ ending(){this.over=true;this.pl.setVelocity(0,0);this.pl.anims.stop();const tm=Math.round((this.time.now-this.t0)/1000),stat='생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0);
+  const O=[],A=o=>{O.push(o);return o};A(this.add.rectangle(400,180,800,360,0x07040e,.9).setDepth(200));
+  A(this.add.text(400,70,'틈 너머에서 바깥의 빛이 새어 든다',ST({fontSize:'22px',fontStyle:'bold'})).setOrigin(.5).setDepth(201));
+  A(this.add.text(400,102,'공허를 걷는 자가 지키던 틈이 열렸다. 어디로 갈 것인가.',ST({fontSize:'13px',color:'#a99fc2'})).setOrigin(.5).setDepth(201));
+  const fin=(t,body)=>{O.forEach(o=>o.destroy());this.end(t,stat,'처음부터',body)};
+  const btn=(x,lb,sub,col,fn)=>{A(this.add.text(x,180,lb,ST({fontSize:'18px',fontStyle:'bold',color:'#12091f',backgroundColor:col,padding:{x:22,y:12}})).setOrigin(.5).setDepth(201).setInteractive().on('pointerdown',fn));A(this.add.text(x,222,sub,ST({fontSize:'11px',color:'#8f86a8'})).setOrigin(.5).setDepth(201))};
+  btn(270,'공허에 남는다','이 몸은 이미 공허의 일부다','#a65cff',()=>fin('엔딩 Ⅰ — 공허에 남다','기생충은 틈을 등지고 어둠으로 돌아갔다 · 공허는 또 하나의 포식자를 얻었다'));
+  btn(530,'밖으로 나간다','아무도 모르는 바깥으로','#e8d8ff',()=>fin('엔딩 Ⅱ — 밖으로','기생충은 틈을 지나 낯선 빛 속으로 기어 나왔다 · 바깥은 아직 모른다, 공허가 무엇을 내보냈는지'))}
  end(a,b,c,tip){
   this.over=true;this.pl.setVelocity(0,0);this.pl.anims.stop();
   this.add.rectangle(400,180,800,360,0x120e1a,.82).setDepth(200);
@@ -920,17 +1068,17 @@ class G extends Phaser.Scene{
    if(f.t=='h'&&f.die<t){f.on=0;const hs=f.spr;f.spr=null;this.tweens.add({targets:hs,alpha:0,duration:600,onComplete:()=>hs.destroy()});continue}
    if(f.t!='c'&&f.t!='h'&&!(hold&&f===tg)){this.flee(f,dt,p);
     }
-   if(hold&&f===tg&&!(f.ready>t))f.p+=dt/C.F[f.t].t;else f.p=Math.max(0,f.p-dt*2);
+   if(hold&&f===tg&&!(f.ready>t)&&!(this.sil>0))f.p+=dt/C.F[f.t].t;else f.p=Math.max(0,f.p-dt*2);
    if(f.p>=1)this.consume(f)}
-  this.bcd-=dt;this.inv-=dt;if(a.vt)this.swirl(dt);this.regen(dt);this.gateU(t,p);if(this.rfs&&this.rfs.length&&Math.random()<.3){const[x,y]=pick(this.rfs),an=Math.random()*6.283,b=this.add.circle(x+Math.cos(an)*22,y+Math.sin(an)*28,1.5,0xe0a0ff,.9).setDepth(12);this.tweens.add({targets:b,x,y,alpha:0,duration:500,onComplete:()=>b.destroy()})}if(this.dk){this.dk.clear().fill(0x05030a,.94).erase('lit',p.x-110,p.y-106);if(a.gm){if(!this.lsm)this.lsm=this.make.image({key:'lit',add:false});for(const[x,y]of a.gm){this.lsm.setScale(.48+Math.sin(t/400+x)*.04).setPosition(x,y);this.dk.erase(this.lsm)}}}
+  this.bcd-=dt;this.inv-=dt;this.sil=Math.max(0,(this.sil||0)-dt);if(a.vt)this.swirl(dt);this.regen(dt);this.gateU(t,p);if(this.rfs&&this.rfs.length&&Math.random()<.3){const[x,y]=pick(this.rfs),an=Math.random()*6.283,b=this.add.circle(x+Math.cos(an)*22,y+Math.sin(an)*28,1.5,0xe0a0ff,.9).setDepth(12);this.tweens.add({targets:b,x,y,alpha:0,duration:500,onComplete:()=>b.destroy()})}if(this.dk){this.dk.clear().fill(0x05030a,.94).erase('lit',p.x-110,p.y-106);if(a.gm){if(!this.lsm)this.lsm=this.make.image({key:'lit',add:false});for(const[x,y]of a.gm){this.lsm.setScale(.48+Math.sin(t/400+x)*.04).setPosition(x,y);this.dk.erase(this.lsm)}}}
   if(a.wtc){this.pt2=(this.pt2||0)-dt;if(this.pt2<=0){this.pt2=.18;const cx=(a.wtc[0]+1)*C.T,cy=(a.wtc[1]+.2)*C.T,b=this.add.circle(cx+(Math.random()-.5)*110,cy+(Math.random()-.5)*60,1.5,Math.random()<.5?0xffe080:0xb0ffc0,.9).setDepth(12);this.tweens.add({targets:b,y:b.y+30+Math.random()*30,x:b.x+(Math.random()-.5)*30,alpha:0,duration:1800,onComplete:()=>b.destroy()})}}
   if((this.req||Phaser.Input.Keyboard.JustDown(k.SPACE))&&!tg&&this.bcd<=0)this.bite();
   this.req=0;this.linPre();if(this.bmD)this.beamU(dt);else this.lit=0;this.foe(dt,p);this.linPost(dt);this.prjU(dt,p);this.eprjU(dt,p);if(this.cur.cor)this.corU();this.pprjU(dt);this.famU(dt);
   // 에너지/종료
   this.en-=C.DRAIN*this.drm*dt;
-  if(this.en<=0){this.en=0;this.hud();const n=L.rooms.filter(r=>r.seen).length,lh=this.lastHit,byHit=lh&&this.time.now-lh.t<1500,pz=!byHit&&this.time.now-(this.lpz??-9e9)<1500,tm=Math.round((this.time.now-this.t0)/1000);return this.end(byHit?lh.src+'에 쓰러졌다':pz?'독 웅덩이에 쓰러졌다':'굶주림으로 쓰러졌다',(this.zi>1?this.zi+'구역  ·  ':'')+'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+n+' / 16','다시 시작',byHit?({'카직스의 할퀴기':'붉은 부채꼴이 보이면 뒤로 빠질 것 · 바위나 나무 곁에서 싸우면 고립 추가 피해가 없다','카직스의 도약':'바닥에 발톱 자국이 뜨면 그 자리를 벗어날 것','카직스의 공허 가시':'보랏빛 조준선이 보이면 옆으로 비킬 것 · 바위 뒤에 숨으면 가시가 막힌다','렉사이의 솟구치기':'붉은 원이 퍼지면 원 밖으로 · 천천히 움직이면(조이스틱 반만 / Shift) 렉사이가 못 느낀다','렉사이의 물기':'솟아오른 렉사이는 느리다 — 에너지가 적으면 거리를 벌릴 것','보이드링 무리':'소용돌이의 보이드링은 수가 정해져 있다 — 방 가장자리에서 하나씩 상대할 것','가시 산호충의 가시':'노란 조준선이 보이면 옆으로 비킬 것 · 산호를 물어 부수면 산호충이 끌려 나온다','빛 포자의 빛 화살':'빛 포자는 빛줄기에 닿아 있을 때만 쏜다 — 기둥 그림자나 덤불로 숨을 것','산호 여왕의 물기':'붉은 부채꼴이 보이면 옆으로 비킬 것 · 분홍 원이 보이면 원 밖으로 빠질 것','감시자의 광선':'빛이 붉게 좁아지면 빛줄기 밖으로 · 뒤로 돌아가 등의 발광 기관을 물 것','감시자의 꼬리':'감시자 등 뒤에 오래 머물면 꼬리치기가 온다 — 붉은 부채꼴이 보이면 물러날 것'})[lh.src]||null:pz?'독 웅덩이 위에서는 에너지가 초당 1.5씩 빠진다 — 오래 머물지 말 것':'에너지는 시간이 지나면 줄어든다 — 먹이를 꾸준히 섭취할 것')}
-  if(this.cur===L.exit&&Math.hypot(p.x-400,p.y-180)<30){this.exT=(this.exT||0)+dt;if(this.exT>=1){if(this.zi<2)return this.nextZone();const tm=Math.round((this.time.now-this.t0)/1000);return this.end('2구역 돌파','생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+L.rooms.filter(r=>r.seen).length+' / 16','처음부터','프로토타입은 여기까지 — 3구역과 최종 보스는 다음 단계에서 열린다')}}else this.exT=0;
-  if(!this.exR&&this.time.now-this.zt0>(this.zi>1?240000:300000)){this.exR=1;this.pop('출구의 기척이 느껴진다 — 지도를 확인할 것',400,140)}
+  if(this.en<=0){this.en=0;this.hud();const n=L.rooms.filter(r=>r.seen).length,lh=this.lastHit,byHit=lh&&this.time.now-lh.t<1500,pz=!byHit&&this.time.now-(this.lpz??-9e9)<1500,tm=Math.round((this.time.now-this.t0)/1000);return this.end(byHit?lh.src+'에 쓰러졌다':pz?'독 웅덩이에 쓰러졌다':'굶주림으로 쓰러졌다',(this.zi>1?this.zi+'구역  ·  ':'')+'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+n+' / 16','다시 시작',byHit?({'카직스의 할퀴기':'붉은 부채꼴이 보이면 뒤로 빠질 것 · 바위나 나무 곁에서 싸우면 고립 추가 피해가 없다','카직스의 도약':'바닥에 발톱 자국이 뜨면 그 자리를 벗어날 것','카직스의 공허 가시':'보랏빛 조준선이 보이면 옆으로 비킬 것 · 바위 뒤에 숨으면 가시가 막힌다','렉사이의 솟구치기':'붉은 원이 퍼지면 원 밖으로 · 천천히 움직이면(조이스틱 반만 / Shift) 렉사이가 못 느낀다','렉사이의 물기':'솟아오른 렉사이는 느리다 — 에너지가 적으면 거리를 벌릴 것','보이드링 무리':'소용돌이의 보이드링은 수가 정해져 있다 — 방 가장자리에서 하나씩 상대할 것','가시 산호충의 가시':'노란 조준선이 보이면 옆으로 비킬 것 · 산호를 물어 부수면 산호충이 끌려 나온다','빛 포자의 빛 화살':'빛 포자는 빛줄기에 닿아 있을 때만 쏜다 — 기둥 그림자나 덤불로 숨을 것','산호 여왕의 물기':'붉은 부채꼴이 보이면 옆으로 비킬 것 · 분홍 원이 보이면 원 밖으로 빠질 것','감시자의 광선':'빛이 붉게 좁아지면 빛줄기 밖으로 · 뒤로 돌아가 등의 발광 기관을 물 것','공허를 걷는 자의 칼날':'바닥에 틈과 붉은 원이 열리면 그 자리를 벗어날 것 — 잠시 뒤 그곳에 나타나 벤다','어긋난 몸 사이의 선':'몸이 둘로 갈라지면 한가운데 초록 원(틈)으로 갈 것 — 가운데만 선이 끊겨 있다','메아리':'보스 곁에서 물거나 침을 쏠수록 메아리가 찬다(점 5개) — 다 차면 멀리 떨어질 것','떨어진 칼날':'붉은 점선을 따라 칼날이 날아갔다 돌아온다 — 점선 밖으로 비킬 것','무의 구체':'검은 구체는 몸에 닿으면 침묵, 물면 삼킨다 — 마주 보고 물 것','감시자의 꼬리':'감시자 등 뒤에 오래 머물면 꼬리치기가 온다 — 붉은 부채꼴이 보이면 물러날 것'})[lh.src]||null:pz?'독 웅덩이 위에서는 에너지가 초당 1.5씩 빠진다 — 오래 머물지 말 것':'에너지는 시간이 지나면 줄어든다 — 먹이를 꾸준히 섭취할 것')}
+  if(this.cur===L.exit&&Math.hypot(p.x-400,p.y-180)<30){this.exT=(this.exT||0)+dt;if(this.exT>=1){if(this.zi<2)return this.nextZone();return this.bossStart()}}else this.exT=0;
+  if(!this.boss&&!this.exR&&this.time.now-this.zt0>(this.zi>1?240000:300000)){this.exR=1;this.pop('출구의 기척이 느껴진다 — 지도를 확인할 것',400,140)}
   this.hud();
  }
  hud(){
@@ -951,7 +1099,7 @@ class G extends Phaser.Scene{
   g.fillStyle(this.eat&&this.eat.isDown?0xc98bff:0xa65cff,this.bA.E).fillCircle(728,288,46);if(this.etx)this.etx.setAlpha(this.bA.E);
   if(this.cur.tr=='haven'){const ok=this.moltPts()>=3;g.fillStyle(ok?0x7be0a8:0x3a2f57,(ok?.75+.2*Math.sin(this.time.now/200):.8)*this.bA.M).fillCircle(636,296,30);this.mtx.setVisible(true).setColor(ok?'#12091f':'#a99fc2').setAlpha(this.bA.M)}else this.mtx.setVisible(false);
   // 처음 보는 몬스터 소개 (판마다 종류별 1번)
-  if(!this.mcard&&!this.over){const IN={kha:['카직스','덤불·나무에 숨어 기다린다 · 붉은 부채꼴 = 할퀴기 · 바닥 발톱 자국 = 도약'],rek:['렉사이','땅속에서 발소리를 듣는다 · 천천히 움직이면 못 느낀다 · 붉은 원 = 솟구치기'],gna:['제르사이 유생','결정을 먹는 순한 유생 · 잡으면 에너지와 무기물'],vdl:['보이드링','소용돌이에서 떼로 나온다 · 나오는 수가 정해져 있다'],spn:['가시 산호충','산호 속에 숨어 가시 3발을 쏜다 · 노란 조준선 = 발사 예고 · 산호를 물어 부수면 끌려 나온다'],lsp:['빛 포자','빛줄기에 닿아 있을 때만 빛 화살을 쏜다 · 그림자·기둥 뒤에서는 안전'],qn:['산호 여왕 (정예)','주변에 산호 감옥을 키우고 가시 산호충을 부른다 · 분홍 원 = 감옥 예고'],wd:['감시자 (정예)','빛줄기로 쫓다가 오래 비추면 광선 · 앞껍질은 물기를 막는다 — 뒤로 돌아가 등(약점)을 노릴 것']};for(const m of this.cur.en){if(!m.on||!m.spr||!m.spr.visible||(m.k=='rek'&&m.st=='under'))continue;const k=m.k||'kha';if(this.seenM[k]||Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>300)continue;if(this.cur.tr=='dark'&&Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>110)continue;this.seenM[k]=1;const c=this.mcard=this.add.text(400,316,IN[k][0]+'\n'+IN[k][1],ST({fontSize:'12px',align:'center',color:'#ece6f7',backgroundColor:'#2a1f40',padding:{x:12,y:6}})).setOrigin(.5).setDepth(62);this.tweens.add({targets:c,alpha:0,delay:4500,duration:500,onComplete:()=>{c.destroy();if(this.mcard===c)this.mcard=null}});break}}
+  if(!this.mcard&&!this.over){const IN={kha:['카직스','덤불·나무에 숨어 기다린다 · 붉은 부채꼴 = 할퀴기 · 바닥 발톱 자국 = 도약'],rek:['렉사이','땅속에서 발소리를 듣는다 · 천천히 움직이면 못 느낀다 · 붉은 원 = 솟구치기'],gna:['제르사이 유생','결정을 먹는 순한 유생 · 잡으면 에너지와 무기물'],vdl:['보이드링','소용돌이에서 떼로 나온다 · 나오는 수가 정해져 있다'],spn:['가시 산호충','산호 속에 숨어 가시 3발을 쏜다 · 노란 조준선 = 발사 예고 · 산호를 물어 부수면 끌려 나온다'],lsp:['빛 포자','빛줄기에 닿아 있을 때만 빛 화살을 쏜다 · 그림자·기둥 뒤에서는 안전'],qn:['산호 여왕 (정예)','주변에 산호 감옥을 키우고 가시 산호충을 부른다 · 분홍 원 = 감옥 예고'],rw:['공허를 걷는 자','틈을 밟고 나타난다 · 4번 걷고 나면 지친다 — 그때 물 것 · 곁에서 물거나 침을 쏠수록 메아리(점 5개)가 차오른다'],wd:['감시자 (정예)','빛줄기로 쫓다가 오래 비추면 광선 · 앞껍질은 물기를 막는다 — 뒤로 돌아가 등(약점)을 노릴 것']};for(const m of this.cur.en){if(!m.on||!m.spr||!m.spr.visible||(m.k=='rek'&&m.st=='under'))continue;const k=m.k||'kha';if(this.seenM[k]||Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>300)continue;if(this.cur.tr=='dark'&&Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>110)continue;this.seenM[k]=1;const c=this.mcard=this.add.text(400,316,IN[k][0]+'\n'+IN[k][1],ST({fontSize:'12px',align:'center',color:'#ece6f7',backgroundColor:'#2a1f40',padding:{x:12,y:6}})).setOrigin(.5).setDepth(62);this.tweens.add({targets:c,alpha:0,delay:4500,duration:500,onComplete:()=>{c.destroy();if(this.mcard===c)this.mcard=null}});break}}
   if(this.molts==0&&this.moltPts()>=3&&!this.mxS&&!this.over){this.mxS=1;const ih=this.cur.tr=='haven',tt=this.add.text(400,150,ih?'탈피 재료가 모였다!\n탈피 버튼'+(this.sys.game.device.input.touch?'':'(E)')+'을 누르면 진화하고 에너지가 가득 찬다':'탈피 재료가 모였다!\n초록 화살표를 따라 둥지로 가서 탈피하면 진화하고 에너지가 가득 찬다',ST({fontSize:'14px',align:'center',color:'#c9f7dd',backgroundColor:'#163024',padding:{x:14,y:9}})).setOrigin(.5).setDepth(62);this.tweens.add({targets:tt,alpha:0,delay:5000,duration:700,onComplete:()=>tt.destroy()})}
   if(this.cur.tr!='haven'&&this.moltPts()>=3){const hv=this.lv.rooms.find(r=>r.tr=='haven');if(hv){const dx=hv.c-this.cur.c,dy=hv.r-this.cur.r,l=Math.hypot(dx,dy*1.6)||1,ux=dx/l,uy=dy*1.6/l,k=Math.min(320/Math.max(Math.abs(ux),.01),120/Math.max(Math.abs(uy),.01)),ax=400+ux*k,ay=180+uy*k,al=.6+.35*Math.sin(this.time.now/180),an=Math.atan2(uy,ux);
    g.fillStyle(0x7be0a8,al).fillTriangle(ax+Math.cos(an)*14,ay+Math.sin(an)*14,ax+Math.cos(an+2.5)*11,ay+Math.sin(an+2.5)*11,ax+Math.cos(an-2.5)*11,ay+Math.sin(an-2.5)*11);if(!this.hvT)this.hvT=this.add.text(0,0,'둥지',ST({fontSize:'11px',color:'#7be0a8',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.hvT.setVisible(true).setPosition(ax-Math.cos(an)*20,ay-Math.sin(an)*20).setAlpha(al)}}else if(this.hvT)this.hvT.setVisible(false);
@@ -964,11 +1112,17 @@ class G extends Phaser.Scene{
   for(const f of this.cur.food)if(f.on&&f.p>0){
    g.fillStyle(0x3a2f57).fillRect(f.spr.x-14,f.spr.y-24,28,5);g.fillStyle(0x7be0a8).fillRect(f.spr.x-14,f.spr.y-24,28*Math.min(1,f.p),5)}
   const dk=this.cur.tr=='dark';for(const m of this.cur.en)if(m.lvT)m.lvT.setVisible(false);
-  for(const m of this.cur.en)if(m.on&&m.spr&&!(m.k=='rek'&&m.st!='up'&&m.st!='dig')){if(dk&&this.lin.v<1&&Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>110)continue;
+  for(const m of this.cur.en)if(m.on&&m.spr&&!(m.k=='rek'&&m.st!='up'&&m.st!='dig')){if(m.k=='rw'){this.rwBar(g,m);continue}if(dk&&this.lin.v<1&&Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>110)continue;
    const mh=m.mh||MON(m.k).hp,r=Math.max(0,Math.min(1,m.hp/mh)),w=({rek:34,gna:22,vdl:16,spn:22,lsp:14,qn:46,wd:52})[m.k]||28,yy=m.spr.y-(m.k=='gna'?18*(m.sz||1):({rek:30,vdl:16,spn:20,lsp:16,qn:38,wd:34})[m.k]||22);
    g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy-1,w+2,6);if(m.lvT&&m.k!='vdl'&&m.k!='lsp'){const df=m.lv-this.plv,lc=df>=2?'#ff7a7a':df<=-2?'#a0a0b8':'#ffffff';m.lvT.setVisible(true).setPosition(m.spr.x-w/2-3,yy+2);if(m.lvc!==lc){m.lvT.setColor(lc);m.lvc=lc}}g.fillStyle(({gna:0x7cc4ff,rek:0xc070ff,vdl:0xffe066,spn:0xd070ff,lsp:0xffe066,qn:0xff6ab0,wd:0xff9a4a})[m.k]||0xff4a6a).fillRect(m.spr.x-w/2,yy,w*r,4);if(!m.k||m.k=='rek'){const hv=Math.max(0,(m.hg??70)/100);g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy+5,w+2,4);g.fillStyle(m.hg<40?0xff7a2a:0xffd060).fillRect(m.spr.x-w/2,yy+6,w*hv,2)}}
   this.t1.setText('Lv.'+this.plv+'   에너지 '+Math.ceil(this.en)+' / '+this.emax);
   {let hint=this.molts>=LMAX?'변이 한계 도달 (5/5)':'진화 완료';if(this.canMolt())hint='탈피 가능 (둥지에서)';else{let b=null,br=-1;for(const k of LK){const t=this.lin[k];if(this.molts>=LMAX||t>=3||(t==2&&!LK.some(o=>o!=k&&this.lin[o]>=1)))continue;const r=this.lavail(k)/this.lcost(k);if(r>br){br=r;b=k}}if(b)hint=LN[b]+' '+(this.lin[b]+1)+'단계 '+Math.max(0,this.lavail(b))+' / '+this.lcost(b)}
+   {if(!this.rgT)this.rgT=LK.map((k,i)=>this.add.text(684+i*40,150,LN[k][0],ST({fontSize:'11px',fontStyle:'bold',color:LCS[k]})).setOrigin(.5).setDepth(61));
+    const ua=und(724,150,44)?.55:1;LK.forEach((k,i)=>{const x=684+i*40,y=150,t=this.lin[k],lk=this.nodeLock(k),ok=lk==='',r=t>=3?1:Math.max(0,Math.min(1,this.lavail(k)/this.lcost(k)));
+     g.fillStyle(0x0d0818,.75*ua).fillCircle(x,y,15);g.lineStyle(3,0x3a2f57,ua).strokeCircle(x,y,12);if(r>0)g.lineStyle(3,LCN[k],ua*(ok&&t<3?.7+.3*Math.sin(this.time.now/150):1)).beginPath().arc(x,y,12,-Math.PI/2,-Math.PI/2+Math.PI*2*r,false).strokePath();
+     for(let j=0;j<3;j++)g.fillStyle(j<t?LCN[k]:0x3a2f57,ua).fillCircle(x-6+j*6,y+19,2);this.rgT[i].setAlpha(ua)});
+    if(!this.rgL)this.rgL=this.add.text(724,180,this.sys.game.device.input.touch?'눌러서 진화 나무':'T: 진화 나무',ST({fontSize:'9px',color:'#a99fc2'})).setOrigin(.5).setDepth(61);this.rgL.setVisible(this.time.now-this.t0<25000).setAlpha(ua)}
+    if(this.sil>0){g.lineStyle(2,0xb0a0d0,.5+.4*Math.sin(this.time.now/90)).strokeCircle(this.pl.x,this.pl.y,22)}
    this.t2.setText('구역 '+this.zi+' / 3\n유기 '+this.lavail('p')+' · 무기 '+this.lavail('c')+' · 정수 '+this.lavail('v')+'\n'+hint)}
   if(this.lin.v>=1){const GR2=this.gR,pu=.55+.3*Math.sin(this.time.now/160);for(const m of this.cur.en){if(!m.on)continue;if(m.k=='rek'&&m.st!='up'){g.lineStyle(2,m.trk>0?0xff5a7a:0xc070ff,pu).strokeCircle(m.x,m.y,16)}else if(!m.k&&(m.st=='idle'||m.st=='hunt'||m.st=='eat')){g.lineStyle(1.5,0xc070ff,pu*.8).strokeCircle(m.x,m.y,18)}else if(m.k=='spn'&&m.st=='hide'){g.lineStyle(1.5,0xc070ff,pu*.8).strokeCircle(m.x,m.y,15)}}
    const D={N:[-1,0],S:[1,0],W:[0,-1],E:[0,1]};for(const k in D){if(!this.cur.d[k])continue;const b=this.lv.at(this.cur.r+D[k][0],this.cur.c+D[k][1]);if(!b)continue;const n=Math.min(4,b.en.filter(e=>e.on&&e.k!='gna').length);for(let q=0;q<n;q++)GR2.fillStyle(0xff5a7a,1).fillRect(723+b.c*16+q*3,59+b.r*16,2,2)}}
