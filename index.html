@@ -582,7 +582,7 @@ class G extends Phaser.Scene{
   A(this.add.rectangle(400,180,800,360,0x0d0818,.97).setDepth(400));
   A(this.add.text(30,24,'유전자 재배열',ST({fontSize:'22px',fontStyle:'bold'})).setDepth(401));
   A(this.add.text(30,54,'나선의 마디를 눌러 형질을 새긴다 · 탈피 '+(this.molts+1)+'회차',ST({fontSize:'13px',color:'#a99fc2'})).setDepth(401));
-  M.pt=A(this.add.text(770,10,'',ST({fontSize:'14px',color:'#ffe066',fontStyle:'bold'})).setOrigin(1,0).setDepth(401));
+  M.pt=A(this.add.text(770,10,'',ST({fontSize:'14px',color:'#ffe066',fontStyle:'bold',align:'right'})).setOrigin(1,0).setDepth(401));
   A(this.add.rectangle(705,60,130,32,0xa65cff).setDepth(401));A(this.add.text(705,60,'재배열 확정',ST({fontSize:'15px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(402));
   A(this.add.rectangle(580,60,96,32,0x3a2f57).setDepth(401));A(this.add.text(580,60,'닫기',ST({fontSize:'14px'})).setOrigin(.5).setDepth(402));
   M.g=A(this.add.graphics().setDepth(401));M.lb=[];M.ds=[];
@@ -592,7 +592,7 @@ class G extends Phaser.Scene{
   A(this.add.text(400,62,'변화 미리보기',ST({fontSize:'11px',color:'#a99fc2'})).setOrigin(.5).setDepth(402));this.moltRefresh()}
  moltRefresh(){const M=this.molt,S0=this.st4,S1=S0.map((v,i)=>v+M.pend[i]),sum=S1.reduce((a,b)=>a+b,0),lim=Math.min(52,this.lim+8);
   const f=st=>{const[a,w,e,k]=st;return{sp:Math.max(1.5,3+.3*(a-5)-.15*(w-5)),em:C.EN+3*(this.plv-1)+4*(w-5),dr:C.DRAIN*Math.max(.3,(1+.05*(w-5))*(1-.06*(e-5))),dt:Math.max(.4,(1-.03*(w-5))*(1-.05*this.shell)),bd:C.BITE.dmg+2*(k-5)+1.5*(this.plv-1)}},o=f(S0),n=f(S1);
-  M.pt.setText('남은 포인트 '+M.pts+' · 한계 '+sum+'/'+lim);
+  M.pt.setText('남은 포인트 '+M.pts+' · 한계 '+sum+'/'+lim+'\n1점 = 재료 '+this.mcost()+'개 · 안 쓴 재료는 남는다');
   const D=[['이동 '+o.sp.toFixed(1)+' → '+n.sp.toFixed(1)+'칸/초'],['받는 피해 '+Math.round(o.dt*100)+'% → '+Math.round(n.dt*100)+'%','최대 에너지 '+o.em+' → '+n.em],['소모 '+o.dr.toFixed(2)+' → '+n.dr.toFixed(2)+'/초'],['물기 '+o.bd.toFixed(1)+' → '+n.bd.toFixed(1)]];
   for(let i=0;i<4;i++){M.lb[i].setText(SNM[i]+' '+S1[i]+(M.pend[i]?' (+'+M.pend[i]+')':''));M.ds[i].setText(D[i].join('\n'))}M.bs=1+.04*(S1[1]-5)}
  moltU(t){const M=this.molt,g=M.g,k=this.k,J=Phaser.Input.Keyboard.JustDown;g.clear();const x0=60,cy=190,R=58,ph=t/900;
@@ -606,7 +606,7 @@ class G extends Phaser.Scene{
   if(y>110&&y<275&&x>=60&&x<740&&M.pts>0){const i=Math.min(3,Math.floor((x-60)/170));M.pend[i]++;M.pts--;this.moltRefresh()}}
  moltClose(){if(!this.molt)return;this.molt.o.forEach(o=>o.destroy());this.molt=null}
  moltDone(){const M=this.molt;if(!M)return;if(!M.pend.some(v=>v>0)){this.pop('형질을 하나 이상 새겨야 한다',400,140);return}
-  this.st4=this.st4.map((v,i)=>v+M.pend[i]);this.lim=Math.min(52,this.lim+8);this.molts++;const sh=this.mn-this.mnb>=3;if(sh)this.shell=Math.min(3,this.shell+1);this.mb=this.org+this.mn;this.mnb=this.mn;
+  this.st4=this.st4.map((v,i)=>v+M.pend[i]);const used=M.pend.reduce((a,b)=>a+b,0),cst=this.mcost();this.lim=Math.min(52,this.lim+8);this.molts++;const sh=this.mn-this.mnb>=3;if(sh)this.shell=Math.min(3,this.shell+1);this.mb=Math.min(this.org+this.mn,this.mb+used*cst);this.mnb=this.mn;
   this.recalc();this.en=this.emax;this.moltClose();const p=this.pl;
   for(let i=0;i<12;i++){const an=i/12*6.283+Math.random()*.3,b=this.add.rectangle(p.x,p.y,6,4,[0x8f6ab8,0x4a2f6a,0xc0a0ff][i%3]).setRotation(an).setDepth(12);this.tweens.add({targets:b,x:p.x+Math.cos(an)*(30+Math.random()*25),y:p.y+Math.sin(an)*(20+Math.random()*20)+10,angle:Math.random()*360,alpha:0,duration:700,ease:'Quad.out',onComplete:()=>b.destroy()})}
   this.bd.forEach(o=>{o.setTintFill(0xffffff);this.time.delayedCall(140,()=>o.clearTint())});
