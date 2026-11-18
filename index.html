@@ -253,6 +253,10 @@ function gen(){
  // 렉사이 땅굴: 렉사이가 사는 방에 이어진 통로에만, 한 방에 1개까지
  for(const a of rooms){if(!a.en.some(e=>e.k=='rek')||has(a,'hole'))continue;const c=links(a).filter(([k,b])=>a.ct[k]=='cave'&&!has(b,'hole')),c2=c.filter(([k,b])=>b.en.some(e=>e.k=='rek')),pl=c2.length?c2:c;
   if(pl.length){const[k,b,o]=pick(pl);a.ct[k]=b.ct[o]='hole'}}
+ // 입구 매복 방지: 카직스·렉사이는 출입구(동굴·땅굴·균열)에서 150px 이상 떨어진 곳으로 (엄폐물 근처 우선)
+ for(const a of rooms){const EP=[];if(a.d.N&&a.ct.N=='cave')EP.push([400,60]);if(a.d.S&&a.ct.S=='cave')EP.push([400,300]);if(a.d.W&&a.ct.W=='cave')EP.push([60,180]);if(a.d.E&&a.ct.E=='cave')EP.push([740,180]);for(const k in (a.hp||{}))if(a.d[k]&&(a.ct[k]=='hole'||a.ct[k]=='rift'))EP.push([(a.hp[k][0]+.5)*C.T,(a.hp[k][1]+.5)*C.T]);
+  const far=(x,y)=>EP.every(([px,py])=>Math.hypot(px-x,py-y)>=150),cov=a.obs.filter(o=>o[2]>=1).concat(a.zn.filter(z=>z[2]==2));
+  for(const e of a.en){if(!(e.k==null||e.k=='rek')||far(e.x,e.y))continue;for(let j=0;j<80;j++){let c,r;if(j<40&&cov.length&&e.k==null){const q=pick(cov);c=q[0]+rnd(3)-1;r=q[1]+rnd(3)-1}else{c=1+rnd(18);r=1+rnd(7)}const x=(c+.5)*C.T,y=(r+.5)*C.T;if(c<1||c>18||r<1||r>7||a.obs.some(o=>o[0]==c&&o[1]==r)||!far(x,y)||a.en.some(o=>o!==e&&Math.hypot(o.x-x,o.y-y)<50))continue;e.x=x;e.y=y;break}}}
  return{rooms,start,exit,at};
 }
 
