@@ -280,7 +280,7 @@ class G extends Phaser.Scene{
   this.t1=this.add.text(16,10,'',ST({fontSize:'13px'})).setDepth(60);
   this.t2=this.add.text(784,10,'',ST({fontSize:'13px',align:'right'})).setOrigin(1,0).setDepth(60);
   this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
-  this.hint=this.add.text(400,60,'왼쪽 조이스틱: 이동 · 오른쪽 버튼: 탭하면 물기, 먹이 곁에서 누르고 있으면 섭취',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
+  this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 버튼: 탭하면 물기 · 먹이 곁에서 누르고 있으면 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금\nSpace: 물기 (먹이 곁에서 누르고 있으면 섭취)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
   this.input.addPointer(2);
   this.input.on('pointerdown',p=>{if(this.over)return;if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
