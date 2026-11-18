@@ -231,7 +231,7 @@ function gen(){
  const spot=(a,cells,avoid)=>{for(let j=0;j<40;j++){let c,r;if(cells&&cells.length&&j<25){const q=pick(cells);c=q[0]+rnd(3)-1;r=q[1]+rnd(3)-1}else{c=1+rnd(18);r=1+rnd(7)}
    if(c<1||c>18||r<1||r>7||a.obs.some(o=>o[0]==c&&o[1]==r)||(avoid&&res(c,r)))continue;return{x:(c+.5)*C.T,y:(r+.5)*C.T}}return null};
  const mk=(a,n,ag,cx=10,cy=4,rg=8)=>{for(let i=0;i<n;i++)for(let j=0;j<30;j++){const c=Math.max(1,Math.min(18,cx+rnd(2*rg+1)-rg)),r=Math.max(1,Math.min(7,cy+rnd(2*rg+1)-rg));if(a.obs.some(o=>o[0]==c&&o[1]==r))continue;P(a,{x:(c+.5)*C.T,y:(r+.5)*C.T,hp:C.E.hp,ag});break}};
- for(const a of rooms){const t=a.tr,dd=dist.get(a)||0,rocks=a.obs.filter(o=>o[2]==0),rg=new Set(rocks.map(o=>o[3])).size,cover=a.obs.filter(o=>o[2]>=1).concat(a.zn.filter(z=>z[2]==2));
+ for(const a of rooms){const t=a.tr,dd=dist.get(a)||0,_dd=(a.dd=dd),rocks=a.obs.filter(o=>o[2]==0),rg=new Set(rocks.map(o=>o[3])).size,cover=a.obs.filter(o=>o[2]>=1).concat(a.zn.filter(z=>z[2]==2));
   const ns=a.food.filter(f=>f.t=='s').length,nl=a.food.filter(f=>f.t=='l').length,nc=a.food.filter(f=>f.t=='c').length;
   // 제르사이 유생: 결정이 있는 바위 지대 (결정 3개당 1마리)
   const ng=t=='mine'?3+rnd(2):(rg>=2&&a!==start?Math.min(3,Math.floor(nc/3)):0);
@@ -531,7 +531,7 @@ class G extends Phaser.Scene{
   for(const G of this.gts){const w=Math.max(.04,c)*G.s;G.L.setScale(w,1+.06*Math.sin(t/120));G.R.setScale(w,1+.06*Math.sin(t/120+1))}
   const cl=c>.55;for(const b of this.gb)b.body.enable=cl;
   if(cl)for(const G of this.gts){const k=G.k;if(k=='N'&&p.y<46&&Math.abs(p.x-400)<85)p.y=62;if(k=='S'&&p.y>314&&Math.abs(p.x-400)<85)p.y=298;if(k=='W'&&p.x<46&&Math.abs(p.y-180)<65)p.x=62;if(k=='E'&&p.x>754&&Math.abs(p.y-180)<65)p.x=738}}
- lvl(e){if(e.lv!=null)return;e.lv=Math.max(1,Math.min(18,this.plv+rnd(7)-3));const b=(({rek:C.R,gna:C.G,vdl:C.V})[e.k]||C.E).hp;e.mh=Math.round(b*(1+.12*(e.lv-1)));e.hp=e.mh;e.df=1+.08*(e.lv-1)}
+ lvl(e){if(e.lv!=null)return;const dd=this.cur.dd||0,off=dd<=1?rnd(4)-3:dd<=3?rnd(5)-2:rnd(4);e.lv=Math.max(1,Math.min(18,this.plv+off));const b=(({rek:C.R,gna:C.G,vdl:C.V})[e.k]||C.E).hp;e.mh=Math.round(b*(1+.12*(e.lv-1)));e.hp=e.mh;e.df=1+.08*(e.lv-1)}
  xpn(){return 20+12*(this.plv-1)}
  gainXp(v){if(this.plv>=18)return;this.xp+=v;while(this.plv<18&&this.xp>=this.xpn()){this.xp-=this.xpn();this.plv++;this.recalc();this.en=Math.min(this.emax,this.en+30);
    const p=this.pl,t=this.add.text(p.x,p.y-40,'레벨 업! Lv.'+this.plv,ST({fontSize:'16px',color:'#ffe066',fontStyle:'bold'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:t,y:p.y-80,alpha:0,duration:1500,onComplete:()=>t.destroy()});
