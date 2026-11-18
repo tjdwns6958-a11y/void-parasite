@@ -279,7 +279,7 @@ class G extends Phaser.Scene{
   this.pnL=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(8,6,232,54,8).setDepth(49);this.pnR=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(640,6,154,124,8).setDepth(49);this.gfx=this.add.graphics().setDepth(50);this.gL=this.add.graphics().setDepth(50);this.gR=this.add.graphics().setDepth(50);this.hA={L:1,R:1};this.rlb=null;
   this.t1=this.add.text(16,10,'',ST({fontSize:'13px'})).setDepth(60);
   this.t2=this.add.text(784,10,'',ST({fontSize:'13px',align:'right'})).setOrigin(1,0).setDepth(60);
-  this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
+  this.etx=this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
   this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 버튼: 탭하면 물기 · 먹이 곁에서 누르고 있으면 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금\nSpace: 물기 (먹이 곁에서 누르고 있으면 섭취)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
   this.input.addPointer(2);
@@ -673,10 +673,13 @@ class G extends Phaser.Scene{
   GL.fillStyle(0x3a2f57).fillRect(16,46,200,4);GL.fillStyle(0x7cc4ff).fillRect(16,46,this.plv>=18?200:200*Math.min(1,this.xp/this.xpn()),4);
   let kx=84,ky=280;const J=this.joy&&this.joy.isDown;
   if(J){const vx=this.joy.x-84,vy=this.joy.y-280,l=Math.hypot(vx,vy)||1,m=Math.min(l,50);kx+=vx/l*m;ky+=vy/l*m}
-  g.fillStyle(0x241c38,.7).fillCircle(84,280,55);g.lineStyle(2,0x6b5a96).strokeCircle(84,280,55);
-  g.fillStyle(0xa65cff).fillCircle(kx,ky,22);
-  g.fillStyle(this.eat&&this.eat.isDown?0xc98bff:0xa65cff).fillCircle(728,288,46);
-  if(this.cur.tr=='haven'){const ok=this.moltPts()>=3;g.fillStyle(ok?0x7be0a8:0x3a2f57,ok?.75+.2*Math.sin(this.time.now/200):.8).fillCircle(636,296,30);this.mtx.setVisible(true).setColor(ok?'#12091f':'#a99fc2')}else this.mtx.setVisible(false);
+  // 조작 버튼 밑에 플레이어·몬스터·먹이가 있으면 버튼을 흐리게
+  const und=(cx,cy,r)=>{const p=this.pl;if(Math.hypot(p.x-cx,p.y-cy)<r+14)return 1;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible&&!(m.k=='rek'&&m.st=='under')&&Math.hypot(m.x-cx,m.y-cy)<r+16)return 1;for(const f of this.cur.food)if(f.on&&f.spr&&Math.hypot(f.spr.x-cx,f.spr.y-cy)<r+8)return 1;return 0};
+  this.bA=this.bA||{J:1,E:1,M:1};const kb=.2;this.bA.J+=((und(84,280,55)&&!J?.3:1)-this.bA.J)*kb;this.bA.E+=((und(728,288,46)&&!(this.eat&&this.eat.isDown)?.35:1)-this.bA.E)*kb;this.bA.M+=((und(636,296,30)?.35:1)-this.bA.M)*kb;
+  g.fillStyle(0x241c38,.7*this.bA.J).fillCircle(84,280,55);g.lineStyle(2,0x6b5a96,this.bA.J).strokeCircle(84,280,55);
+  g.fillStyle(0xa65cff,J?1:this.bA.J).fillCircle(kx,ky,22);
+  g.fillStyle(this.eat&&this.eat.isDown?0xc98bff:0xa65cff,this.bA.E).fillCircle(728,288,46);if(this.etx)this.etx.setAlpha(this.bA.E);
+  if(this.cur.tr=='haven'){const ok=this.moltPts()>=3;g.fillStyle(ok?0x7be0a8:0x3a2f57,(ok?.75+.2*Math.sin(this.time.now/200):.8)*this.bA.M).fillCircle(636,296,30);this.mtx.setVisible(true).setColor(ok?'#12091f':'#a99fc2').setAlpha(this.bA.M)}else this.mtx.setVisible(false);
   if(this.cur.tr!='haven'&&this.moltPts()>=3){const hv=this.lv.rooms.find(r=>r.tr=='haven');if(hv){const dx=hv.c-this.cur.c,dy=hv.r-this.cur.r,l=Math.hypot(dx,dy*1.6)||1,ux=dx/l,uy=dy*1.6/l,k=Math.min(320/Math.max(Math.abs(ux),.01),120/Math.max(Math.abs(uy),.01)),ax=400+ux*k,ay=180+uy*k,al=.6+.35*Math.sin(this.time.now/180),an=Math.atan2(uy,ux);
    g.fillStyle(0x7be0a8,al).fillTriangle(ax+Math.cos(an)*14,ay+Math.sin(an)*14,ax+Math.cos(an+2.5)*11,ay+Math.sin(an+2.5)*11,ax+Math.cos(an-2.5)*11,ay+Math.sin(an-2.5)*11);if(!this.hvT)this.hvT=this.add.text(0,0,'둥지',ST({fontSize:'11px',color:'#7be0a8',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.hvT.setVisible(true).setPosition(ax-Math.cos(an)*20,ay-Math.sin(an)*20).setAlpha(al)}}else if(this.hvT)this.hvT.setVisible(false);
   if(this.exT>0)g.lineStyle(4,0xff9ac0,.95).beginPath().arc(400,180,34,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,this.exT),false).strokePath();
