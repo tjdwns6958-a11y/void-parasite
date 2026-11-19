@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v30</title>
+<title>공허 기생충 v31</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -687,8 +687,9 @@ class G extends Phaser.Scene{
  kland(m){const D=C.E.leapV*C.E.leapT;let lx=m.x,ly=m.y;for(let s=8;s<=D;s+=8){const nx=Phaser.Math.Clamp(m.x+m.ux*s,60,740),ny=Phaser.Math.Clamp(m.y+m.uy*s,60,300);if(this.blk(nx,ny,30))break;lx=nx;ly=ny}if(m.mk)m.mk.setPosition(lx,ly+6)}
  recalc(){const L=this.lin||{p:0,c:0,v:0},v=this.plv-1;this.spd=3*(1+.015*v);this.emax=C.EN+5*v+6*(this.feast||0);this.drm=1;this.dmt=L.c>=1?.9:1;this.bdmg=(C.BITE.dmg+1.5*v)*(L.p>=1?1.25:1);this.bsc=1+.04*(this.feast||0)+(L.p>=3?.08:0)+(L.c>=3?.06:0)}
  lcost(k){return Math.ceil(LCOST[k][this.lin[k]]*(1+.3*this.molts))}
+ lmax(){return (this.zi||1)>=2?LMAX:3}
  lavail(k){return k=='p'?this.org-this.spO:k=='c'?this.mn-this.spM:this.ve-this.spV}
- nodeLock(k){const t=this.lin[k];if(t>=3)return '완성';if(this.molts>=LMAX)return '변이 한계';if(t==2&&!LK.some(o=>o!=k&&this.lin[o]>=1))return '다른 계통 1단계 필요';if(this.lavail(k)<this.lcost(k))return LRS[k]+' '+Math.max(0,this.lavail(k))+' / '+this.lcost(k);return ''}
+ nodeLock(k){const t=this.lin[k];if(t>=3)return '완성';if(this.molts>=this.lmax())return (this.zi||1)<2?'1구역 한계 (3번)':'변이 한계';if(t==2&&!LK.some(o=>o!=k&&this.lin[o]>=1))return '다른 계통 1단계 필요';if(this.lavail(k)<this.lcost(k))return LRS[k]+' '+Math.max(0,this.lavail(k))+' / '+this.lcost(k);return ''}
  nodeOk(k){return this.nodeLock(k)===''}
  canMolt(){return LK.some(k=>this.nodeOk(k))}
  moltPts(){return this.canMolt()?3:0}
@@ -710,7 +711,7 @@ class G extends Phaser.Scene{
   M.pvT=A(this.add.text(392,30,'',ST({fontSize:'10px',color:'#a99fc2'})).setOrigin(1,.5).setDepth(402));
   this.moltRefresh()}
  moltRefresh(){const M=this.molt,g=M.g,L=this.lin;g.clear();
-  M.sub.setText('쓸 수 있는 재료: 유기물 '+this.lavail('p')+' · 무기물 '+this.lavail('c')+' · 공허 정수 '+this.lavail('v')+'   ·   변이 '+this.molts+' / '+LMAX+' — 탈피할수록 재료가 더 든다');
+  M.sub.setText('쓸 수 있는 재료: 유기물 '+this.lavail('p')+' · 무기물 '+this.lavail('c')+' · 공허 정수 '+this.lavail('v')+'   ·   변이 '+this.molts+' / '+this.lmax()+((this.zi||1)<2?' (2구역부터 5)':'')+' — 탈피할수록 재료가 더 든다');
   LK.forEach((k,i)=>{const x0=24+i*254,sel=M.sel==k,lk=this.nodeLock(k);g.fillStyle(sel?0x2a2040:0x1d1726,1).fillRoundedRect(x0,72,246,272,8);g.lineStyle(sel?3:1,sel?LCN[k]:0x3a2f57,1).strokeRoundedRect(x0,72,246,272,8);
    M.tt[i].setText(LN[k]+' 계통  ·  '+LRS[k]);
    for(let t=0;t<3;t++){const tx=M.rw[i][t],[nm,ds]=ND[k][t];let head,col;
@@ -766,7 +767,7 @@ class G extends Phaser.Scene{
   const p=this.pl;p.setPosition(400,180);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.sp.forEach((q,i)=>{q.x=400-7*(i+1);q.y=184});this.en=Math.min(this.emax,this.en+30);this.inv=1.5;
   this.enter(this.lv.start);
   const ov=this.add.rectangle(400,180,800,360,0x05030a,1).setDepth(150);this.tweens.add({targets:ov,alpha:0,duration:1000,onComplete:()=>ov.destroy()});
-  const t1=this.add.text(400,138,this.zi+'구역 — 심연 산호초',ST({fontSize:'24px',fontStyle:'bold',color:'#e8d0ff'})).setOrigin(.5).setDepth(151),t2=this.add.text(400,174,'공허 산호 숲과 심연의 감시탑 · 몬스터가 한층 강하다 · 에너지 +30',ST({fontSize:'13px',color:'#b8aed2'})).setOrigin(.5).setDepth(151);
+  const t1=this.add.text(400,138,this.zi+'구역 — 심연 산호초',ST({fontSize:'24px',fontStyle:'bold',color:'#e8d0ff'})).setOrigin(.5).setDepth(151),t2=this.add.text(400,174,'공허 산호 숲과 심연의 감시탑 · 몬스터가 한층 강하다 · 에너지 +30'+(this.zi==2?'\n변이 한계가 3번 → 5번으로 늘었다':''),ST({fontSize:'13px',color:'#b8aed2'})).setOrigin(.5).setDepth(151);
   this.tweens.add({targets:[t1,t2],alpha:0,delay:2800,duration:700,onComplete:()=>{t1.destroy();t2.destroy()}})}
  mkSpr(e){this.lvl(e);e.lvT=this.add.text(e.x,e.y,'Lv.'+e.lv,ST({fontSize:'10px',fontStyle:'bold'})).setOrigin(1,.5).setDepth(60);e.lvc=null;
   if(e.k=='rek'){if(e.st!='up')e.st='under';e.tm=0;e.trk=0;e.spr=this.add.image(e.x,e.y,e.st=='up'?'rek':'mound').setDepth(e.st=='up'?9:1.6)}
@@ -909,10 +910,10 @@ class G extends Phaser.Scene{
    else{const[x,y]=this.treePos(k,2);T(k=='c'?x+20:x-20,y-12,hd+'\n'+pr,{fontSize:'11px',color:LCS[k],align:k=='c'?'left':'right',lineSpacing:2},k=='c'?0:1,.5)}}
   for(const k of LK){const[x,y]=this.treePos(k,2),q=this.mq&&this.mq.k==k?this.mq.st:null,dn=this.skl==k;T(x+(k=='v'?-17:17),y-13,'★',{fontSize:'13px',fontStyle:'bold',color:dn?'#ffe066':q=='open'?'#ff9af4':'#5a4e72'})}
   T(782,50,'★ 분화 3단계 → 특수 퀘스트(중간 보스) → 특수 스킬'+(this.skl?'\n보유 특수 스킬: 「'+MBQ[this.skl].s+'」':this.mq&&this.mq.st=='open'?'\n진행 중: 「'+MBQ[this.mq.k].q+'」 — 둥지의 균열':''),{fontSize:'10px',color:'#ffe9a8',align:'right',lineSpacing:2},1,0);
-  g.fillStyle(0x241c38,1).fillCircle(cx,cy,20);g.lineStyle(2,0xc98bff,1).strokeCircle(cx,cy,20);T(cx,cy-4,'나',{fontSize:'13px',fontStyle:'bold'});T(cx,cy+9,'탈피 '+this.molts+'/'+LMAX,{fontSize:'8px',color:'#a99fc2'});
+  g.fillStyle(0x241c38,1).fillCircle(cx,cy,20);g.lineStyle(2,0xc98bff,1).strokeCircle(cx,cy,20);T(cx,cy-4,'나',{fontSize:'13px',fontStyle:'bold'});T(cx,cy+9,'탈피 '+this.molts+'/'+this.lmax(),{fontSize:'8px',color:'#a99fc2'});
   g.fillStyle(0x1a1330,1).fillRoundedRect(16,312,768,44,8);let a,b;
   if(O.sel){const[k,j]=O.sel,t=this.lin[k];a=LN[k]+' '+(j+1)+'단계 · '+ND[k][j][0]+(j==2?'      ★ 특수 퀘스트 「'+MBQ[k].q+'」 → 특수 스킬 「'+MBQ[k].s+'」':'');b=ND[k][j][1]+'   —   '+(j<t?'획득함':j==t?(this.nodeOk(k)?'재료가 모였다 — 둥지에서 탈피하면 얻는다':this.nodeLock(k)):'앞 단계를 먼저 얻어야 한다')}
-  else{a='포식 = 유기물 (유충·몬스터 껍질)    갑각 = 무기물 (결정·유생·렉사이 껍질)    공허 = 공허 정수 (껍질·보이드링·산호·정예)';b='3단계는 다른 계통 1단계가 있어야 열린다 · 탈피는 최대 5번, 할수록 필요한 재료가 늘어난다 · 동그라미를 누르면 자세한 설명'}
+  else{a='포식 = 유기물 (유충·몬스터 껍질)    갑각 = 무기물 (결정·유생·렉사이 껍질)    공허 = 공허 정수 (껍질·보이드링·산호·정예)';b='3단계는 다른 계통 1단계가 있어야 열린다 · 탈피는 1구역 3번 · 2구역부터 5번까지, 할수록 재료가 늘어난다 · 동그라미를 누르면 자세한 설명'}
   T(28,323,a,{fontSize:'11px',fontStyle:'bold',color:'#ece6f7'},0,.5);T(28,343,b,{fontSize:'10px',color:'#a99fc2',wordWrap:{width:750}},0,.5)}
  treeTap(x,y){const O=this.treeO;if(!O)return;let best=null,bd=22;for(const k of LK)for(let j=0;j<3;j++){const[nx,ny]=this.treePos(k,j),d=Math.hypot(nx-x,ny-y);if(d<bd){bd=d;best=[k,j]}}
   if(best){O.sel=best;this.treeDraw();return}if(y>308&&!O.st)return;this.treeClose()}
@@ -1690,7 +1691,7 @@ class G extends Phaser.Scene{
    const mh=m.mh||MON(m.k).hp,r=Math.max(0,Math.min(1,m.hp/mh)),w=({rek:34,gna:22,vdl:16,spn:22,lsp:14,qn:46,wd:52})[m.k]||28,yy=m.spr.y-(m.k=='gna'?18*(m.sz||1):({rek:30,vdl:16,spn:20,lsp:16,qn:38,wd:34})[m.k]||22);
    g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy-1,w+2,6);if(m.lvT&&m.k!='vdl'&&m.k!='lsp'){const df=m.lv-this.plv,lc=df>=2?'#ff7a7a':df<=-2?'#a0a0b8':'#ffffff';m.lvT.setVisible(true).setPosition(m.spr.x-w/2-3,yy+2);if(m.lvc!==lc){m.lvT.setColor(lc);m.lvc=lc}}g.fillStyle(({gna:0x7cc4ff,rek:0xc070ff,vdl:0xffe066,spn:0xd070ff,lsp:0xffe066,qn:0xff6ab0,wd:0xff9a4a})[m.k]||0xff4a6a).fillRect(m.spr.x-w/2,yy,w*r,4);if(!m.k||m.k=='rek'){const hv=Math.max(0,(m.hg??70)/100);g.fillStyle(0x12091f,.85).fillRect(m.spr.x-w/2-1,yy+5,w+2,4);g.fillStyle(m.hg<40?0xff7a2a:0xffd060).fillRect(m.spr.x-w/2,yy+6,w*hv,2)}}
   this.t1.setText('Lv.'+this.plv+'   에너지 '+Math.ceil(this.en)+' / '+this.emax);
-  {let hint=this.molts>=LMAX?'변이 한계 도달 (5/5)':'진화 완료';if(this.canMolt())hint='탈피 가능 (둥지에서)';else{let b=null,br=-1;for(const k of LK){const t=this.lin[k];if(this.molts>=LMAX||t>=3||(t==2&&!LK.some(o=>o!=k&&this.lin[o]>=1)))continue;const r=this.lavail(k)/this.lcost(k);if(r>br){br=r;b=k}}if(b)hint=LN[b]+' '+(this.lin[b]+1)+'단계 '+Math.max(0,this.lavail(b))+' / '+this.lcost(b)}
+  {let hint=this.molts>=this.lmax()?((this.zi||1)<2?'1구역 변이 한계 (3/3)':'변이 한계 도달 (5/5)'):'진화 완료';if(this.canMolt())hint='탈피 가능 (둥지에서)';else{let b=null,br=-1;for(const k of LK){const t=this.lin[k];if(this.molts>=this.lmax()||t>=3||(t==2&&!LK.some(o=>o!=k&&this.lin[o]>=1)))continue;const r=this.lavail(k)/this.lcost(k);if(r>br){br=r;b=k}}if(b)hint=LN[b]+' '+(this.lin[b]+1)+'단계 '+Math.max(0,this.lavail(b))+' / '+this.lcost(b)}
    {if(!this.rgT)this.rgT=LK.map((k,i)=>this.add.text(684+i*40,150,LN[k][0],ST({fontSize:'11px',fontStyle:'bold',color:LCS[k]})).setOrigin(.5).setDepth(61));
     const ua=und(724,150,44)?.55:1;LK.forEach((k,i)=>{const x=684+i*40,y=150,t=this.lin[k],lk=this.nodeLock(k),ok=lk==='',r=t>=3?1:Math.max(0,Math.min(1,this.lavail(k)/this.lcost(k)));
      g.fillStyle(0x0d0818,.75*ua).fillCircle(x,y,15);g.lineStyle(3,0x3a2f57,ua).strokeCircle(x,y,12);if(r>0)g.lineStyle(3,LCN[k],ua*(ok&&t<3?.7+.3*Math.sin(this.time.now/150):1)).beginPath().arc(x,y,12,-Math.PI/2,-Math.PI/2+Math.PI*2*r,false).strokePath();

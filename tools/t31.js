@@ -1,0 +1,10 @@
+const {chromium}=require('/opt/npm-tools/node_modules/playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:844,height:390}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1});await p.goto('file:///home/claude/play/game.html');await p.waitForTimeout(1500);
+const r1=await p.evaluate(()=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();s.org=500;s.mn=500;s.ve=50;s.lin={p:2,c:1,v:0};s.molts=3;s.recalc();return {zi:s.zi,lmax:s.lmax(),can:s.canMolt(),lock:s.nodeLock('p')}});
+await p.waitForTimeout(400);await p.screenshot({path:'s30/z1_cap.png'});
+await p.evaluate(()=>{GAME.scene.scenes[0].treeOpen(0)});await p.waitForTimeout(300);await p.screenshot({path:'s30/z1_tree.png'});await p.evaluate(()=>{GAME.scene.scenes[0].treeClose()});
+const r2=await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.nextZone();return {zi:s.zi,lmax:s.lmax(),can:s.canMolt(),lock:s.nodeLock('p')}});
+await p.waitForTimeout(700);await p.screenshot({path:'s30/z2_enter.png'});
+const r3=await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.molts=5;return {lmax:s.lmax(),can:s.canMolt(),lock:s.nodeLock('p')}});await p.waitForTimeout(300);await p.screenshot({path:'s30/z2_cap.png'});
+console.log(JSON.stringify([r1,r2,r3]));console.log(errs.join('|')||'no errors');await b.close()})();
