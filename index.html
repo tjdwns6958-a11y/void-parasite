@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v33</title>
+<title>공허 기생충 v34</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v33';
+window.VP_VER='v34';
 window.vpErr=function(e,where){try{const n=(window.__vpErrN=(window.__vpErrN||0)+1);if(n<=5)console.error('[vpErr]',where||'',e);
   if(n>1)return;const msg=String(e&&e.message||e).slice(0,120),st=String(e&&e.stack||'').split('\n').slice(1,4).map(l=>l.trim().replace(/\(?(file|https?):[^)]*\//,'(')).join(' | ').slice(0,220);
   try{localStorage.setItem('vp_err',JSON.stringify({v:VP_VER,where:where||'',msg,st,at:Date.now()}))}catch(_){}
@@ -392,14 +392,14 @@ class G extends Phaser.Scene{
   this.pnL=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(8,6,232,54,8).setDepth(49);this.pnR=this.add.graphics().fillStyle(0x0d0818,.6).fillRoundedRect(640,6,154,124,8).setDepth(49);this.gfx=this.add.graphics().setDepth(50);this.gL=this.add.graphics().setDepth(50);this.gR=this.add.graphics().setDepth(50);this.hA={L:1,R:1};this.rlb=null;
   this.t1=this.add.text(16,10,'',ST({fontSize:'13px'})).setDepth(60);
   this.t2=this.add.text(784,10,'',ST({fontSize:'13px',align:'right'})).setOrigin(1,0).setDepth(60);
-  this.etx=this.add.text(728,288,'섭취',ST({fontSize:'16px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
+  this.etx=this.add.text(750,308,'섭취',ST({fontSize:'12px',color:'#ffffff',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
   this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 버튼: 탭하면 물기 · 먹이 곁에서 누르고 있으면 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금\nSpace: 물기 (먹이 곁에서 누르고 있으면 섭취)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
   if(!window.__vpNoTree)this.time.delayedCall(30,()=>{const sv=this.loadSave();if(sv)this.resumeAsk(sv);else this.treeOpen(1)});this.glWatch();
   this.input.addPointer(2);
   this.input.on('pointerdown',p=>{if(this.over||this.rsO)return;if(this.cine){if(this.cine.t>.6)this.cine.t=this.cine.dur;return}if(this.treeO){this.treeTap(p.x,p.y);return}if(this.paused)return;if(!this.molt&&p.x>662&&p.x<788&&p.y>132&&p.y<168){this.treeOpen();return}if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
    if(this.skl&&Phaser.Math.Distance.Between(p.x,p.y,676,228)<28){this.skUse();return}
-   if(Phaser.Math.Distance.Between(p.x,p.y,728,288)<60){this.eat=p;this.req=1}else if(p.x<420&&(!this.joy||!this.joy.isDown))this.joy=p});
+   if(Phaser.Math.Distance.Between(p.x,p.y,750,308)<50){this.eat=p;this.req=1}else if(p.x<420&&(!this.joy||!this.joy.isDown)){this.joy=p;this.jo={x:Phaser.Math.Clamp(p.x,46,400),y:Phaser.Math.Clamp(p.y,46,314)};window.__vpJoyUsed=1}});
   this.input.on('pointerup',p=>{if(this.joy===p)this.joy=null;if(this.eat===p)this.eat=null});
   this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,E,ONE,TWO,THREE,FOUR,ENTER,ESC,SHIFT,Q');
   this.enter(this.lv.start);
@@ -1665,7 +1665,7 @@ class G extends Phaser.Scene{
   const dt=Math.min(ms/1000,.05),p=this.pl,a=this.cur,k=this.k,L=this.lv;this.fxLow=this.children.list.length>520;this.hkT=(this.hkT||0)-dt;if(this.hkT<=0){this.hkT=5;this.dec=this.dec.filter(o=>o&&o.scene);this.svN=(this.svN||0)+1;if(this.svN%3==0)this.saveG()}if(this.cine){this.cineU(dt);return}if(this.tr){this.tunnel(dt);return}if(this.molt){this.moltU(t);return}if(a.tr=='haven'&&Phaser.Input.Keyboard.JustDown(k.E))this.moltOpen();
   let ix=0,iy=0,fr=0;
   const J=this.joy;
-  if(J&&J.isDown){const vx=J.x-84,vy=J.y-280,l=Math.hypot(vx,vy);fr=Math.min(1,Math.max(0,(l-6)/38));if(l>0){ix=vx/l;iy=vy/l}}
+  if(J&&J.isDown){const o=this.jo||(this.jo={x:J.x,y:J.y});let vx=J.x-o.x,vy=J.y-o.y,l=Math.hypot(vx,vy);if(l>46){const k=(l-46)/l;o.x+=vx*k;o.y+=vy*k;vx=J.x-o.x;vy=J.y-o.y;l=46}fr=Math.min(1,Math.max(0,(l-5)/30));if(l>0){ix=vx/l;iy=vy/l}}
   const kx=(k.RIGHT.isDown||k.D.isDown)-(k.LEFT.isDown||k.A.isDown),ky=(k.DOWN.isDown||k.S.isDown)-(k.UP.isDown||k.W.isDown);
   if(kx||ky){const l=Math.hypot(kx,ky);ix=kx/l;iy=ky/l;fr=k.SHIFT.isDown?Math.min(1,60/(this.spd*C.T)):1}
   // 가속/감속
@@ -1721,14 +1721,15 @@ class G extends Phaser.Scene{
    if(!this.vig)this.vig=this.add.graphics().setDepth(48);this.vig.clear();if(lo&&!this.over){const a=(.12+.18*pu)*(1-this.en/this.emax/.25*.5);for(let i=0;i<5;i++){this.vig.lineStyle(10,0xff2a4a,a*(1-i/5)).strokeRect(5+i*10,5+i*10,790-i*20,350-i*20)}}
    if(lo&&!this.loW&&!this.over){this.loW=1;this.pop('에너지 부족 — 먹이를 찾아 섭취할 것',400,150)}else if(this.en/this.emax>.35)this.loW=0}
   GL.fillStyle(0x3a2f57).fillRect(16,46,200,4);GL.fillStyle(0x7cc4ff).fillRect(16,46,this.plv>=18?200:200*Math.min(1,this.xp/this.xpn()),4);
-  let kx=84,ky=280;const J=this.joy&&this.joy.isDown;
-  if(J){const vx=this.joy.x-84,vy=this.joy.y-280,l=Math.hypot(vx,vy)||1,m=Math.min(l,50);kx+=vx/l*m;ky+=vy/l*m}
+  const J=this.joy&&this.joy.isDown,jo=this.jo||{x:0,y:0};let kx=jo.x,ky=jo.y;
+  if(J){const vx=this.joy.x-jo.x,vy=this.joy.y-jo.y,l=Math.hypot(vx,vy)||1,m=Math.min(l,34);kx+=vx/l*m;ky+=vy/l*m}
   // 조작 버튼 밑에 플레이어·몬스터·먹이가 있으면 버튼을 흐리게
   const und=(cx,cy,r)=>{const p=this.pl;if(Math.hypot(p.x-cx,p.y-cy)<r+14)return 1;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible&&!(m.k=='rek'&&m.st=='under')&&Math.hypot(m.x-cx,m.y-cy)<r+16)return 1;for(const f of this.cur.food)if(f.on&&f.spr&&Math.hypot(f.spr.x-cx,f.spr.y-cy)<r+8)return 1;for(const k in this.cur.hp||{})if(this.cur.d[k]&&(this.cur.ct[k]=='hole'||this.cur.ct[k]=='rift')){const[hc,hr]=this.cur.hp[k];if(Math.hypot((hc+.5)*40-cx,(hr+.5)*40-cy)<r+22)return 1}return 0};
-  this.bA=this.bA||{J:1,E:1,M:1};const kb=.2;this.bA.J+=((und(84,280,55)&&!J?.3:1)-this.bA.J)*kb;this.bA.E+=((und(728,288,46)&&!(this.eat&&this.eat.isDown)?.35:1)-this.bA.E)*kb;this.bA.M+=((und(636,296,30)?.35:1)-this.bA.M)*kb;
-  g.fillStyle(0x241c38,.7*this.bA.J).fillCircle(84,280,55);g.lineStyle(2,0x6b5a96,this.bA.J).strokeCircle(84,280,55);
-  g.fillStyle(0xa65cff,J?1:this.bA.J).fillCircle(kx,ky,22);
-  g.fillStyle(this.eat&&this.eat.isDown?0xc98bff:0xa65cff,this.bA.E).fillCircle(728,288,46);if(this.etx)this.etx.setAlpha(this.bA.E);
+  this.bA=this.bA||{J:1,E:1,M:1};const kb=.2;this.bA.J+=((J?1:0)-this.bA.J)*.35;this.bA.E+=((und(750,308,32)&&!(this.eat&&this.eat.isDown)?.3:1)-this.bA.E)*kb;this.bA.M+=((und(636,296,30)?.35:1)-this.bA.M)*kb;
+  if(this.bA.J>.02&&this.jo){const a=this.bA.J;g.fillStyle(0x241c38,.3*a).fillCircle(jo.x,jo.y,40);g.lineStyle(1.5,0xa08cdc,.5*a).strokeCircle(jo.x,jo.y,40);g.fillStyle(0xa65cff,.65*a).fillCircle(kx,ky,15);g.lineStyle(1,0xe0c8ff,.6*a).strokeCircle(kx,ky,15)}
+  // 처음 한 번만: 어디를 눌러야 하는지 흐린 고리로 안내 (터치 기기)
+  if(!window.__vpJoyUsed&&this.sys.game.device.input.touch&&!this.boss){const pu=.5+.5*Math.sin(this.time.now/400);g.lineStyle(1.5,0xa08cdc,.25+.2*pu).strokeCircle(110,276,40);g.fillStyle(0xa65cff,.18+.12*pu).fillCircle(110,276,15);if(!this.jhT)this.jhT=this.add.text(110,224,'왼쪽을 누르고 끌면 이동',ST({fontSize:'10px',color:'#c8b8ee'})).setOrigin(.5).setDepth(61);this.jhT.setAlpha(.55+.3*pu)}else if(this.jhT){this.jhT.destroy();this.jhT=null}
+  {const ed=this.eat&&this.eat.isDown;g.fillStyle(ed?0xc98bff:0xa65cff,(ed?.85:.42)*this.bA.E).fillCircle(750,308,32);g.lineStyle(1.5,0xd8b8ff,.6*this.bA.E).strokeCircle(750,308,32);if(this.etx)this.etx.setAlpha((ed?1:.75)*this.bA.E)}
   if(this.cur.tr=='haven'){const ok=this.moltPts()>=3;g.fillStyle(ok?0x7be0a8:0x3a2f57,(ok?.75+.2*Math.sin(this.time.now/200):.8)*this.bA.M).fillCircle(636,296,30);this.mtx.setVisible(true).setColor(ok?'#12091f':'#a99fc2').setAlpha(this.bA.M)}else this.mtx.setVisible(false);
   // 처음 보는 몬스터 소개 (판마다 종류별 1번)
   if(!this.mcard&&!this.over){const IN={kha:['낫그늘','덤불·나무에 숨어 기다린다 · 붉은 부채꼴 = 할퀴기 · 바닥 발톱 자국 = 도약'],rek:['땅울음','땅속에서 발소리를 듣는다 · 천천히 움직이면 못 느낀다 · 붉은 원 = 솟구치기'],gna:['제르사이 유생','결정을 먹는 순한 유생 · 잡으면 에너지와 무기물'],vdl:['보이드링','소용돌이에서 떼로 나온다 · 나오는 수가 정해져 있다'],spn:['가시 산호충','산호 속에 숨어 가시 3발을 쏜다 · 노란 조준선 = 발사 예고 · 산호를 물어 부수면 끌려 나온다'],lsp:['빛 포자','빛줄기에 닿아 있을 때만 빛 화살을 쏜다 · 그림자·기둥 뒤에서는 안전'],qn:['산호 여왕 (정예)','주변에 산호 감옥을 키우고 가시 산호충을 부른다 · 분홍 원 = 감옥 예고'],em:['라벤더 아래의 여제','수면 아래에서는 닿지 않는다 · 수면 위로 솟을 때 물 것 · 2페이즈: 거울 속의 나로 물 것'],rw:['공허를 걷는 자','틈을 밟고 나타난다 · 4번 걷고 나면 지친다 — 그때 물 것 · 곁에서 물거나 침을 쏠수록 메아리(점 5개)가 차오른다'],wd:['감시자 (정예)','빛줄기로 쫓다가 오래 비추면 광선 · 앞껍질은 물기를 막는다 — 뒤로 돌아가 등(약점)을 노릴 것']};for(const m of this.cur.en){if(!m.on||!m.spr||!m.spr.visible||(m.k=='rek'&&m.st=='under'))continue;const k=m.k||'kha';if(this.seenM[k]||Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>300)continue;if(this.cur.tr=='dark'&&Math.hypot(m.x-this.pl.x,m.y-this.pl.y)>110)continue;this.seenM[k]=1;const c=this.mcard=this.add.text(400,316,IN[k][0]+'\n'+IN[k][1],ST({fontSize:'12px',align:'center',color:'#ece6f7',backgroundColor:'#2a1f40',padding:{x:12,y:6}})).setOrigin(.5).setDepth(62);this.tweens.add({targets:c,alpha:0,delay:4500,duration:500,onComplete:()=>{c.destroy();if(this.mcard===c)this.mcard=null}});break}}

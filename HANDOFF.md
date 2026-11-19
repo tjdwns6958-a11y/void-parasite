@@ -1,7 +1,7 @@
 # 공허 기생충 — 새 대화 인수인계 (2026-11-19 22:20 기준)
 
 > 새 대화의 Claude는 **이 문서 → `DEVLOG.md` 순서로** 읽고 시작할 것.
-> 저장소: GitHub `tjdwns6958-a11y/void-parasite` — `main` = **v33** (공개됨)
+> 저장소: GitHub `tjdwns6958-a11y/void-parasite` — `main` = **v34** (공개됨)
 
 ---
 
@@ -9,11 +9,11 @@
 
 | 항목 | 상태 |
 |---|---|
-| 공개된 게임 | **v33** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG (slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f`, 버전 id `1795094064-2eb2`) |
+| 공개된 게임 | **v34** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG (slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f`, 버전 id `1795094662-e26f`) |
 | ① 멈춤 | v33에 대책 넣음(AI별 오류 격리·루프 전체 보호·감시견·오류 표시). 실시간 테스트에선 재현 안 됨 → **개발자 폰에서 다시 멈추면 왼쪽 위 빨간 오류 글씨 캡처를 받기로 함** |
 | ② 포식 유기물 | v33 반영 (낫그늘·땅울음 4→10 등). 개발자 체감 확인 대기 |
 | ③ 이름 변경 | 완료: 카직스 → **낫그늘**, 렉사이 → **땅울음** |
-| ④ 모바일 조작 UI | 시안 3안(U1 떠다니는 조이스틱 / U2 레터박스 / U3 보이지 않는 조작)을 보여 줌 — `docs/ui_options_v34.png`. **개발자 선택 대기** → 고른 안을 v34로 |
+| ④ 모바일 조작 UI | 개발자가 **U1 떠다니는 조이스틱** 선택 → v34에 적용 (DEVLOG 16절). 실제 폰 손맛 피드백 대기 |
 
 ## 1. 개발자 규칙 (반드시 지킬 것)
 
@@ -210,5 +210,5 @@
 
 ```
 공허 기생충 게임 작업을 이어서 하자. GitHub tjdwns6958-a11y/void-parasite 저장소의
-HANDOFF.md와 DEVLOG.md를 먼저 읽어 줘. 모바일 조작 UI는 (U1/U2/U3 중 고른 것)으로 해 줘.
+HANDOFF.md와 DEVLOG.md를 먼저 읽어 줘. (이어서 할 일)
 ```
