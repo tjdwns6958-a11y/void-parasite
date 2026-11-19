@@ -1,0 +1,11 @@
+const {chromium}=require('/opt/npm-tools/node_modules/playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:844,height:390}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1});await p.goto('file:///home/claude/play/game.html');await p.waitForTimeout(1500);
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();s.plv=8;s.lin={p:1,c:3,v:0};s.molts=4;s.zi=2;s.recalc();s.en=s.emax;s.mqStart('c');s.mbEnter()});
+await p.waitForTimeout(5200);await p.screenshot({path:'/home/claude/play/s30/rv0.png'});
+const r1=await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.pl.body.reset(470,200);s.en=-5;return 1});
+await p.waitForTimeout(150);await p.screenshot({path:'/home/claude/play/s30/rv1.png'});await p.waitForTimeout(350);await p.screenshot({path:'/home/claude/play/s30/rv2.png'});
+const r2=await p.evaluate(()=>{const s=GAME.scene.scenes[0];return {en:Math.round(s.en),emax:s.emax,rvU:s.rvU,over:s.over,cry:s.cry,bossHp:Math.round(s.cur.en[0].hp)}});
+await p.waitForTimeout(2500);const r3=await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.en=-5;return 1});await p.waitForTimeout(300);
+const r4=await p.evaluate(()=>{const s=GAME.scene.scenes[0];return {over:s.over}});
+console.log(JSON.stringify([r2,r4]));console.log(errs.join('|')||'no errors');await b.close()})();
