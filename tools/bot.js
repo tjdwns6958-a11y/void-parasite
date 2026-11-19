@@ -32,10 +32,11 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
    const L=s.lv,D={N:[-1,0],S:[1,0],W:[0,-1],E:[0,1]};
    if(opt.stay){tx=400+Math.cos(S.t*.4)*230;ty=180+Math.sin(S.t*.4)*110;mode='stay'}
    else if(a===L.exit&&((S.t-(S.zt||0))>opt.exitAfter||S.rooms.size>=16)){tx=400;ty=180;mode='exit'}
+   else if(!Object.keys(D).some(k=>a.d[k])){tx=400+Math.cos(S.t)*150;ty=180+Math.sin(S.t*.7)*90;mode='arena'}
    else{const opts=Object.keys(D).filter(k=>a.d[k]).map(k=>{const b=L.at(a.r+D[k][0],a.c+D[k][1]);return[k,b]});
     const key='g'+a.r+a.c;const hv=S.opt.guide&&S.pickK()&&a.tr!='haven'?L.rooms.find(r=>r.tr=='haven'):null;if(hv){const dist=new Map([[hv,0]]),q=[hv];while(q.length){const r=q.shift();for(const k in D)if(r.d[k]){const b=L.at(r.r+D[k][0],r.c+D[k][1]);if(!dist.has(b)){dist.set(b,dist.get(r)+1);q.push(b)}}}const best=opts.slice().sort((u,v)=>(dist.get(u[1])??99)-(dist.get(v[1])??99))[0];mem[key]={k:best[0],t:now+3000}}
     if(!mem[key]||mem[key].t<now){let c=opts.filter(([k,b])=>!S.rooms.has(b.r*4+b.c));if(!c.length){// 출구 쪽으로: BFS
-       const dist=new Map([[L.exit,0]]),q=[L.exit];while(q.length){const r=q.shift();for(const k in D)if(r.d[k]){const b=L.at(r.r+D[k][0],r.c+D[k][1]);if(!dist.has(b)){dist.set(b,dist.get(r)+1);q.push(b)}}}
+       const dist=new Map(L.exit?[[L.exit,0]]:[]),q=L.exit?[L.exit]:[];while(q.length){const r=q.shift();for(const k in D)if(r.d[k]){const b=L.at(r.r+D[k][0],r.c+D[k][1]);if(!dist.has(b)){dist.set(b,dist.get(r)+1);q.push(b)}}}
        c=opts.slice().sort((u,v)=>(dist.get(u[1])??99)-(dist.get(v[1])??99)).slice(0,1);if(Math.random()<.25)c=opts}
      mem[key]={k:c[Math.floor(Math.random()*c.length)][0],t:now+15000}}
     const k=mem[key].k,ty0=a.ct[k];

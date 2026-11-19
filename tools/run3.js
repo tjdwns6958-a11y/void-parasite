@@ -2,7 +2,7 @@
 const {chromium}=require('playwright');const fs=require('fs');
 const [tag,runs='6',secs='300',exitAfter='200',html='game.html']=process.argv.slice(2);fs.mkdirSync('rounds/'+tag,{recursive:true});
 (async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const out=[];
-for(let r=0;r<+runs;r++){const p=await b.newPage({viewport:{width:844,height:390}});const errs=[];p.on('pageerror',e=>errs.push(e.message+' @'+((e.stack||'').split('\n')[1]||'').trim()));
+for(let r=0;r<+runs;r++){const p=await b.newPage({viewport:{width:844,height:390}});const errs=[];p.on('pageerror',e=>errs.push(e.message+' @'+((e.stack||'').split('\n')[1]||'').trim()));p.on('console',m=>{if(m.type()=='error'&&errs.length<8)errs.push('C:'+m.text().split('\n').slice(0,2).join(' '))});
  await p.addInitScript(seed=>{window.__vpNoTree=1;let a=seed*7919;Math.random=function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}},r+1+(+process.env.SEEDOFF||0));
  await p.goto('file:///home/claude/play/'+html);await p.waitForTimeout(1000);await p.addScriptTag({path:'bot.js'});
  await p.evaluate(([ea,gd,ln,pre])=>{botInstall({exitAfter:+ea,guide:gd,lin:ln});BOTSTAT.on=true;if(pre)new Function('s',pre)(GAME.scene.getScene('G'))},[exitAfter,process.env.GUIDE?1:0,process.env.LIN||'mix',process.env.PRE||'']);
