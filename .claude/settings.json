@@ -1,0 +1,23 @@
+{
+  "extraKnownMarketplaces": {
+    "knowledge-work-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/knowledge-work-plugins"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "design@knowledge-work-plugins": false,
+    "playwright@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "feature-dev@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": false
+  }
+}
