@@ -86,13 +86,14 @@ window.fullInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G'),S=
  const swTick=()=>{const m=s.swOn,pl=s.pl;if(!m)return;if(F.sw)F.sw.minE=Math.min(F.sw.minE,s.en/s.emax);
   let gx=m.x,gy=m.y,want=m.ex?8:150;const food=s.cur.food.filter(f=>f.on&&f.spr).sort((a,c)=>Math.hypot(a.x-pl.x,a.y-pl.y)-Math.hypot(c.x-pl.x,c.y-pl.y))[0];
   if(food&&(s.en<s.emax*.55||(!m.ex&&Math.hypot(food.x-pl.x,food.y-pl.y)<120))){gx=food.x;gy=food.y;want=0}
+  const ht=s.swHandTips&&s.swHandTips();let htc=null;if(ht&&ht.length){htc=ht.sort((a,c)=>Math.hypot(a.x-pl.x,a.y-pl.y)-Math.hypot(c.x-pl.x,c.y-pl.y))[0];if(!(food&&s.en<s.emax*.35)){gx=htc.x;gy=htc.y;want=30}}
   const score=(x,y)=>Math.abs(Math.hypot(x-gx,y-gy)-want);let best=null,bs=1e9;
   for(let i=0;i<=16;i++){const a=i/16*6.283,st=i==16?0:1;for(const Lq of st?[28,56]:[0]){const x=Phaser.Math.Clamp(pl.x+Math.cos(a)*Lq,50,750),y=Phaser.Math.Clamp(pl.y+Math.sin(a)*Lq,50,310);let sc=score(x,y);if(s.swDanger(x,y)||s.swDanger((x+pl.x)/2,(y+pl.y)/2))sc+=5000;if(sc<bs){bs=sc;best=[x,y,a,st]}}}
   if(bs>=5000){let fb=null,fd=1e9;for(let k=0;k<48;k++){const a=k/48*6.283*3.7,Lq=40+(k%6)*36,x=Phaser.Math.Clamp(pl.x+Math.cos(a)*Lq,50,750),y=Phaser.Math.Clamp(pl.y+Math.sin(a)*Lq,50,310);if(!s.swDanger(x,y)&&Lq<fd){fd=Lq;fb=[x,y]}}if(fb)best=[fb[0],fb[1],Math.atan2(fb[1]-pl.y,fb[0]-pl.x),1]}
   let dx=0,dy=0;if(best&&best[3]){dx=Math.cos(best[2]);dy=Math.sin(best[2])}if(Math.hypot(gx-pl.x,gy-pl.y)<8&&!s.swDanger(pl.x,pl.y)){dx=0;dy=0}
   W.lag.push([dx,dy]);const q=W.lag.length>15?W.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002)W.oops=30;if(W.oops>0){W.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}
   press(dx,dy);const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.SPACE.isDown=!!nearF;
-  if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1}
+  if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<44&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1}else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1}
   else if(!nearF&&s.lin.v>=2&&!m.gone&&Math.hypot(m.x-pl.x,m.y-pl.y)<190&&s.bcd<=0&&(s.spitCd||0)<=0)s.req=1};
  // ---- 매 프레임: bot.js 다음에 돈다 ----
  s.sys.events.on('preupdate',()=>{
