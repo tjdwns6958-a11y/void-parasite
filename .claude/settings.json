@@ -5,9 +5,19 @@
         "source": "github",
         "repo": "anthropics/knowledge-work-plugins"
       }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
     }
   },
   "enabledPlugins": {
-    "design@knowledge-work-plugins": true
+    "design@knowledge-work-plugins": true,
+    "playwright@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true
   }
 }
