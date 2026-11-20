@@ -98,6 +98,8 @@ window.fullInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G'),S=
  s.sys.events.on('preupdate',()=>{
   if(s.over){if(F.endT!=null&&!F.chose&&(F.endN=(F.endN||0)+1)>4){const lb=opt.endPick||'공허에 남는다',b=s.children.list.find(o=>o.type=='Text'&&o.text==lb&&o.input);if(b){F.chose=lb;b.emit('pointerdown')}}return}
   if(s.cine||s.tr||s.molt)return;
+  // 굴·균열에서 막 나온 자리(잠금)에 붙어 있으면 한 발짝 비켜선다 — 안 그러면 같은 굴로 못 돌아가고 갇힌다
+  if(s.hlk&&!s.mbOn&&!s.swOn&&Math.hypot(s.pl.x-s.hlk[0],s.pl.y-s.hlk[1])<46){S.on=false;clr();go(400,180);return}
   if(s.swOn){S.on=false;clr();swTick();return}
   if(s.mbOn){S.on=false;clr();if(s.mbRO)go(400,200);else{s.eat=null;mbTick()}return}
   const Q=s.mq;if(Q&&Q.st=='open'&&!s.boss&&Q.room){if(F.qT==null)F.qT=S.t;S.on=false;clr();if(s.cur===Q.room&&Q.x!=null)go(Q.x,Q.y,4);else nav(Q.room);return}

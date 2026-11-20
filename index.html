@@ -767,7 +767,7 @@ class G extends Phaser.Scene{
    q.x+=Math.cos(q.a)*q.v*dt;q.y+=Math.sin(q.a)*q.v*dt;q.o.setPosition(q.x,q.y);if(!this.fxLow&&Math.random()<.5){const b=this.add.circle(q.x,q.y,1.5,0xc070ff,.6).setDepth(10.5);this.tweens.add({targets:b,alpha:0,scale:.3,duration:220,onComplete:()=>b.destroy()})}
    {const co=(this.cur.cor||[]).find(o=>o.on&&Math.abs(q.x-(o.c+.5)*C.T)<18&&Math.abs(q.y-(o.r+.5)*C.T)<18);if(co&&q.t>0){this.corHit(co,3);q.t=0}}
    if(q.t<=0||this.blk(q.x,q.y,18)||q.x<40||q.x>760||q.y<40||q.y>320)q.t=0;
-   else for(const m of this.cur.en)if(m.on&&m.spr&&!(m.k=='rek'&&m.st!='up')&&Math.hypot(m.x-q.x,m.y-q.y)<16){m.slw=1.5;this.dmgM(m,(m.k=='sw'?1.4:1)*this.sdmg(),q.mir);q.t=0;const r=this.add.circle(q.x,q.y,14,0xc070ff,.35).setDepth(11);this.tweens.add({targets:r,scale:1.6,alpha:0,duration:240,onComplete:()=>r.destroy()});break}
+   else for(const m of this.cur.en)if(m.on&&m.spr&&!(m.k=='rek'&&m.st!='up')&&Math.hypot(m.x-q.x,m.y-q.y)<16){m.slw=1.5;this.dmgM(m,(m.k=='sw'?(this.lin.v>=3?1.6:1.4):1)*this.sdmg(),q.mir);q.t=0;const r=this.add.circle(q.x,q.y,14,0xc070ff,.35).setDepth(11);this.tweens.add({targets:r,scale:1.6,alpha:0,duration:240,onComplete:()=>r.destroy()});break}
    if(q.t<=0)q.o.destroy()}this.pprj=this.pprj.filter(q=>q.t>0)}
  linPre(){for(const m of this.cur.en)if(m.on&&m.slw>0){m.x0=m.x;m.y0=m.y}}
  linPost(dt){for(const m of this.cur.en){if(!m.on)continue;if(m.slw>0){m.slw-=dt;if(m.x0!=null){m.x=m.x0+(m.x-m.x0)*.5;m.y=m.y0+(m.y-m.y0)*.5;m.x0=null}if(Math.random()<dt*6){const b=this.add.circle(m.x+(Math.random()-.5)*14,m.y,1.6,0xc070ff,.8).setDepth(12);this.tweens.add({targets:b,y:b.y+10,alpha:0,duration:400,onComplete:()=>b.destroy()})}}
@@ -1293,7 +1293,7 @@ class G extends Phaser.Scene{
   if(k=='c')room.en.push(E('atl',400,178,Math.round(380+44*plv),{br:34,nm:'환초의 가면',bi:0,gone:1}));
   if(k=='v')room.en.push(E('obs',400,116,Math.round(380+40*plv),{br:44,nm:'틈 너머의 관찰자',bi:0,gone:1}));
   this.lv={rooms:[room],start:room,exit:null,at:()=>null};this.mbOn=k;this.mbRO=0;this.mbT=0;
-  p.setPosition(400,300);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.ang=-Math.PI/2;this.sp.forEach((q,i)=>{q.x=400;q.y=304+7*(i+1)});this.inv=2;this.en=Math.min(this.emax,this.en+30);
+  p.setPosition(400,300);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.ang=-Math.PI/2;this.sp.forEach((q,i)=>{q.x=400;q.y=304+7*(i+1)});this.inv=2;this.en=Math.min(this.emax,Math.max(this.en+30,this.emax*.75));
   this.enter(room);if(this.rlb){this.rlb.destroy();this.rlb=null}
   if(!this.telG){this.telG=this.add.graphics().setDepth(1.55)}
   if(k=='c')for(const[x,y,f]of[[60,300,0],[740,300,1],[52,120,1],[748,130,0],[150,330,0],[650,332,1]])this.dec.push(this.add.image(x,y,'cor').setOrigin(.5,1).setDepth(2).setFlipX(!!f).setTint(0xd0b0ff));
@@ -1588,7 +1588,7 @@ class G extends Phaser.Scene{
   const ta=Math.atan2(p.y-ey,p.x-ex);
   // 가장자리의 눈
   let anyOpen=false;
-  for(const q of m.ey){if(q.open){anyOpen=true;q.ot+=dt;q.ft-=dt;if(q.ft<=0){q.ft=2.3;const a=Math.atan2(p.y-q.y,p.x-q.x);this.mbShot(q.x,q.y,a,210,D(7),'가장자리 눈의 빛살',m,'emo').o.setTint(0xffb060)}
+  for(const q of m.ey){if(q.open){anyOpen=true;q.ot+=dt;q.ft-=dt;if(q.ft<=0){q.ft=2.3;const a=Math.atan2(p.y-q.y,p.x-q.x);this.mbShot(q.x,q.y,a,175,D(7),'가장자리 눈의 빛살',m,'emo').o.setTint(0xffb060)}
     if(q.ot>14){q.open=0;this.tweens.add({targets:q.oe,scaleY:.1,duration:200,onComplete:()=>q.oe.setVisible(false)})}}}
   if(m.st=='pulled'){m.gone=0;const k=Math.min(1,(m.pt0-m.tm)/.6);m.x=m.hx+(400-m.hx)*k;m.y=m.hy+(205-m.hy)*k;m.spr.setPosition(m.x+Math.sin(now/60)*2,m.y).setScale(1.15);m.pu.setPosition(m.x,m.y).setScale(1,.6);
    g.lineStyle(2,0xffe066,.5+.3*Math.sin(now/80)).strokeEllipse(m.x,m.y,130,94);if(m.tm<=0){m.st='back';m.tm=.6}return}
@@ -1707,7 +1707,7 @@ class G extends Phaser.Scene{
  swHurt(m,v,src,cd){const now=this.time.now;if(cd&&(m.hc||0)>now)return;if(cd)m.hc=now+cd*1000;this.hurt(Math.round(v*m.df),src,m)}
  swFood(m,x,y,n){for(let i=0;i<n;i++){let q=null;for(const o of m.P)if(o.on&&Math.random()<.2){q=o;break}if(q)q.on=0;if(this.cur.food.filter(f=>f.on).length>=6)break;
   const fx=Phaser.Math.Clamp((q?q.x:x)+(Math.random()-.5)*50,60,740),fy=Phaser.Math.Clamp((q?q.y:y)+(Math.random()-.5)*36,60,300),cr=this.lin.c>=2&&(m.fdN=(m.fdN||0)+1)%2==0,f={t:cr?'c':'s',x:fx,y:fy,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(fx,fy,cr?'f_c':'f_s').setDepth(5);this.cur.food.push(f)}}
- swExpose(m,t,food){for(const q of m.P)q.cc=undefined;m.st='expose';m.tm=t;m.ex=1;m.gone=0;m.sk=null;m.hzF=null;this.emPull=null;if(food){this.swFood(m,m.x,m.y,food);if(this.lin.v>=1)this.ess(1,m.x,m.y)}
+ swExpose(m,t,food){for(const q of m.P)q.cc=undefined;m.st='expose';m.tm=t;m.ex=1;m.gone=0;m.sk=null;m.hzF=null;this.emPull=null;if(food){this.swFood(m,m.x,m.y,food);if(this.lin.v>=1)this.ess(this.lin.v>=3?2:1,m.x,m.y)}
   m.exN=(m.exN||0)+1;if(m.exN<=3)this.dtx(m.x,m.y-34,'무리가 흩어졌다 — 지금 여왕을 물 것!','#ffe066')}
  swPick(m){const P2=m.ph==2;m.seq++;
   if(P2&&m.hp<m.mh*.15&&!m.tided)return 'tide';
