@@ -9,7 +9,7 @@ const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT
   await p.goto('file:///home/claude/play/'+html);await p.waitForTimeout(1500);
   await p.evaluate(([plv,LIN,MODE])=>{const G=GAME,s=G.scene.scenes[0];if(s.hint)s.hint.destroy();s.plv=+plv;s.lin={p:+LIN[1],c:+LIN[3],v:+LIN[5]};s.zi=2;s.molts=5;s.recalc();s.wormSkin&&s.wormSkin();s.en=s.emax;s.bossStart();
    window.__T=G.loop.time||performance.now();G.loop.sleep();G.__vpNoDog=1;s.tweens.getDelta=function(){return 16.667*this.timeScale};
-   const S=window.__S={t:0,dmg:{},minE:1,hits:0,bites:0,lag:[],ph2:0,skills:{},mode:MODE};const oh=s.hurt.bind(s);s.hurt=function(d,src,m){const e0=this.en;oh(d,src,m);if(this.en<e0){S.dmg[src]=(S.dmg[src]||0)+Math.round(e0-this.en);S.hits++}};
+   const S=window.__S={t:0,dmg:{},minE:1,hits:0,bites:0,lag:[],ph2:0,skills:{},mode:MODE};if(s.swHandBite){const ohb=s.swHandBite.bind(s);s.swHandBite=function(m,fx,fy){const r=ohb(m,fx,fy);if(r)S.pops=(S.pops||0)+1;return r}}const oh=s.hurt.bind(s);s.hurt=function(d,src,m){const e0=this.en;oh(d,src,m);if(this.en<e0){S.dmg[src]=(S.dmg[src]||0)+Math.round(e0-this.en);S.hits++}};
    const KB=s.k;const press=(dx,dy)=>{KB.LEFT.isDown=dx<-.3;KB.RIGHT.isDown=dx>.3;KB.UP.isDown=dy<-.3;KB.DOWN.isDown=dy>.3};
    window.chunk=function(n,draw){const dt=1000/60;for(let k=0;k<n;k++){window.__T+=dt;S.t+=dt/1000;
      if(s.over){return s.swOn?'dead':'win'}
@@ -29,7 +29,7 @@ const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT
      if(hum){S.lag.push([dx,dy]);const q=S.lag.length>15?S.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002){S.oops=30}if(S.oops>0){S.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}}
      press(dx,dy);
      const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.SPACE.isDown=!!nearF;
-     if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<44&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1;S.bites++}
+     if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<48&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&MODE=='tank'&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&s.lin.v>=2&&!m.gone&&Math.hypot(m.x-pl.x,m.y-pl.y)<190&&s.bcd<=0&&(s.spitCd||0)<=0){s.req=1}
@@ -41,6 +41,6 @@ const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT
   for(let i=0;i<+MAXS*2;i++){let v;try{v=await p.evaluate(([d])=>chunk(30,d),[+SHOT&&i%14==7]);}catch(e){errs.push('eval '+e.message.slice(0,90));out='crash';break}
    if(typeof v=='string'){out=v;break}last=v;if(+SHOT&&i%14==7&&shotN<12){await p.screenshot({path:`/home/claude/play/sw_${r}_${shotN++}_${v.st}.png`})}}
   const S=await p.evaluate(()=>window.__S).catch(()=>({}));
-  res.push({r,out,t:S.t&&+S.t.toFixed(0),ph2:S.ph2&&+S.ph2.toFixed(0),minE:S.minE&&+S.minE.toFixed(2),hits:S.hits,bites:S.bites,last,dmg:S.dmg,sk:S.skills,errs:errs.slice(0,4),wall:Math.round((Date.now()-t0)/1000)});
+  res.push({r,out,t:S.t&&+S.t.toFixed(0),ph2:S.ph2&&+S.ph2.toFixed(0),minE:S.minE&&+S.minE.toFixed(2),hits:S.hits,bites:S.bites,pops:S.pops||0,last,dmg:S.dmg,sk:S.skills,errs:errs.slice(0,4),wall:Math.round((Date.now()-t0)/1000)});
   console.log(JSON.stringify(res[res.length-1]));await p.close()}
  await b.close()})();

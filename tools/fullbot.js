@@ -93,7 +93,7 @@ window.fullInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G'),S=
   let dx=0,dy=0;if(best&&best[3]){dx=Math.cos(best[2]);dy=Math.sin(best[2])}if(Math.hypot(gx-pl.x,gy-pl.y)<8&&!s.swDanger(pl.x,pl.y)){dx=0;dy=0}
   W.lag.push([dx,dy]);const q=W.lag.length>15?W.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002)W.oops=30;if(W.oops>0){W.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}
   press(dx,dy);const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.SPACE.isDown=!!nearF;
-  if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<44&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1}else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1}
+  if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<48&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1}else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1}
   else if(!nearF&&s.lin.v>=2&&!m.gone&&Math.hypot(m.x-pl.x,m.y-pl.y)<190&&s.bcd<=0&&(s.spitCd||0)<=0)s.req=1};
  // ---- 매 프레임: bot.js 다음에 돈다 ----
  s.sys.events.on('preupdate',()=>{
