@@ -1,0 +1,14 @@
+const {chromium}=require('/opt/npm-tools/node_modules/playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:800,height:360}});const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()=='error')errs.push(m.text().slice(0,200))});
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpNoSave=1;let a=77;Math.random=function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}});
+await p.goto('file:///home/claude/play/game.html');await p.waitForTimeout(1500);
+await p.evaluate(()=>{const G=GAME,s=G.scene.scenes[0];if(s.hint)s.hint.destroy();s.plv=14;s.lin={p:3,c:0,v:2};s.zi=2;s.molts=5;s.recalc();s.wormSkin();s.kc=186;
+ s.rec={m:[['p','갈고리 턱',102],['v','공허 감각',185],['p','포식 성장',291],['v','공허 침',440],['p','통째 삼키기',451]],mb:{nm:'허기의 왕관',t0:0,dt:41},food:312,swT:null};s.t0=s.time.now-1020*1000;s.bossStart();
+ window.T=performance.now();G.loop.sleep();G.__vpNoDog=1;s.tweens.getDelta=function(){return 16.667*this.timeScale};
+ window.step=n=>{for(let i=0;i<n;i++){T+=16.67;s.inv=1;G.scene.update(T,16.67)}G.renderer.preRender();G.scene.render(G.renderer);G.renderer.postRender()};
+ step(60*6);const m=s.swOn;m.hp=m.mh*.49;step(60*4);m.hp=1;m.st='expose';m.ex=1;s.kill(m);step(60*11)});
+await p.screenshot({path:'/home/claude/play/card0.png'});
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];const b=s.children.list.find(o=>o.type=='Text'&&o.text=='밖으로 나간다');b.emit('pointerdown');step(20)});await p.screenshot({path:'/home/claude/play/card1.png'});
+await p.evaluate(()=>step(90));await p.screenshot({path:'/home/claude/play/card2.png'});
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];const b=s.children.list.find(o=>o.type=='Text'&&o.text&&o.text.startsWith('지난 기록 '));b.emit('pointerdown');step(5)});await p.screenshot({path:'/home/claude/play/card3.png'});
+console.log(errs);await b.close()})();
