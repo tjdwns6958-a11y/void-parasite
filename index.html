@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v57</title>
+<title>공허 기생충 v58</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v57';
+window.VP_VER='v58';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -67,15 +67,15 @@ function skinTex(s,key,L){if(s.textures.exists('wh_'+key))return;
  const dom=L.p>0&&L.p>=L.c&&L.p>=L.v?'p':L.c>0&&L.c>=L.v?'c':L.v>0?'v':'n',t=dom=='n'?0:L[dom];
  const PAL={n:['#c98bff','#b06cf0','#a65cff','#8f4ad8','#7a3cc0'],p:[['#c77be8','#b05cd8','#9c4fe0','#8540c4','#6e34ac'],['#c062c8','#a84aa8','#933fa8','#7c3492','#662a7c'],['#c8509c','#a83a86','#922f78','#7c2868','#64205a']],c:[['#b998f0','#9f7ce8','#9070e0','#7c5cc8','#6a4cb0'],['#aeb0ec','#8e88d8','#7f78cc','#6c66b8','#5a54a0'],['#a7b6e8','#7f8ac8','#707bb8','#5f69a4','#4f588c']],v:[['#c98bff','#a65cff','#9a50f4','#8240d8','#6c30bc'],['#b878ff','#8e3ee8','#7c30d8','#6624bc','#521aa0'],['#a060ff','#6e28c8','#5e1eb4','#4c1698','#3c107c']]};
  const pal=dom=='n'?PAL.n:PAL[dom][t-1],px=(x,X,Y,c)=>{x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),1,1)},ln=(x,a,b,c,d,col)=>{const n=Math.max(Math.abs(c-a),Math.abs(d-b))||1;for(let i=0;i<=n;i++)px(x,a+(c-a)*i/n,b+(d-b)*i/n,col)};
- tex(s,'wh_'+key,24,24,2,x=>{const c=12,r=4.9*(1+(L.p>=3?.16:L.p>=2?.06:0)+(L.c>=3?.08:0));
+ const HF=nj=>x=>{const c=12,r=4.9*(1+(L.p>=3?.16:L.p>=2?.06:0)+(L.c>=3?.08:0));
   if(L.v>=1)disc(x,c,c,r+2.2,'rgba(200,140,255,.28)');disc(x,c,c,r+.9,'#3d1b6b');disc(x,c,c,r,pal[0]);
   if(L.c>=1)for(let a=Math.PI*.55;a<Math.PI*1.45;a+=.12)px(x,c+Math.cos(a)*(r-.6),c+Math.sin(a)*(r-.6),'#dfe6ff');
   if(L.c>=3){for(let a=-r;a<=r;a++)px(x,c-1,c+a*.9,'#5a6494');ln(x,c+r-2,c-r+1,c+r+3,c-r-3,'#bfeaff');px(x,c+r+3,c-r-4,'#fff');ln(x,c+r-2,c+r-1,c+r+3,c+r+3,'#bfeaff');px(x,c+r+3,c+r+4,'#fff')}
-  if(L.p>=1){ln(x,c+r-1,c-3,c+r+3,c-4,'#ffe0ea');ln(x,c+r+3,c-4,c+r+4,c-1,'#ffe0ea');ln(x,c+r-1,c+3,c+r+3,c+4,'#ffe0ea');ln(x,c+r+3,c+4,c+r+4,c+1,'#ffe0ea')}
-  if(L.p>=3){for(let a=0;a<=r+1;a++){const w=(r+1-a)*.75;for(let b=-w;b<=w;b++)px(x,c+a,c+b,'#1a0414')}for(let a=1;a<=r;a+=2){const w=(r+1-a)*.75;px(x,c+a,c-w,'#fff');px(x,c+a,c+w,'#fff')}}
+  if(L.p>=1&&!nj){ln(x,c+r-1,c-3,c+r+3,c-4,'#ffe0ea');ln(x,c+r+3,c-4,c+r+4,c-1,'#ffe0ea');ln(x,c+r-1,c+3,c+r+3,c+4,'#ffe0ea');ln(x,c+r+3,c+4,c+r+4,c+1,'#ffe0ea')}
+  if(L.p>=3&&!nj){for(let a=0;a<=r+1;a++){const w=(r+1-a)*.75;for(let b=-w;b<=w;b++)px(x,c+a,c+b,'#1a0414')}for(let a=1;a<=r;a+=2){const w=(r+1-a)*.75;px(x,c+a,c-w,'#fff');px(x,c+a,c+w,'#fff')}}
   const ec=L.p>=2?'#ff5a7a':'#ffffff';if(L.p>=3){px(x,c-1,c-4,ec);px(x,c-1,c+3,ec)}else{px(x,c+2,c-2,ec);px(x,c+2,c+1,ec)}
   if(L.v>=1){disc(x,c-1,c,1.9,'#ffe0ff');disc(x,c-1,c,1.1,'#c070ff');px(x,c-1,c,'#fff')}
-  if(L.v>=2){ln(x,c+r,c-2,c+r+4,c-6,'#c070ff');px(x,c+r+5,c-7,'#f0c8ff');ln(x,c+r,c+2,c+r+4,c+6,'#c070ff');px(x,c+r+5,c+7,'#f0c8ff')}});
+  if(L.v>=2){ln(x,c+r,c-2,c+r+4,c-6,'#c070ff');px(x,c+r+5,c-7,'#f0c8ff');ln(x,c+r,c+2,c+r+4,c+6,'#c070ff');px(x,c+r+5,c+7,'#f0c8ff')}};tex(s,'wh_'+key,24,24,2,HF(0));tex(s,'whj_'+key,24,24,2,HF(1));
  [3.6,3.2,2.6,2].forEach((r0,i)=>tex(s,'ws'+(i+1)+'_'+key,20,20,2,x=>{const c=10,r=r0*(1+(L.p>=2?.12:0)+(L.c>=3?.06:0));
   if(L.v>=3)disc(x,c,c,r+2.4,'rgba(200,140,255,.3)');disc(x,c,c,r+.9,'#3d1b6b');disc(x,c,c,r,pal[i+1]);
   if(L.c>=1)for(let a=Math.PI*1.1;a<Math.PI*1.9;a+=.15)px(x,c+Math.cos(a)*(r-.4),c+Math.sin(a)*(r-.4),'#c8d0ec');
@@ -721,7 +721,7 @@ class G extends Phaser.Scene{
  canMolt(){return LK.some(k=>this.nodeOk(k))}
  moltPts(){return this.canMolt()?3:0}
  skinKey(L){return 'p'+L.p+'c'+L.c+'v'+L.v}
- wormSkin(){const L=this.lin,key=this.skinKey(L);if(key=='p0c0v0'){this.hd.setTexture('wh');this.sg.forEach((o,i)=>o.setTexture('ws'+(i+1)));return}skinTex(this,key,L);this.hd.setTexture('wh_'+key);this.sg.forEach((o,i)=>o.setTexture('ws'+(i+1)+'_'+key))}
+ wormSkin(){const L=this.lin,key=this.skinKey(L);if(key=='p0c0v0'){this.hd.setTexture('wh');this.sg.forEach((o,i)=>o.setTexture('ws'+(i+1)));return}skinTex(this,key,L);this.pjOn();this.hd.setTexture((L.p>=1?'whj_':'wh_')+key);this.sg.forEach((o,i)=>o.setTexture('ws'+(i+1)+'_'+key))}
  wormDeco(){const L=this.lin;if(L.c<2){if(this.cryS)this.cryS.forEach(o=>o.setVisible(false));return}if(!this.cryS)this.cryS=[0,1,2].map(()=>this.add.image(0,0,'lc_cry').setDepth(9.6));
   this.cryS.forEach((o,i)=>{const sg=this.sg[i];o.setVisible(i<this.cry).setPosition(sg.x,sg.y-6*this.bsc).setScale(this.bsc)})}
  moltOpen(){if(this.molt||this.tr)return;if(!this.canMolt()){this.pop('진화할 재료가 부족하다',this.pl.x,this.pl.y);return}
@@ -2312,7 +2312,24 @@ class G extends Phaser.Scene{
    const al=k.t<.15?1:1-(k.t-.15)/.35,c=Math.cos(k.an),s=Math.sin(k.an),px=-s,py=c,bx=k.x-c*k.r,by=k.y-s*k.r;
    for(const sg of[-1,1])for(let j=0;j<3;j++){const ox=bx+c*j*4.5+px*sg*5.5,oy=by+s*j*4.5+py*sg*5.5,tx=ox-px*sg*3.2,ty=oy-py*sg*3.2;g.lineStyle(3,0x2a1040,al*.9).lineBetween(ox,oy,tx,ty);g.lineStyle(1.6,0xfff4fa,al).lineBetween(ox,oy,tx,ty)}
    return true});
-  const E=this.brFx;if(!E)return;E.t+=dt;const q=E.t/.24;if(q>=1){this.brFx=null;return}this.jawDraw(g,q,1)}
+  const E=this.brFx;if(!E)return;E.t+=dt;const q=E.t/.24;if(q>=1){this.brFx=null;return}if(!(this.lin&&this.lin.p>=1))this.jawDraw(g,q,1)}
+ // ===== v58: 포식 턱이 실제로 다문다 =====
+ // 포식 1단계부터 머리 그림(whj_)에는 갈고리 턱·큰 입을 그리지 않고, 여기서 매 프레임 직접 그림 (진화 창 미리보기 wh_는 예전 그대로).
+ // 평소 살짝 벌림(.25) → 물기: 크게 벌렸다(0~.35) → '딱' 다묾(.35~.52) → 천천히 평소로. 포식이면 공통 송곳니(jawDraw)는 안 그림.
+ // 1단계 갈고리 한 쌍 · 2단계 갈고리 1.3배 · 3단계 갈고리 + 큰 입(검은 쐐기·흰 이빨)이 같이 벌어졌다 닫힘.
+ pjU(){const g=this.pjG;if(!g||!g.scene)return;g.clear();const L=this.lin,hd=this.hd;if(!L||L.p<1||!hd||!hd.visible||!hd.scene)return;
+  const E=this.brFx,q=E?Math.min(1,E.t/.24):-1,op=q<0?.25:q<.35?.25+.75*q/.35:q<.52?1-(q-.35)/.17:.25*Math.min(1,(q-.52)/.48);
+  const a=hd.rotation,fx=Math.cos(a),fy=Math.sin(a),u=hd.displayWidth/24,al=hd.alpha,r=4.9*(1+(L.p>=3?.16:L.p>=2?.06:0)+(L.c>=3?.08:0));
+  const W=(x,y)=>({x:hd.x+(fx*x-fy*y)*u,y:hd.y+(fy*x+fx*y)*u});
+  if(L.p>=3){const w0=(r+1)*.75*(.3+.7*op),T=W(r+1+op*1.5,0),A=W(0,-w0),B=W(0,w0);g.fillStyle(0x1a0414,al).fillTriangle(A.x,A.y,B.x,B.y,T.x,T.y);
+   for(let k=1;k<=r;k+=2){const w=w0*(1-k/(r+1+op*1.5));for(const sg of[-1,1]){const p=W(k,sg*w);g.fillStyle(0xffffff,al).fillRect(p.x-u*.5,p.y-u*.5,u,u)}}}
+  const S=L.p>=2?1.3:1;
+  for(const sg of[-1,1]){const bx=r-1,by=sg*3,an=sg*(op*.62-.06),c=Math.cos(an),s=Math.sin(an);
+   const P=[[r-1,sg*3],[r+3,sg*4],[r+4,sg*1]].map(([x,y])=>{const dx=(x-bx)*S,dy=(y-by)*S;return W(bx+dx*c-dy*s,by+dx*s+dy*c)});
+   g.lineStyle(2.6*u,0x3d1b6b,al).beginPath().moveTo(P[0].x,P[0].y).lineTo(P[1].x,P[1].y).lineTo(P[2].x,P[2].y).strokePath();
+   g.lineStyle(1.3*u,0xffe0ea,al).beginPath().moveTo(P[0].x,P[0].y).lineTo(P[1].x,P[1].y).lineTo(P[2].x,P[2].y).strokePath()}
+  if(q>=.5&&q<.66){const t=W(r+5*S,0);g.fillStyle(0xffffff,(1-Math.abs(q-.58)/.08)*al).fillCircle(t.x,t.y,1.1*u)}}
+ pjOn(){if(this.pjG&&this.pjG.scene)return;this.pjG=this.add.graphics().setDepth(10.05);this.events.off('postupdate',this.pjU,this);this.events.on('postupdate',this.pjU,this)}
  // ===== v53: 송곳니 한 쌍 — 서로 절대 교차하지 않게 다시 그림 =====
  // 각 송곳니 = 머리 앞의 2차 곡선(밑동 → 바깥쪽으로 볼록 → 끝). 가운데 선에서 잰 옆 거리가 모든 점에서 ≥ 2.4px(다물었을 때 끝) → 중심선 사이 ≥ 4.8px.
  // 테두리도 끝으로 갈수록 가늘게(3.2→1.0) → 테두리까지 포함해 눈에 보이는 틈 ≥ 약 3.8px.
