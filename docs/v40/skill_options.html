@@ -1,0 +1,61 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0a0612;color:#e8e0f4;font-family:"WenQuanYi Zen Hei",sans-serif;width:1260px;padding:28px 30px 30px}
+h1{font-size:26px;margin:0 0 6px;color:#f0e8ff}
+.sub{color:#b8acd0;font-size:14.5px;margin:0 0 6px;line-height:1.6}
+.prob{background:#1a1028;border-left:3px solid #ff8ab8;padding:10px 14px;margin:12px 0 24px;font-size:14.5px;line-height:1.65;color:#ddd2ee}
+.opt{margin-bottom:28px}
+.hd{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.tag{font-size:14px;padding:2px 10px;border-radius:10px;color:#140a20;font-weight:700}
+.hd h2{margin:0;font-size:22px;color:#fff}
+.rule{font-size:14.5px;color:#d4cae6;margin:2px 0 10px;line-height:1.6}
+.rule b{color:#fff}
+.pn{display:flex;gap:14px}
+.p{position:relative;width:390px;height:221px;background-image:url(z1_clean.png);background-size:1040px 468px;background-position:-221px -143px;image-rendering:pixelated;border-radius:6px;overflow:hidden}
+.p svg{position:absolute;left:0;top:0}
+.p .cap{position:absolute;left:8px;bottom:6px;right:8px;font-size:13px;color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;line-height:1.4}
+.p .n{position:absolute;left:8px;top:6px;width:22px;height:22px;border-radius:50%;background:#000a;border:1.5px solid #fff8;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pc{display:flex;gap:18px;font-size:13.5px;color:#c8bcdc;margin-top:8px}
+.pc span b{color:#7be0a8}.pc span i{font-style:normal;color:#ff9ab0}
+.rec{background:#141e18;border-left:3px solid #7be0a8;padding:12px 16px;font-size:15px;line-height:1.7;color:#d8f0e0}
+</style></head><body>
+<h1>초반 스킬 · '섭취' 개선 시안 4안</h1>
+<div class="prob"><b>지금 문제.</b> 오른쪽 버튼 하나에 '섭취'라고 적혀 있지만 실제로는 <b>탭 = 물기, 먹이 곁에서 누르고 있기 = 섭취</b>. 먹이 곁에서는 탭해도 물기가 안 나가고, 누르고 있어야 한다는 걸 알 길이 없음. 분화(탈피) 전에는 쓸 수 있는 기술도 없음.</div>
+<div id="opts"></div>
+<div class="rec"><b>Claude 추천: E2 + (E4 또는 E3).</b> 먹기는 E2처럼 '닿으면 먹기'로 바꾸는 게 가장 직관적이고(버튼 이름 문제가 사라짐), 초반 스킬은 기생충다운 <b>E4 기생 흡착</b>이나 화려한 <b>E3 공허 아가리</b> 중 하나. 섞어서 고르셔도 됩니다 (예: "먹기는 E2, 스킬은 E4").</div>
+<script>
+const W=300,H=170; // 패널 좌표 = 게임 좌표 (170..470, 110..280)
+const P=(x,y)=>[x-170,y-110];
+// 장면 속 실제 위치: 플레이어 머리 (330,205) 왼쪽을 봄 / 먹이 (221,161) (274,231) (180,124)
+const pl=P(325,205),fA=P(221,161),fB=P(274,231);
+const larva=(x,y,s=1,c='#7be0a8')=>`<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="9" ry="6" fill="${c}"/><ellipse cx="10" cy="0" rx="6" ry="5" fill="${c}"/><circle cx="12" cy="-1.5" r="1.2" fill="#0a2014"/></g>`;
+const mon=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-14 6 L-6 -10 L0 -2 L6 -12 L14 6 Q0 14 -14 6Z" fill="#3a2a5a" stroke="#c8a0ff" stroke-width="1.5"/><circle cx="-4" cy="0" r="2" fill="#ff5a7a"/><circle cx="4" cy="0" r="2" fill="#ff5a7a"/></g>`;
+const ring=(x,y,f,c='#7be0a8')=>{const r=13,a=f*6.283;return `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#0008" stroke-width="4"/><path d="M${x} ${y-r} A${r} ${r} 0 ${f>.5?1:0} 1 ${x+r*Math.sin(a)} ${y-r*Math.cos(a)}" fill="none" stroke="${c}" stroke-width="3"/>`};
+const txt=(x,y,t,c='#7be0a8',s=11)=>`<text x="${x}" y="${y}" fill="${c}" font-size="${s}" font-weight="700" text-anchor="middle" style="paint-order:stroke" stroke="#000" stroke-width="3">${t}</text>`;
+const btn=(x,y,r,t,c)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}55" stroke="${c}" stroke-width="1.5"/>${txt(x,y+4,t,'#fff',r>16?11:9)}`;
+const tent=(x1,y1,x2,y2,c='#d070ff',w=2.5)=>{const mx=(x1+x2)/2+(y2-y1)*.18,my=(y1+y2)/2-(x2-x1)*.18;return `<path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="3" fill="${c}"/>`};
+const O=[
+{id:'E1',col:'#d070ff',name:'흡입 촉수',rule:'버튼을 둘로 나눔: <b>물기</b>(탭) · <b>흡입</b>(누르고 있기). 흡입을 누르면 앞쪽 부채꼴 안의 먹이에 <b>촉수가 달라붙어 입으로 끌어와</b> 먹는다. 도망치는 유충도 끌려옴.',
+ pros:'버튼 이름 = 하는 일. 지금 방식과 가장 가까워 바꿀 것이 적음',cons:'버튼이 하나 늘고, 여전히 \'누르고 있기\'가 필요',
+ p:[[`<path d="M${pl[0]} ${pl[1]} L${pl[0]-120} ${pl[1]-70} A140 140 0 0 0 ${pl[0]-130} ${pl[1]+50}Z" fill="#d070ff22" stroke="#d070ff88" stroke-dasharray="4 3"/>${btn(276,112,18,'흡입','#d070ff')}${btn(250,130,11,'물기','#ff8ab8')}`,'흡입 버튼을 누르고 있으면 앞쪽에 흡입 범위가 보인다'],
+     [`${tent(pl[0]-8,pl[1],fA[0]+4,fA[1]+3)}${tent(pl[0]-8,pl[1]+2,fB[0]+2,fB[1])}${larva(fA[0]+30,fA[1]+18,.9)}`,'범위 안 먹이에 촉수가 달라붙어 끌어온다'],
+     [`${ring(pl[0]-14,pl[1]-2,.75)}${txt(pl[0]-14,pl[1]-22,'에너지 +5')}`,'입에 닿으면 섭취 (고리가 차면 끝)']]},
+{id:'E2',col:'#7be0a8',name:'닿으면 먹기 + 돌진 물기',rule:'<b>섭취 버튼을 없앰.</b> 먹이에 몸이 닿아 있으면 저절로 먹는다(작은 고리가 참). 버튼은 <b>물기</b> 하나 + 처음부터 있는 스킬 <b>돌진 물기</b>(앞으로 튀어 나가며 물기, 3초마다).',
+ pros:'가장 직관적 — 설명이 필요 없음. 돌진으로 도망치는 먹이·적을 잡음',cons:'스킬 자체는 평범한 편 (공허·기생 느낌은 약함)',
+ p:[[`${ring(fB[0],fB[1],.6)}<path d="M${pl[0]} ${pl[1]} L${fB[0]+8} ${fB[1]-4}" stroke="#ffffff55" stroke-dasharray="3 3"/>`,'먹이 위로 지나가며 닿아 있으면 저절로 먹는다'],
+     [`<path d="M${pl[0]-10} ${pl[1]} L${pl[0]-110} ${pl[1]-40}" stroke="#ff8ab8" stroke-width="10" stroke-opacity=".25" stroke-linecap="round"/><path d="M${pl[0]-10} ${pl[1]} L${pl[0]-110} ${pl[1]-40}" stroke="#ff8ab8" stroke-width="1.5" stroke-dasharray="5 4"/>${btn(278,118,14,'돌진','#ff8ab8')}`,'스킬: 바라보는 쪽으로 돌진선이 보이고'],
+     [`${larva(pl[0]-112,pl[1]-42,1)}<path d="M${pl[0]-60} ${pl[1]-20} l-40 -16" stroke="#ffd0e0" stroke-width="6" stroke-linecap="round" opacity=".6"/><path d="M${pl[0]-122} ${pl[1]-54} l-8 -8 M${pl[0]-118} ${pl[1]-30} l-8 8" stroke="#fff" stroke-width="2"/>${txt(pl[0]-112,pl[1]-62,'콱!','#ff8ab8',13)}`,'튀어 나가며 문다 — 도망치는 유충도 잡힘']]},
+{id:'E3',col:'#a65cff',name:'공허 아가리',rule:'초반 스킬: 앞에 <b>공허 구멍이 1.5초 열려</b> 둘레의 먹이를 모두 빨아들이고 작은 적을 끌어당긴다(8초마다). 닫힐 때 빨려 든 것을 한꺼번에 섭취. 평소 먹기는 E2처럼 닿으면 먹기.',
+ pros:'가장 화려하고 공허다움 — 무리 보스의 소용돌이·블랙홀과 같은 언어',cons:'만들 것이 가장 많음. 너무 세면 탐험이 쉬워져 수치 조정 필요',
+ p:[[`${btn(278,118,14,'아가리','#a65cff')}<ellipse cx="${fA[0]+30}" cy="${fA[1]+20}" rx="6" ry="16" fill="#05020a" stroke="#c8a0ff" stroke-width="1.5"/>`,'버튼 → 바라보는 쪽에 공허 틈이 열린다'],
+     [(()=>{const cx=fA[0]+30,cy=fA[1]+20;let s='';for(let i=0;i<3;i++)s+=`<ellipse cx="${cx}" cy="${cy}" rx="${22+i*16}" ry="${20+i*13}" fill="none" stroke="#a65cff" stroke-opacity="${.6-i*.17}" stroke-dasharray="6 5"/>`;return s+`<ellipse cx="${cx}" cy="${cy}" rx="18" ry="22" fill="#05020a" stroke="#e0c0ff" stroke-width="2"/>`+`<path d="M${fB[0]} ${fB[1]} Q${cx+20} ${cy+30} ${cx+6} ${cy+8}" stroke="#7be0a888" stroke-width="2" fill="none" stroke-dasharray="3 3"/>`+larva(cx+50,cy-30,.8)+`<path d="M${cx+40} ${cy-26} L${cx+14} ${cy-8}" stroke="#7be0a888" stroke-width="2" stroke-dasharray="3 3"/>`})(),'소용돌이치며 먹이·작은 적이 빨려 든다'],
+     [(()=>{const cx=fA[0]+30,cy=fA[1]+20;return `<circle cx="${cx}" cy="${cy}" r="4" fill="#fff"/><circle cx="${cx}" cy="${cy}" r="14" fill="none" stroke="#e0c0ff" opacity=".5"/>${txt(cx,cy-20,'에너지 +15 · 유기 +6')}`})(),'틈이 닫히며 한꺼번에 섭취']]},
+{id:'E4',col:'#ff6a9a',name:'기생 흡착',rule:'초반 스킬: 가장 가까운 몬스터에 <b>촉수를 꽂아 달라붙는다</b>(최대 2.5초, 6초마다). 붙어 있는 동안 상대 체력을 빨아 <b>내 에너지로</b>. 맞거나 시간이 다 되면 떨어져 뒤로 튕긴다. 평소 먹기는 E2처럼 닿으면 먹기.',
+ pros:'\'기생충\' 컨셉 그 자체 — 사냥이 곧 먹기. 에너지가 바닥일 때 살아날 수단',cons:'달라붙은 동안 다른 적에게 맞기 쉬움 (위험과 보상)',
+ p:[[`${mon(fA[0]+10,fA[1]+6)}<circle cx="${fA[0]+10}" cy="${fA[1]+6}" r="20" fill="none" stroke="#ff6a9a" stroke-dasharray="4 3"/>${btn(278,118,14,'흡착','#ff6a9a')}`,'버튼 → 가장 가까운 몬스터를 노린다'],
+     [`${mon(fA[0]+10,fA[1]+6)}${tent(pl[0]-10,pl[1],fA[0]+16,fA[1]+10,'#ff6a9a',3)}${tent(pl[0]-10,pl[1]+3,fA[0]+8,fA[1]+14,'#ff6a9a',2)}${txt(fA[0]+10,fA[1]-20,'-4','#ff9ab0')}${txt(pl[0]-6,pl[1]-20,'에너지 +4','#7be0a8')}`,'촉수로 붙어 체력을 빨아 에너지로'],
+     [`${mon(fA[0]-6,fA[1]-2)}<path d="M${pl[0]+4} ${pl[1]} l22 8" stroke="#fff8" stroke-width="2" stroke-dasharray="3 3"/>${txt(pl[0]+20,pl[1]-16,'떨어짐','#ffd0e0')}`,'시간이 다 되거나 맞으면 떨어져 튕겨 나감']]}];
+const box=document.getElementById('opts');
+for(const o of O){const d=document.createElement('div');d.className='opt';
+ d.innerHTML=`<div class="hd"><span class="tag" style="background:${o.col}">${o.id}</span><h2>${o.name}</h2></div><div class="rule">${o.rule}</div><div class="pn">${o.p.map((q,i)=>`<div class="p"><svg width="390" height="221" viewBox="0 0 ${W} ${H}">${q[0]}</svg><div class="n">${i+1}</div><div class="cap">${q[1]}</div></div>`).join('')}</div><div class="pc"><span><b>좋은 점</b> ${o.pros}</span><span><i>아쉬운 점</i> ${o.cons}</span></div>`;box.appendChild(d)}
+</script></body></html>

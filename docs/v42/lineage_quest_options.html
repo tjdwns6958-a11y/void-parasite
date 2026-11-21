@@ -1,0 +1,22 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;background:#0a0612;color:#e8e0f4;font-family:"WenQuanYi Zen Hei",sans-serif;width:1260px;padding:28px 30px 30px}
+h1{font-size:26px;margin:0 0 6px;color:#f0e8ff}.sub{color:#b8acd0;font-size:14.5px;margin:0 0 20px;line-height:1.65}.sub b{color:#fff}
+.row{display:flex;gap:22px;margin-bottom:26px;align-items:flex-start}
+.full{width:800px;height:360px;flex:none;background-size:800px 360px;border-radius:6px}
+.side{width:378px}.crop{width:378px;height:113px;background-size:756px 340px;background-position:0 0;border-radius:6px;margin:6px 0 10px;border:1px solid #2a2040}
+.tag{display:inline-block;font-size:13px;padding:2px 9px;border-radius:10px;color:#140a20;font-weight:700;margin-bottom:6px}
+h2{margin:0 0 4px;font-size:21px;color:#fff}ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:#d4cae6}b{color:#fff}
+.lb{font-size:12px;color:#a99cc4}
+.com{background:#151024;border-left:3px solid #7cc4ff;padding:10px 14px;margin-bottom:22px;font-size:14px;line-height:1.7;color:#d8e6f4}
+</style></head><body>
+<h1>계통(포식·갑각·공허) 퀘스트 창 시안 3안 + 화면 맨 밑 경험치 막대</h1>
+<p class="sub">실제 게임 화면 (v42 코드로 찍음). 먹는 방식은 지금처럼 <b>물기 + 섭취</b>, UI 모양도 지금 방식 그대로. 바뀐 것은 계통 표시 자리·모양과 경험치 막대 자리.</p>
+<div class="com"><b>세 안 공통</b> — ① 오른쪽 위의 작은 고리 셋 + '유기·무기·정수' 줄 → 에너지 막대 밑 <b>퀘스트 창</b>으로 옮김 (계통마다 자기 재료를 같이 보여 줌: 포식 = 유기물, 갑각 = 무기물, 공허 = 공허 정수) ② 계통마다 그림 기호 <b>송곳니 · 육각 껍질 · 눈</b> ③ 상태를 말로: 진행 중 '12 / 20' · <b>탈피 가능!</b>(초록 깜빡임) · 다른 계통 1단계 필요 · 한계 · 완성(금색) ④ 퀘스트 창을 누르면 진화 나무 ⑤ 오른쪽 위는 구역 · 변이 횟수 · 지도만 ⑥ <b>경험치 막대는 화면 맨 밑 가로 전체</b> (메이플식, 'Lv.3 · 경험치 27 / 44 [61.36%]')</div>
+<div id="rows"></div>
+<script>
+const V=[
+ {v:1,col:'#ff8ab8',name:'Q1 목록형 퀘스트 창',li:['세 계통을 <b>한 줄씩</b>: 기호 · 이름 · 단계 칸(■■□) · 막대 · 재료 수','셋을 한눈에 비교하기 가장 쉬움 — 무엇을 모아야 할지 바로 보임','탈피 가능한 줄은 초록으로 깜빡임','크기: 에너지 창과 같은 폭, 높이 68']},
+ {v:2,col:'#ffd34a',name:'Q2 퀘스트 알리미',li:['메이플 퀘스트 알리미처럼 <b>지금 가장 가까운 목표 하나</b>를 크게: \'! [갑각] 1단계 · 결정 비늘\' / \'둥지에서 탈피하자!\'','다음에 얻을 <b>능력 이름</b>까지 보여 줌 → 무엇을 위해 모으는지 분명','아래 작은 탭 셋으로 나머지 계통 단계도 확인','글이 가장 친절함. 대신 세 계통 수치를 동시에 비교하긴 어려움']},
+ {v:3,col:'#9fd8ff',name:'Q3 아이콘 카드',li:['계통마다 <b>작은 카드</b>: 큰 기호 · 이름+단계 · 막대 · 수','기호가 커서 글을 안 읽어도 구분됨 — 가장 직관적','탈피 가능 카드는 초록 테두리가 깜빡, 완성 카드는 금 테두리','셋 중 화면을 가장 많이 가림 (폭 232 × 높이 66, 다른 안과 비슷하지만 카드 테두리가 눈에 띔)']}];
+document.getElementById('rows').innerHTML=V.map(o=>`<div class="row"><div class="full" style="background-image:url(lq${o.v}a.png)"></div><div class="side"><span class="tag" style="background:${o.col}">${o.name.split(' ')[0]}</span><h2>${o.name.slice(3)}</h2><div class="lb">다른 상태 예: 포식 완성 · 갑각/공허 진행 중 (2구역, Lv.9)</div><div class="crop" style="background-image:url(lq${o.v}b.png)"></div><ul>${o.li.map(l=>`<li>${l}</li>`).join('')}</ul></div></div>`).join('');
+</script></body></html>

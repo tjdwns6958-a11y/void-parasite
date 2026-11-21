@@ -49,7 +49,7 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
    if(side>0){side-=1;const an=Math.atan2(dy,dx)+Math.PI/2*sdir;dx=Math.cos(an);dy=Math.sin(an)}
    const l=Math.hypot(dx,dy)||1;K.RIGHT.isDown=dx/l>.38;K.LEFT.isDown=dx/l<-.38;K.DOWN.isDown=dy/l>.38;K.UP.isDown=dy/l<-.38;
    if(a.cor&&hist.length>=12&&s.bcd<=0){const h=hist[hist.length-12];if(Math.hypot(p.x-h[0],p.y-h[1])<8&&a.cor.some(o=>o.on&&Math.hypot((o.c+.5)*40-p.x,(o.r+.5)*40-p.y)<56)){s.ang=Math.atan2(dy,dx);s.req=1}}
-   hist.push([p.x,p.y]);if(hist.length>30)hist.shift();if(side<=0&&hist.length==30&&Math.hypot(p.x-hist[0][0],p.y-hist[0][1])<12){side=35;sdir=Math.random()<.5?1:-1;S.stuck++;(S.stR=S.stR||{})[(a.tr||'-')+(s.zi||1)]=((S.stR||{})[(a.tr||'-')+(s.zi||1)]||0)+1;hist=[]}}});
+   hist.push([p.x,p.y]);if(hist.length>30)hist.shift();if(side<=0&&hist.length==30&&Math.hypot(p.x-hist[0][0],p.y-hist[0][1])<12){const rk='r'+a.r+a.c;S.stk=S.stk&&S.stk.k==rk&&now-S.stk.t<12000?{k:rk,n:S.stk.n+1,t:now}:{k:rk,n:1,t:now};side=Math.min(240,35*S.stk.n);sdir=S.stk.n>1?-sdir:(Math.random()<.5?1:-1);if(S.stk.n>=3)mem['g'+a.r+a.c]=null;S.stuck++;(S.stR=S.stR||{})[(a.tr||'-')+(s.zi||1)]=((S.stR||{})[(a.tr||'-')+(s.zi||1)]||0)+1;hist=[]}}});
 };
 // 빨리감기: RAF 루프를 멈추고 직접 스텝 (렌더 생략)
 window.ff=function(sec,renderEvery){const G=GAME;if(!window.__T){window.__T=G.loop.time||performance.now();G.loop.sleep();const tw=G.scene.getScene('G').tweens;tw.getDelta=function(){return 16.667*this.timeScale}}const dt=1000/60,n=Math.round(sec*60);const s=G.scene.getScene('G');

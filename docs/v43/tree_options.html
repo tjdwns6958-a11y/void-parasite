@@ -1,0 +1,68 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;background:#0a0612;color:#e8e0f4;font-family:"WenQuanYi Zen Hei",sans-serif;width:1260px;padding:28px 30px 30px}
+h1{font-size:26px;margin:0 0 6px;color:#f0e8ff}.sub{color:#b8acd0;font-size:14.5px;margin:0 0 20px;line-height:1.6}.sub b{color:#fff}
+.row{display:flex;gap:24px;margin-bottom:28px;align-items:flex-start}.scr{position:relative;width:800px;height:360px;flex:none;border-radius:6px;overflow:hidden;background:#0b0716}
+.cap{width:376px}.cap h2{margin:2px 0 4px;font-size:22px;color:#fff}.cap .one{color:#ffe9a8;font-size:14px;margin-bottom:8px}
+.tag{display:inline-block;font-size:13px;padding:2px 9px;border-radius:10px;margin-bottom:8px;color:#140a20;font-weight:700}
+.cap ul{margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:#d4cae6}.cap li{margin-bottom:3px}.cap b{color:#fff}
+.now{width:400px;height:180px;background:url(start_2500.png) 0 0/400px 180px}
+.card{position:absolute;background:#140c24f2;border:1px solid #4a3a70;border-radius:8px;padding:10px 12px;font-size:11.5px;line-height:1.55;color:#d8d0ea}
+.card h3{margin:0 0 4px;font-size:15px}.card .req{margin-top:6px;font-size:11px}.btnx{position:absolute;right:14px;top:12px;font-size:12px;padding:5px 10px;background:#3a2f57;border-radius:5px;color:#ece6f7;font-weight:700}
+</style></head><body>
+<h1>진화 나무 UI 개편 시안 3안 (T1~T3)</h1>
+<p class="sub">같은 상태로 그림: <b>포식 1단계 완료</b>(갈고리 턱) · 포식 2단계 진행 중(유기물 24/40) · <b>갑각 1단계 탈피 가능</b> · 공허 1단계 진행 중(정수 1/2) · 3단계는 다른 계통 1단계 필요. 세 안 모두 <b>동그라미를 누르면 설명 카드</b>, 퀘스트 창을 누르면 열림.</p>
+<div class="row"><div class="scr now"></div><div class="cap" style="width:auto"><h2 style="font-size:18px">지금 (v43)</h2><ul><li>Y자 선 + 번호 동그라미 + 이름 글자</li><li>재료·규칙 설명이 아래에 글로 길게</li><li>무엇이 '지금 가능한지'가 한눈에 안 들어옴</li></ul></div></div>
+<div id="rows"></div>
+<div style="background:#141e18;border-left:3px solid #7be0a8;padding:12px 16px;font-size:15px;line-height:1.7;color:#d8f0e0"><b>Claude 의견: T2.</b> 진화하면 실제로 그 부위 모양이 바뀌므로(지금도 계통마다 겉모습이 바뀜) '내 몸이 이렇게 된다'가 가장 직관적. 분위기는 T3, 정보 정리는 T1이 가장 좋음.</div>
+<script>
+const LC={p:'#ff7a9a',c:'#9fd8ff',v:'#c98bff'},NM={p:['갈고리 턱','포식 성장','통째 삼키기'],c:['결정 비늘','수정 충전','공명 갑각'],v:['공허 감각','공허 침','공허 권속']};
+const ST={p:['done','prog','lock'],c:['ready','wait','lock'],v:['prog','wait','lock']};
+const T=(x,y,t,c='#fff',s=11,w=700,a='middle')=>`<text x="${x}" y="${y}" fill="${c}" font-size="${s}" font-weight="${w}" text-anchor="${a}">${t}</text>`;
+const nodeSty=(k,st)=>st=='done'?{f:LC[k],s:'#fff',o:1}:st=='ready'?{f:'#1a3a2a',s:'#7be0a8',o:1}:st=='prog'?{f:'#1c1430',s:LC[k],o:1}:{f:'#120c1e',s:'#3a2f57',o:.7};
+const card=(x,y,w,k,i,st)=>{const n=NM[k][i],D={'포식 성장':'물 때마다 피해의 15%를 에너지로 흡수 · 물어서 처치하면 몸이 커지고 최대 에너지 +6 (5번까지)'}[n]||'';
+ return `<div class="card" style="left:${x}px;top:${y}px;width:${w}px"><h3 style="color:${LC[k]}">${n} <span style="font-size:11px;color:#a99fc2">포식 2단계</span></h3>${D}<div style="margin-top:7px;height:6px;background:#3a2f57;border-radius:3px"><div style="width:60%;height:6px;background:${LC[k]};border-radius:3px"></div></div><div class="req">유기물 <b style="color:#fff">24 / 40</b> · 둥지(초록 방)에서 탈피</div></div>`};
+const R=[
+{id:'T1',col:'#7be0a8',name:'살아 있는 나무',one:'몸에서 자라는 덩굴과 꼬투리',
+ svg:()=>{let s=`<defs><radialGradient id="g1"><stop offset="0" stop-color="#a65cff" stop-opacity=".35"/><stop offset="1" stop-color="#a65cff" stop-opacity="0"/></radialGradient></defs><rect width="800" height="360" fill="#0b0716"/><circle cx="270" cy="300" r="120" fill="url(#g1)"/>`;
+  const br={p:[[270,290],[262,222],[268,152],[276,80]],c:[[270,290],[350,256],[420,214],[478,164]],v:[[270,290],[190,256],[124,214],[70,164]]};
+  for(const k of ['v','p','c']){const P=br[k];s+=`<path d="M${P[0][0]} ${P[0][1]} C ${P[1][0]} ${P[1][1]+20}, ${P[1][0]} ${P[1][1]}, ${P[1][0]} ${P[1][1]} S ${P[2][0]+6} ${P[2][1]+18}, ${P[2][0]} ${P[2][1]} S ${P[3][0]-6} ${P[3][1]+18}, ${P[3][0]} ${P[3][1]}" stroke="${LC[k]}" stroke-opacity=".55" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+   for(let i=0;i<3;i++){const [x,y]=P[i+1],st=ST[k][i],q=nodeSty(k,st);s+=`<ellipse cx="${x}" cy="${y}" rx="${16-i}" ry="${21-i}" fill="${q.f}" stroke="${q.s}" stroke-width="${st=='ready'?3:2}" opacity="${q.o}"/>`;
+    if(st=='prog'||st=='ready')s+=`<ellipse cx="${x}" cy="${y+(21-i)*(1-(st=='ready'?1:k=='p'?.6:.5))}" rx="${(16-i)*.75}" ry="${(21-i)*(st=='ready'?1:k=='p'?.6:.5)*.85}" fill="${st=='ready'?'#7be0a8':LC[k]}" opacity=".45"/>`;
+    if(st=='done')s+=T(x,y+4,'✓','#140a20',14);if(st=='lock'||st=='wait')s+=T(x,y+4,'🔒'.replace('🔒','•'),'#5a4a78',14);
+    if(k=='p')s+=T(x+24,y+4,NM[k][i],st=='lock'||st=='wait'?'#6b6280':'#ece6f7',11,700,'start');else s+=T(x,y+36-i,NM[k][i],st=='lock'||st=='wait'?'#6b6280':'#ece6f7',11,700);if(st=='ready')s+=T(x,y+51,'탈피 가능!','#7be0a8',11,700)}}
+  s+=`<ellipse cx="270" cy="304" rx="26" ry="16" fill="#c890ff" stroke="#fff" stroke-width="1.5"/>`+T(270,308,'나','#140a20',13)+T(270,336,'탈피 1 / 3','#a99fc2',10,400);
+  s+=T(24,30,'진화 나무','#fff',18,700,'start')+T(24,48,'먹은 재료로 꼬투리가 차오르고, 꽉 차면 둥지에서 탈피','#a99fc2',10.5,400,'start');return s},
+ html:()=>card(548,92,236,'p',1)+`<div class="btnx">닫기 ✕</div><div class="card" style="left:548px;top:250px;width:236px;font-size:11px"><b style="color:#fff">꼬투리 읽는 법</b><br><span style="color:#7be0a8">● 초록 테 = 지금 탈피 가능</span><br>차오른 정도 = 모은 재료 · ✓ = 완료 · 흐림 = 아직 잠김</div>`,
+ li:['Y자 선 대신 <b>몸(\'나\')에서 자라는 덩굴 세 줄기</b>, 단계는 <b>꼬투리</b>','꼬투리가 <b>재료만큼 차오름</b> → 진행 정도가 그림으로 보임, 꽉 차면 초록 테','오른쪽에 <b>설명 카드</b>(능력·재료·어디서 탈피)를 크게 → 아래 긴 설명 글 없앰','가장 정리가 잘 되고 지금 구조와 가까워 바꾸기 쉬움']},
+{id:'T2',col:'#ff8ab8',name:'몸 해부도',one:'내 몸이 이렇게 바뀐다',
+ svg:()=>{let s=`<rect width="800" height="360" fill="#0b0716"/>`;const cx=300,cy=200;
+  // 몸통 마디 (갑각 판)
+  for(let i=7;i>=1;i--){const x=cx+i*34,y=cy+Math.sin(i*.6)*10,r=30-i*2.2;s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#7a3cc0" stroke="#2a1048" stroke-width="2"/>`;if(i<=3)s+=`<path d="M${x-r*.6} ${y-r*.7} L${x} ${y-r*1.05} L${x+r*.6} ${y-r*.7}" fill="#9fd8ff" opacity="${i==1?.9:.35}" stroke="#d8f0ff" stroke-width="${i==1?1.2:.5}"/>`}
+  // 머리 + 턱 + 눈/더듬이
+  s+=`<circle cx="${cx}" cy="${cy}" r="38" fill="#a65cff" stroke="#2a1048" stroke-width="2"/><path d="M${cx-34} ${cy-16} L${cx-62} ${cy-6} L${cx-36} ${cy+2}Z M${cx-34} ${cy+16} L${cx-62} ${cy+6} L${cx-36} ${cy-2}Z" fill="#ff7a9a" stroke="#fff" stroke-width="1.2"/>`;
+  s+=`<circle cx="${cx-10}" cy="${cy-14}" r="6" fill="#fff"/><circle cx="${cx-10}" cy="${cy+14}" r="6" fill="#fff"/><circle cx="${cx-12}" cy="${cy-14}" r="3" fill="#1a0a28"/><circle cx="${cx-12}" cy="${cy+14}" r="3" fill="#1a0a28"/>`;
+  s+=`<path d="M${cx+6} ${cy-34} Q ${cx-4} ${cy-70} ${cx-30} ${cy-84}" stroke="#c98bff" stroke-width="3" fill="none" opacity=".55" stroke-dasharray="4 3"/><circle cx="${cx-30}" cy="${cy-84}" r="5" fill="#c98bff" opacity=".55"/>`;
+  // 지시선 + 라벨
+  const lab=(x1,y1,x2,y2,k,title,lines)=>{let o=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${LC[k]}" stroke-width="1.2"/><circle cx="${x1}" cy="${y1}" r="3.5" fill="${LC[k]}"/>`;o+=T(x2+(x2<x1?-6:6),y2-4,title,LC[k],14,700,x2<x1?'end':'start');lines.forEach((l,i)=>o+=T(x2+(x2<x1?-6:6),y2+13+i*14,l,'#d8d0ea',10.5,400,x2<x1?'end':'start'));return o};
+  const pips=(k)=>ST[k].map(st=>st=='done'?'●':st=='ready'?'◎':'○').join(' ');
+  s+=lab(cx-56,cy,cx-110,cy+60,'p','턱 · 포식  '+pips('p'),['✓ 갈고리 턱','다음: 포식 성장 — 유기물 24 / 40']);
+  s+=lab(cx+34,cy-26,cx+130,cy-118,'c','껍질 · 갑각  '+pips('c'),['결정 비늘 — 무기물 16 / 16','탈피 가능! 둥지로']);
+  s+=lab(cx-30,cy-84,cx-120,cy-120,'v','눈·더듬이 · 공허  '+pips('v'),['공허 감각 — 공허 정수 1 / 2']);
+  s+=`<circle cx="${cx+130}" cy="${cy-118}" r="0"/>`+`<rect x="${cx+128}" y="${cy-102}" width="${176}" height="16" rx="4" fill="#7be0a8" opacity=".14"/>`;
+  s+=T(24,30,'진화 — 내 몸','#fff',18,700,'start')+T(24,48,'부위를 누르면 그 계통의 3단계와 바뀌는 모습','#a99fc2',10.5,400,'start');
+  s+=T(560,250,'● 완료  ◎ 지금 가능  ○ 아직','#a99fc2',10,400,'start');return s},
+ html:()=>`<div class="btnx">닫기 ✕</div><div class="card" style="left:540px;top:262px;width:240px;font-size:11px"><b style="color:#ff7a9a">턱을 눌렀을 때</b> → 아래에 단계 3칸이 펼쳐지고, 고른 단계의 <b>미리보기 모습</b>(턱이 더 길어진 머리)과 설명</div>`,
+ li:['큰 기생충 그림에서 <b>턱 = 포식, 껍질 = 갑각, 눈·더듬이 = 공허</b>','계통 이름을 몰라도 \'턱이 세진다 / 껍질이 단단해진다 / 감각이 생긴다\'로 바로 이해','부위를 누르면 단계별 <b>모습 미리보기</b> (지금도 계통마다 겉모습이 바뀌므로 그 그림을 그대로 씀)','지금 가능한 부위는 초록으로 빛남']},
+{id:'T3',col:'#ffe066',name:'별자리',one:'공허의 하늘에 그려진 진화',
+ svg:()=>{let s=`<rect width="800" height="360" fill="#05030a"/>`;let sd=5;const r=()=>{sd=sd*16807%2147483647;return sd/2147483647};for(let i=0;i<160;i++)s+=`<circle cx="${r()*800}" cy="${r()*360}" r="${r()<.1?1.2:.6}" fill="#fff" opacity="${.2+r()*.5}"/>`;
+  const C={p:[[260,70],[300,130],[262,190]],c:[[420,200],[480,160],[540,210]],v:[[180,250],[120,200],[90,280]]},me=[320,240];
+  for(const k in C){const P=C[k];s+=`<line x1="${me[0]}" y1="${me[1]}" x2="${P[0][0]}" y2="${P[0][1]}" stroke="${LC[k]}" stroke-opacity=".25" stroke-dasharray="3 4"/>`;for(let i=1;i<3;i++)s+=`<line x1="${P[i-1][0]}" y1="${P[i-1][1]}" x2="${P[i][0]}" y2="${P[i][1]}" stroke="${LC[k]}" stroke-opacity="${ST[k][i-1]=='done'?.8:.25}" stroke-width="1.5"/>`;
+   P.forEach(([x,y],i)=>{const st=ST[k][i],on=st=='done',rd=st=='ready',pr=st=='prog';s+=`<circle cx="${x}" cy="${y}" r="${on?9:rd?8:pr?7:5}" fill="${on?LC[k]:rd?'#7be0a8':pr?LC[k]:'#2a2040'}" opacity="${on||rd?1:pr?.55:.8}"/>`;if(on||rd)s+=`<circle cx="${x}" cy="${y}" r="16" fill="${on?LC[k]:'#7be0a8'}" opacity=".18"/>`;
+    s+=T(x+14,y+4,NM[k][i],on||rd||pr?'#ece6f7':'#5a4a78',11,on||rd?700:400,'start');if(rd)s+=T(x,y-16,'탈피 가능!','#7be0a8',10)})}
+  s+=`<circle cx="${me[0]}" cy="${me[1]}" r="11" fill="#fff"/><circle cx="${me[0]}" cy="${me[1]}" r="22" fill="#c890ff" opacity=".2"/>`+T(me[0],me[1]+30,'나','#fff',12);
+  s+=T(206,40,'송곳니자리 · 포식','#ff7a9a',11,700,'start')+T(470,128,'껍질자리 · 갑각','#9fd8ff',11,700,'start')+T(40,184,'눈자리 · 공허','#c98bff',11,700,'start');
+  s+=T(24,30,'진화의 별자리','#fff',18,700,'start');return s},
+ html:()=>card(560,100,220,'p',1)+`<div class="btnx">닫기 ✕</div>`,
+ li:['밤하늘에 \'나\'라는 별과 <b>세 별자리</b>(송곳니·껍질·눈 모양)','단계를 이루면 <b>별에 불이 켜지고</b> 다음 별로 선이 이어짐, 탈피 가능한 별은 초록','공허·은하(보스 패턴)와 같은 분위기 — 가장 신비로움','정보는 별을 눌러야 보여서 T1보다 한눈에 덜 들어옴']}];
+document.getElementById('rows').innerHTML=R.map(o=>`<div class="row"><div class="scr"><svg width="800" height="360" viewBox="0 0 800 360" style="position:absolute;left:0;top:0">${o.svg()}</svg>${o.html()}</div><div class="cap"><span class="tag" style="background:${o.col}">${o.id}</span><h2>${o.name}</h2><div class="one">${o.one}</div><ul>${o.li.map(l=>`<li>${l}</li>`).join('')}</ul></div></div>`).join('');
+</script></body></html>
