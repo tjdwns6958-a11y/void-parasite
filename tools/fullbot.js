@@ -17,7 +17,7 @@ window.fullInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G'),S=
  wrap('ending',()=>{F.ev.push(['엔딩 선택',T0()]);F.endT=S.t;if(F.sw){F.sw.win=1;F.sw.time=+(S.t-F.sw.t0).toFixed(0)}});
  wrap('end',(a)=>F.ev.push(['끝',T0(),a]));
  const press=(dx,dy)=>{KB.LEFT.isDown=dx<-.3;KB.RIGHT.isDown=dx>.3;KB.UP.isDown=dy<-.3;KB.DOWN.isDown=dy>.3};
- const clr=()=>{for(const k of['LEFT','RIGHT','UP','DOWN','SPACE'])KB[k].isDown=false};
+ const clr=()=>{for(const k of['LEFT','RIGHT','UP','DOWN','SPACE','F'])KB[k].isDown=false};
  // 장애물에 막히면 옆으로 비켜 간다 (bot.js와 같은 방식)
  const G2={h:[],side:0,sd:1};
  const go=(x,y,dz)=>{const p=s.pl;let dx=x-p.x,dy=y-p.y;const l=Math.hypot(dx,dy);if(l<(dz||6)){press(0,0);G2.h=[];return}
@@ -92,7 +92,7 @@ window.fullInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G'),S=
   if(bs>=5000){let fb=null,fd=1e9;for(let k=0;k<48;k++){const a=k/48*6.283*3.7,Lq=40+(k%6)*36,x=Phaser.Math.Clamp(pl.x+Math.cos(a)*Lq,50,750),y=Phaser.Math.Clamp(pl.y+Math.sin(a)*Lq,50,310);if(!s.swDanger(x,y)&&Lq<fd){fd=Lq;fb=[x,y]}}if(fb)best=[fb[0],fb[1],Math.atan2(fb[1]-pl.y,fb[0]-pl.x),1]}
   let dx=0,dy=0;if(best&&best[3]){dx=Math.cos(best[2]);dy=Math.sin(best[2])}if(Math.hypot(gx-pl.x,gy-pl.y)<8&&!s.swDanger(pl.x,pl.y)){dx=0;dy=0}
   W.lag.push([dx,dy]);const q=W.lag.length>15?W.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002)W.oops=30;if(W.oops>0){W.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}
-  press(dx,dy);const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.SPACE.isDown=!!nearF;
+  press(dx,dy);const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.F.isDown=!!nearF;
   if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<48&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1}else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1}
   else if(!nearF&&s.lin.v>=2&&!m.gone&&Math.hypot(m.x-pl.x,m.y-pl.y)<190&&s.bcd<=0&&(s.spitCd||0)<=0)s.req=1};
  // ---- 매 프레임: bot.js 다음에 돈다 ----
