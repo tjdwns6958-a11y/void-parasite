@@ -1,7 +1,7 @@
-# 공허 기생충 — 새 대화 인수인계 (2026-11-20 21:00 기준, v39)
+# 공허 기생충 — 새 대화 인수인계 (2026-11-21 기준, v55)
 
-> 새 대화의 Claude는 **이 문서 → `DEVLOG.md`(특히 20~24절) 순서로** 읽고 시작할 것.
-> 저장소: GitHub `tjdwns6958-a11y/void-parasite` (비공개) — `main` = `v33-wip` = **v39**
+> 새 대화의 Claude는 **이 문서 → `DEVLOG.md`(특히 20~38절) 순서로** 읽고 시작할 것.
+> 저장소: GitHub `tjdwns6958-a11y/void-parasite` (비공개) — `main` = **v53** (PR 머지 후) (`v33-wip`은 v39에서 멈춤. 2026-11-21 대화부터는 세션 작업 브랜치 → PR → `main` 머지 방식)
 > 같은 내용을 zip으로도 받았다면, zip 안의 파일이 저장소 전체와 같다.
 
 ---
@@ -11,10 +11,10 @@
 | 항목 | 상태 |
 |---|---|
 | 게임 | Phaser 3.80.1 HTML 파일 하나(`index.html`)로 된 로그라이크. 롤 '공허' 배경의 기생충 진화. 비상업 연습 프로젝트 |
-| 공개된 게임 | **v39** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG |
-| 아티팩트 | slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f` · 최신 버전 id `1795173455-1b73` · **공개(public)** 상태 |
-| 지금 기다리는 것 | 개발자의 **v39 폰 플레이 피드백** — 손 공격(쓸기 → 걷는 손, 손끝마디 물기) · 고리 R1/R3 · 별똥 은하 · 엔딩 직전 E1 · 전체 난이도 |
-| 열려 있는 숙제 | DEVLOG 24절: 실제 폰 확인(멈춤·조이스틱·개구리), 전체 플레이 시간(목표 평균 10분), 효과음/배경음(도구가 필요하면 먼저 물어볼 것) |
+| 공개된 게임 | **v55** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG |
+| 아티팩트 | slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f` · 최신 버전 id `1795263780-1453` · **공개(public)** 상태 |
+| 지금 기다리는 것 | 개발자의 다음 수정사항. 결정된 것: 물기·섭취 모션 = M3 용수철 꿈틀(v45), 물기 = 둥근 부채꼴 ±45°·거리 63 + 조준 보정(v50) + 턱 = 작은 송곳니 한 쌍, 서로 교차 금지(v52~v53) + 맞았을 때만 앞으로 약 6px(v51), 땅울음 흔들림 축소 + 땅 갈라짐(v51), 시작 연출·진화 나무 = 지금 방식 유지(S·T 시안 보류, `docs/v43/`), 퀘스트 창 = Q2 알리미 + ▼모두/▲접기(v43), 경험치 막대 = 화면 맨 밑·연하게(v43), 먹는 방식 = 물기+섭취 그대로, UI = 지금 방식 유지(E·F·U·W 시안 모두 반려), 화면 = 전체 화면 버튼(v41), 경험치 = 화면 맨 밑(v42). 그 밖에 v40 글자·속도 폰 확인, v39 보스 피드백 |
+| 열려 있는 숙제 | DEVLOG 40절: 실제 폰 확인(멈춤·조이스틱·개구리), 효과음/배경음(도구가 필요하면 먼저 물어볼 것) |
 
 ### 버전 흐름 (자세한 건 DEVLOG)
 | 버전 | 커밋 | 내용 |
@@ -26,10 +26,28 @@
 | v37 | `24c9b44` | 중간 보스 방 멈춤 원인(출구 화살표 `lv.exit=null`) 수정 · 계통/중간 보스 난이도 맞춤 · 전체 플레이 봇 |
 | v38 | `da0a9b9` | 엔딩 B **진화 기록 카드** · 세 겹 고리 · 분열 무리 유지 · 밀물/행성 고리 삭제 |
 | v39 | `dd876f0` | 1페이즈 R1 회전 고리 · 2페이즈 R3 쫓아오는 고리(어렵게) · G3 별똥 은하 + 금빛 유도탄 · **손 공격 P1→P4** · 엔딩 직전 **E1(한 점에서 끝)** |
+| v40 | (이번 PR) | **글자 깨짐 수정**: 캔버스를 화면 화소에 맞춰 `VZ`배(1~3) + 카메라 확대, 터치 좌표 `/VZ`, 느린 기기면 배율 자동 하향 · 수정사항 ②③④ 시안 |
+| v41 | (이번 PR) | **전체 화면 버튼**(일시정지 창·진화 나무, pointerup에서 켬, 안 되는 곳은 안내) · 먹는 방식 F1~F4 · UI W1~W4 시안 (둘 다 반려) |
+| v42 | (이번 PR) | **경험치 막대 화면 맨 밑**(메이플식) · **계통 퀘스트 창**(에너지 막대 밑, Q1 목록 / Q2 알리미 / Q3 카드 — `window.__vpLQ`, 선택 대기) · 오른쪽 위 고리 셋 제거 |
+| v43 | (이번 PR) | 퀘스트 창 **Q2 알리미 고정 + ▼ 모두/▲ 접기**(localStorage `vp_lq`) · 경험치 막대 연하게 · 시작 연출 S1~S3 · 진화 나무 T1~T3 시안(보류) |
+| v44 | (이번 PR) | 물기·섭취 **캐릭터 모션**(M1 턱 집게 / M2 원형 아가리 / M3 용수철 꿈틀 — `window.__vpMo`, 선택 대기) · 먹는 동안 머리가 먹이 쪽 · 물기 범위 = 얇은 고리 |
+| v45 | (이번 PR) | 모션 **M3 용수철 꿈틀 확정**(M1·M2·`__vpMo` 코드 삭제) |
+| v46 | (이번 PR) | 물기 범위 **사다리꼴**(그림+판정 `inBite`) · 물면 **앞으로 약 15px**(속도 밀기 `lgT/lgX/lgY`) |
+| v47 | (이번 PR) | 물기 범위 **둥근 사다리꼴**(`biteShape`, 바깥 끝 +8 볼록, 모서리 둥글게) · 판정도 볼록 끝 |
+| v48 | (이번 PR) | 물기 범위 모양 4안 R1~R4(`window.__vpBR`, 다각형 판정 `brPoly`/`inBite`, 예전 판정과 면적·거리 맞춤) · 효과 `brDraw` · 턱 다무는 모션 |
+| v49 | (이번 PR) | 물기 범위 **R1 둥근 부채꼴 확정**, 각도 ±66° → **±40°**(`brDeg`, 테스트용 `window.__vpBRA`), R2~R4 삭제 |
+| v50 | (이번 PR) | 부채꼴 **±45°** + **조준 보정** `aimAssist`(앞 ±60°·거리 84 일반 몬스터, 보스 제외, 끄기 `window.__vpNoAim`) |
+| v51 | (이번 PR) | 물기 전진 **맞았을 때만 0.06초(~6px)** · 땅울음 `rkBurst`(흔들림 170px 안만 약하게 + 땅 갈라짐) · 턱 모션 시안 J1~J3(`jawDraw`, `window.__vpJaw`) |
+| v52 | (이번 PR) | 턱 모션 **J1 송곳니 한 쌍 확정**, 크기 줄임(길이 12→8), J2·J3 삭제 |
+| v53 | (이번 PR) | 송곳니 **교차 0**(`fangPts` 곡선 재정의, 테두리 포함 틈 ≥ 3.5px, `tools/fanggap.js`로 측정) |
+| v55 | (9판 점검 PR) | **배고픔 삭제**(`C.DRAIN` 감소 줄 삭제) · 막대 = 체력, 화면 글씨 '에너지' → '체력'(코드 변수 `en/emax`는 그대로) · 쓰러짐 문구 '굶주림' → '힘이 다해' |
+| v54 | (9판 점검 PR) | 9판 전체 플레이 점검(DEVLOG 38절) · 퀘스트 숫자 `Math.min(q.a,q.c)` · 땅울음 안내 글씨 `qtx`를 퀘스트 창 밑(`54+lqH+6/16`)으로 · 봇 막힘 탈출 강화(`tools/bot.js`) |
 
 ## 1. 개발자 규칙 (반드시 지킬 것)
 
-- **`CLAUDE.md`(다른 대화에서 추가)**: 새 대화 첫 응답에서 먼저 "어떤 플러그인을 킬까요?"라고 묻고 `.claude/settings.json`의 플러그인 5개(Design · playwright · frontend-design · feature-dev · claude-md-management)를 켜짐/꺼짐과 함께 보여 줄 것. 2026-11-20 기준 모두 꺼짐.
+- **송곳니(물기 턱) 그림은 서로 교차하면 안 된다** (2026-11-21 지적). 턱 모양을 바꾸면 `tools/fanggap.js`로 교차 0 · 틈 > 0을 확인할 것.
+
+- **`CLAUDE.md`(다른 대화에서 추가)**: 새 대화 첫 응답에서 먼저 "어떤 플러그인을 킬까요?"라고 묻고 `.claude/settings.json`의 플러그인 5개(Design · playwright · frontend-design · feature-dev · claude-md-management)를 켜짐/꺼짐과 함께 보여 줄 것. 2026-11-21 기준 playwright · frontend-design만 켜짐.
 - **대화는 한국어로.**
 - 바꾸거나 새로 만들 것은 **먼저 예시 3안 이상을 이미지로 보여 주고**, 개발자가 고른 것만 적용한다.
   - 예외: 개발자가 "너 마음대로 / 원하는 대로"라고 맡긴 것.
@@ -78,8 +96,9 @@
 ### 빌드 (패치 방식)
 - 각 버전은 `dev/vNN/vNN_patch.py`(문자열 `rep(old,new,cnt)` — 앵커가 정확히 cnt번 나와야 함) + `dev/vNN/vNN_methods.js`(새 함수, `"\n end(a,b,c,tip){"` 앞에 끼움).
 - 같은 이름의 함수를 뒤에 다시 정의하면 뒤의 것이 이긴다 (클래스 메서드) → 옛 스킬 교체에 사용.
-- v39 재빌드: `git show da0a9b9:index.html > /tmp/v38.html && cp /tmp/v38.html index.html && python3 dev/v39/v39_patch.py index.html`
-- **v40은** 지금 `index.html`(v39)을 바탕으로 `dev/v40/v40_patch.py`를 만들 것. `<title>`과 `window.VP_VER`도 바꿀 것.
+- v54 재빌드: `git show dd876f0:index.html > index.html && for v in 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55; do python3 dev/v$v/v${v}_patch.py index.html; done`
+- **v56은** 지금 `index.html`(v55)을 바탕으로 `dev/v56/v56_patch.py`를 만들 것. `<title>`과 `window.VP_VER`도 바꿀 것.
+- **v40부터 화면 좌표 주의**: 캔버스는 800·VZ × 360·VZ, 카메라 줌 VZ. 게임 코드는 계속 논리 좌표(800×360)를 쓰지만, **포인터의 `p.x/p.y`는 VZ로 나눠야** 논리 좌표가 된다(`pointerdown` 처리 참고). 새 터치 입력을 넣을 때 꼭 지킬 것. 테스트에서 배율 고정은 `window.__vpZ=1`.
 - 문법 확인: `<script>` 본문을 뽑아 `node --check`.
 
 ### 테스트 사본
@@ -111,10 +130,10 @@
 
 ## 5. 공개 · 커밋
 
-- 공개: `mcp__claude-artifacts__publish_files` — `slug` 위 값, `base_version` 최신 버전 id, `shared_live:"public"`, `artifact_title`은 **현재 제목**(예 "공허 기생충 v39"), `title` "공허 기생충 vNN", files `[{as:"index.html", path:<index.html 절대 경로>}]`.
-- git: `v33-wip`에 커밋 → `git -c push.negotiate=true push origin v33-wip` 와 `git -c push.negotiate=true push origin v33-wip:main`.
+- 공개: `mcp__claude-artifacts__publish_files` — `slug` 위 값, `base_version` 최신 버전 id, `shared_live:"public"`, `artifact_title`은 **현재 제목**(예 "공허 기생충 v55"), `title` "공허 기생충 vNN", files `[{as:"index.html", path:<index.html 절대 경로>}]`.
+- git: (v39까지) `v33-wip`에 커밋 → `v33-wip`과 `main`에 푸시. (v40부터) 세션이 정해 준 작업 브랜치에 커밋·푸시 → 초안 PR → 개발자가 `main`에 머지.
 - 커밋 메시지 끝 줄은 그 세션의 안내를 따를 것 (이번 세션 예: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` + `Claude-Session: …`).
-- 버전마다 `DEVLOG.md`에 절 하나 추가(지금 23절이 v39, 24절이 '다음 할 일'), `README.md` '현재 내용', 이 문서 0절 표를 갱신.
+- 버전마다 `DEVLOG.md`에 절 하나 추가(지금 24절 v40, 25절 v41, 26절 v42, 27절 v43, 28절 v44, 29절 v45, 30절 v46, 31절 v47, 32절 v48, 33절 v49, 34절 v50, 35절 v51, 36절 v52, 37절 v53, 38절 v54(9판 점검), 39절 v55(배고픔 삭제), 40절 '다음 할 일'), `README.md` '현재 내용', 이 문서 0절 표를 갱신.
 - 시안 이미지는 `docs/boss_designs/NN_*.png`, 미리보기는 `docs/vNN_preview.png`.
 
 ## 6. 이번 대화(v33~v39)에서 개발자가 고른 것

@@ -26,8 +26,8 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
   if(rw){const an=Math.atan2(p.y-rw.y,p.x-rw.x);tx=p.x+Math.cos(an)*90;ty=p.y+Math.sin(an)*90;mode='dodge-rek'}
   else if((()=>{const sw=a.en.find(m=>m.on&&(m.k=='spn'||m.k=='lsp')&&m.wu>0&&Math.hypot(m.x-p.x,m.y-p.y)<320),wc=a.en.find(m=>m.on&&m.k=='wd'&&(m.st=='charge'||m.st=='tail')),qc=a.en.find(m=>m.on&&m.k=='qn'&&m.st=='cast');let an=null;if(wc&&wc.st=='tail')an=Math.atan2(p.y-wc.y,p.x-wc.x);else if(wc)an=wc.fa+Math.PI/2*(((p.x-wc.x)*-Math.sin(wc.fa)+(p.y-wc.y)*Math.cos(wc.fa))>0?1:-1);else if(qc)an=Math.atan2(p.y-qc.cy,p.x-qc.cx)+(Math.hypot(p.x-qc.cx,p.y-qc.cy)<5?1:0);else if(sw)an=Math.atan2(p.y-sw.y,p.x-sw.x)+Math.PI/2*(mem.ds||1);if(an==null)return false;if(Math.random()<.02)mem.ds=-(mem.ds||1);tx=p.x+Math.cos(an)*90;ty=p.y+Math.sin(an)*90;mode='dodge2';return true})()){}
   else if(kz&&Math.hypot(kz.x-p.x,kz.y-p.y)<220){const an=Math.atan2(p.y-kz.y,p.x-kz.x)+Math.PI/2;tx=p.x+Math.cos(an)*80;ty=p.y+Math.sin(an)*80;mode='dodge'}
-  else if(nearE&&nearE[1]<170&&(!hungry||!nearF||nearF[1]>nearE[1])){tx=nearE[0].x;ty=nearE[0].y;mode='fight'}
-  else if(nearF&&!(mem.skip>now)&&(hungry&&!(opt.guide&&S.pickK()&&nearF[1]>50)||nearF[1]<110||(S.t-(mem.roomT||0))<12)){tx=nearF[0].x;ty=nearF[0].y;mode='eat'}
+  else if(nearE&&nearE[1]<(opt.guide&&S.pickK()&&a.tr!='haven'?90:170)&&(!hungry||!nearF||nearF[1]>nearE[1])){tx=nearE[0].x;ty=nearE[0].y;mode='fight'}
+  else if(nearF&&!(mem.skip>now)&&(opt.guide&&S.pickK()?nearF[1]<40||hungry&&nearF[1]<50:(hungry||nearF[1]<110&&S.t-(mem.roomT||0)<60||(S.t-(mem.roomT||0))<12))){tx=nearF[0].x;ty=nearF[0].y;mode='eat'}
   else{ // 탐험: 안 가 본 이웃방 우선, 일정 시간 지나면 출구로
    const L=s.lv,D={N:[-1,0],S:[1,0],W:[0,-1],E:[0,1]};
    if(opt.stay){tx=400+Math.cos(S.t*.4)*230;ty=180+Math.sin(S.t*.4)*110;mode='stay'}
@@ -49,7 +49,7 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
    if(side>0){side-=1;const an=Math.atan2(dy,dx)+Math.PI/2*sdir;dx=Math.cos(an);dy=Math.sin(an)}
    const l=Math.hypot(dx,dy)||1;K.RIGHT.isDown=dx/l>.38;K.LEFT.isDown=dx/l<-.38;K.DOWN.isDown=dy/l>.38;K.UP.isDown=dy/l<-.38;
    if(a.cor&&hist.length>=12&&s.bcd<=0){const h=hist[hist.length-12];if(Math.hypot(p.x-h[0],p.y-h[1])<8&&a.cor.some(o=>o.on&&Math.hypot((o.c+.5)*40-p.x,(o.r+.5)*40-p.y)<56)){s.ang=Math.atan2(dy,dx);s.req=1}}
-   hist.push([p.x,p.y]);if(hist.length>30)hist.shift();if(side<=0&&hist.length==30&&Math.hypot(p.x-hist[0][0],p.y-hist[0][1])<12){side=35;sdir=Math.random()<.5?1:-1;S.stuck++;(S.stR=S.stR||{})[(a.tr||'-')+(s.zi||1)]=((S.stR||{})[(a.tr||'-')+(s.zi||1)]||0)+1;hist=[]}}});
+   hist.push([p.x,p.y]);if(hist.length>30)hist.shift();if(side<=0&&hist.length==30&&Math.hypot(p.x-hist[0][0],p.y-hist[0][1])<12){const rk='r'+a.r+a.c;S.stk=S.stk&&S.stk.k==rk&&now-S.stk.t<12000?{k:rk,n:S.stk.n+1,t:now}:{k:rk,n:1,t:now};side=Math.min(240,35*S.stk.n);sdir=S.stk.n>1?-sdir:(Math.random()<.5?1:-1);if(S.stk.n>=3)mem['g'+a.r+a.c]=null;S.stuck++;(S.stR=S.stR||{})[(a.tr||'-')+(s.zi||1)]=((S.stR||{})[(a.tr||'-')+(s.zi||1)]||0)+1;hist=[]}}});
 };
 // 빨리감기: RAF 루프를 멈추고 직접 스텝 (렌더 생략)
 window.ff=function(sec,renderEvery){const G=GAME;if(!window.__T){window.__T=G.loop.time||performance.now();G.loop.sleep();const tw=G.scene.getScene('G').tweens;tw.getDelta=function(){return 16.667*this.timeScale}}const dt=1000/60,n=Math.round(sec*60);const s=G.scene.getScene('G');
