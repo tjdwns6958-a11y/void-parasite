@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v53</title>
+<title>공허 기생충 v54</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v53';
+window.VP_VER='v54';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -2252,7 +2252,7 @@ class G extends Phaser.Scene{
    mark(X+14,y0+9,rd,dn);this.lqTx(id+'q',X+14,y0+9,dn?'★':'!',{fontSize:'10px',fontStyle:'bold',color:'#2a1a00'}).setOrigin(.5);
    this.lqTx(id+'t',X+25,y0+9,this.lqTitle(q),{fontSize:big?'12px':'11px',fontStyle:'bold',color:LCS[q.k]}).setOrigin(0,.5);
    this.lqTx(id+'m',X+12,y0+(big?27:23),this.lqMsg(q),{fontSize:big?'11px':'10px',color:rd?'#7be0a8':dn?'#ffe9a8':'#c9c0de',fontStyle:rd?'bold':'normal'}).setOrigin(0,.5);
-   if(q.st=='prog'||rd)this.lqTx(id+'c',X+W-8,y0+(big?27:23),q.a+' / '+q.c,{fontSize:big?'11px':'10px',fontStyle:'bold',color:'#ece6f7'}).setOrigin(1,.5);
+   if(q.st=='prog'||rd)this.lqTx(id+'c',X+W-8,y0+(big?27:23),Math.min(q.a,q.c)+' / '+q.c,{fontSize:big?'11px':'10px',fontStyle:'bold',color:'#ece6f7'}).setOrigin(1,.5);
    const by=y0+(big?36:30),bh=big?6:4;g.fillStyle(0x3a2f57,1).fillRoundedRect(X+10,by,W-20,bh,bh/2);g.fillStyle(this.lqCol(q),rd?pu:1).fillRoundedRect(X+10,by,Math.max(bh,(W-20)*q.r),bh,bh/2)};
   let H;
   if(!open){const f=this.lqFocus(Q);H=70;g.fillStyle(0x0d0818,.6).fillRoundedRect(X,Y,W,H,8);entry(f,Y+4,'f',1);
@@ -2358,7 +2358,7 @@ class G extends Phaser.Scene{
   const spd=Math.hypot(this.vx,this.vy);
   
   
-  {const rk=a.en.some(m=>m.on&&m.k=='rek'),qt=rk&&fr>.05&&spd>8&&spd<=70;if(rk&&!this.qtx)this.qtx=this.add.text(16,64,'',ST({fontSize:'11px',fontStyle:'bold'})).setDepth(61);if(this.qtx){this.qtx.setVisible(rk);if(rk)this.qtx.setText(qt?'● 조용히 이동 중 — 땅울음이 못 느낀다':spd>70?'○ 발소리가 땅을 울린다 (천천히: 조이스틱 반만 / Shift)':'').setColor(qt?'#7be0a8':'#ff9ac0')}}
+  {const rk=a.en.some(m=>m.on&&m.k=='rek'),qt=rk&&fr>.05&&spd>8&&spd<=70;if(rk&&!this.qtx)this.qtx=this.add.text(16,64,'',ST({fontSize:'11px',fontStyle:'bold'})).setDepth(61);if(this.qtx){this.qtx.setVisible(rk);if(rk)this.qtx.setPosition(16,(this.boss?54:54+(this.lqH||70)+(this.time.now-this.t0<25000?16:6)));if(rk)this.qtx.setText(qt?'● 조용히 이동 중 — 땅울음이 못 느낀다':spd>70?'○ 발소리가 땅을 울린다 (천천히: 조이스틱 반만 / Shift)':'').setColor(qt?'#7be0a8':'#ff9ac0')}}
   this.worm(dt,t,spd,sp);this.moApply(dt);this.brDraw(dt);const zk=this.zone(p.x,p.y+4);if(zk!==this.zk){this.zk=zk;this.pt=0;this.bd.forEach(o=>{o.setAlpha(zk==2?.3:1);if(zk==3)o.setTint(0x9ee0a0);else o.clearTint()})}this.bushU(dt,zk==2);if(zk==3){this.lpz=this.time.now;this.en-=1.5*dt;this.pt=(this.pt||0)-dt;if(this.pt<=0)this.tox(p)}
   if(this.zi>1){this.mt=(this.mt||0)-dt;if(this.mt<=0){this.mt=.28;const x=40+Math.random()*720,y=70+Math.random()*260,b=this.add.circle(x,y,.8+Math.random()*1.2,Math.random()<.5?0x7a8aff:0xc080ff,.55).setDepth(13);this.tweens.add({targets:b,y:y-26-Math.random()*30,x:x+(Math.random()-.5)*20,alpha:0,duration:2600,onComplete:()=>b.destroy()})}}
   this.bt=(this.bt||0)-dt;if(this.bt<=0&&a.pl&&a.pl.length){this.bt=.22;const l=pick(pick(a.pl).lb),an=Math.random()*6.283,rr=Math.random()*.7,b=this.add.circle(l.x+Math.cos(an)*l.rx*rr,l.y+Math.sin(an)*l.ry*rr,1.5+Math.random()*2,0xb6ff7a,.8).setDepth(.65);this.tweens.add({targets:b,scale:1.8,alpha:0,duration:700,onComplete:()=>b.destroy()})}
