@@ -26,8 +26,8 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
   if(rw){const an=Math.atan2(p.y-rw.y,p.x-rw.x);tx=p.x+Math.cos(an)*90;ty=p.y+Math.sin(an)*90;mode='dodge-rek'}
   else if((()=>{const sw=a.en.find(m=>m.on&&(m.k=='spn'||m.k=='lsp')&&m.wu>0&&Math.hypot(m.x-p.x,m.y-p.y)<320),wc=a.en.find(m=>m.on&&m.k=='wd'&&(m.st=='charge'||m.st=='tail')),qc=a.en.find(m=>m.on&&m.k=='qn'&&m.st=='cast');let an=null;if(wc&&wc.st=='tail')an=Math.atan2(p.y-wc.y,p.x-wc.x);else if(wc)an=wc.fa+Math.PI/2*(((p.x-wc.x)*-Math.sin(wc.fa)+(p.y-wc.y)*Math.cos(wc.fa))>0?1:-1);else if(qc)an=Math.atan2(p.y-qc.cy,p.x-qc.cx)+(Math.hypot(p.x-qc.cx,p.y-qc.cy)<5?1:0);else if(sw)an=Math.atan2(p.y-sw.y,p.x-sw.x)+Math.PI/2*(mem.ds||1);if(an==null)return false;if(Math.random()<.02)mem.ds=-(mem.ds||1);tx=p.x+Math.cos(an)*90;ty=p.y+Math.sin(an)*90;mode='dodge2';return true})()){}
   else if(kz&&Math.hypot(kz.x-p.x,kz.y-p.y)<220){const an=Math.atan2(p.y-kz.y,p.x-kz.x)+Math.PI/2;tx=p.x+Math.cos(an)*80;ty=p.y+Math.sin(an)*80;mode='dodge'}
-  else if(nearE&&nearE[1]<170&&(!hungry||!nearF||nearF[1]>nearE[1])){tx=nearE[0].x;ty=nearE[0].y;mode='fight'}
-  else if(nearF&&!(mem.skip>now)&&(hungry&&!(opt.guide&&S.pickK()&&nearF[1]>50)||nearF[1]<110||(S.t-(mem.roomT||0))<12)){tx=nearF[0].x;ty=nearF[0].y;mode='eat'}
+  else if(nearE&&nearE[1]<(opt.guide&&S.pickK()&&a.tr!='haven'?90:170)&&(!hungry||!nearF||nearF[1]>nearE[1])){tx=nearE[0].x;ty=nearE[0].y;mode='fight'}
+  else if(nearF&&!(mem.skip>now)&&(opt.guide&&S.pickK()?nearF[1]<40||hungry&&nearF[1]<50:(hungry||nearF[1]<110&&S.t-(mem.roomT||0)<60||(S.t-(mem.roomT||0))<12))){tx=nearF[0].x;ty=nearF[0].y;mode='eat'}
   else{ // 탐험: 안 가 본 이웃방 우선, 일정 시간 지나면 출구로
    const L=s.lv,D={N:[-1,0],S:[1,0],W:[0,-1],E:[0,1]};
    if(opt.stay){tx=400+Math.cos(S.t*.4)*230;ty=180+Math.sin(S.t*.4)*110;mode='stay'}
