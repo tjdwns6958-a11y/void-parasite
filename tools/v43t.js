@@ -1,0 +1,20 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});
+const ctx=await b.newContext({viewport:{width:844,height:390},deviceScaleFactor:2,hasTouch:true,isMobile:true});const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpNoSave=1;window.__vpZ=2;let a=4242;Math.random=function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}});
+await p.goto('file://'+__dirname+'/v43.html');await p.waitForTimeout(2500);
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();s.pl.setPosition(400,230);s.plv=9;s.xp=Math.round(s.xpn()*.45);s.lin={p:2,c:0,v:1};s.molts=3;s.zi=2;s.recalc&&s.recalc();s.wormSkin&&s.wormSkin();s.org=s.spO+30;s.mn=s.spM+20;s.ve=s.spV+3});
+await p.waitForTimeout(700);
+const box=await p.evaluate(()=>{const r=GAME.canvas.getBoundingClientRect();return{l:r.left,t:r.top,w:r.width,h:r.height}});
+const tap=async(x,y)=>{await p.touchscreen.tap(box.l+x*box.w/800,box.t+y*box.h/360);await p.waitForTimeout(500)};
+const st=()=>p.evaluate(()=>{const s=GAME.scene.scenes[0];return{open:s.lqO,H:s.lqH,tree:!!s.treeO,ls:localStorage.getItem('vp_lq')}});
+await p.screenshot({path:'v43_closed.png'});console.log('start',await st());
+await tap(214,64);console.log('toggle',await st());await p.screenshot({path:'v43_open.png'});
+await tap(100,150);console.log('tap panel(open) -> tree',await st());
+await p.evaluate(()=>GAME.scene.scenes[0].treeClose());await p.waitForTimeout(300);
+await tap(214,64);console.log('toggle back',await st());
+await tap(100,90);console.log('tap panel(closed) -> tree',await st());
+await p.evaluate(()=>GAME.scene.scenes[0].treeClose());
+// 펼친 상태가 다시 열어도 기억되는지
+await tap(214,64);await p.reload();await p.waitForTimeout(2500);console.log('after reload',await st());
+console.log('errs',errs);await b.close()})();

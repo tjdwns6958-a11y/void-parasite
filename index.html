@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v42</title>
+<title>공허 기생충 v43</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v42';
+window.VP_VER='v43';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -387,7 +387,7 @@ class G extends Phaser.Scene{
    for(let d=0;d<4;d++){
     this.anims.create({key:'w'+d,frames:[0,1,2,3,4,5].map(f=>({key:'walk',frame:d+'_'+f})),frameRate:C.WF,repeat:-1});
     this.anims.create({key:'i'+d,frames:[0,1,2,3].map(f=>({key:'idle',frame:d+'_'+f})),frameRate:C.IF,repeat:-1})}}
-  this.hvT=null;this.seenP={};this.seenM={};this.mcard=null;this.mxS=0;{const mq=window.matchMedia('(orientation: portrait)'),ap=()=>{if(!this.paused&&!this.over&&!this.molt&&!this.tr)this.pz()},oh=()=>{if(mq.matches)ap()};mq.addEventListener('change',oh);this.game.events.on('hidden',ap);this.game.events.on('blur',ap);this.events.once('shutdown',()=>{mq.removeEventListener('change',oh);this.game.events.off('hidden',ap);this.game.events.off('blur',ap)})}this.paused=false;this.pzo=null;this.treeO=null;this.rgT=null;this.gQ=null;this.lqT=null;this.xpT=null;this.xpL=null;this.cine=null;this.mq=null;this.mbOn=null;this.tel=[];this.mbb=[];this.skl=null;this.skCd=0;this.dsh=null;this.wallT=0;this.emb=[];this.emPull=null;this.emMir=0;this.rfl=null;this.rgL=null;this.rwNm=null;this.sil=0;this.boss=false;this.rwo=[];this.swOn=null;this.swNm=null;this.rec={m:[],mb:null,food:0,swT:null};this.recSaved=0;this.input.keyboard.off('keydown-T');this.input.keyboard.on('keydown-T',()=>{if(this.treeO)this.treeClose();else this.treeOpen()});this.input.keyboard.off('keydown-ENTER');this.input.keyboard.on('keydown-ENTER',()=>{if(this.treeO)this.treeClose()});this.input.keyboard.off('keydown-P');this.input.keyboard.off('keydown-ESC');this.input.keyboard.on('keydown-P',()=>this.pz());this.input.keyboard.on('keydown-ESC',()=>{if(!this.molt)this.pz()});this.vig=null;this.loW=0;this.qtx=null;this.eye=null;this.inBp=false;this.bl=[];this.bsp=[];this.bol=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lin={p:0,c:0,v:0};this.spO=0;this.spM=0;this.spV=0;this.ve=0;this.feast=0;this.cry=0;this.fam=[];this.pprj=[];this.hasteT=0;this.spitCd=0;this.cryS=null;this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
+  this.hvT=null;this.seenP={};this.seenM={};this.mcard=null;this.mxS=0;{const mq=window.matchMedia('(orientation: portrait)'),ap=()=>{if(!this.paused&&!this.over&&!this.molt&&!this.tr)this.pz()},oh=()=>{if(mq.matches)ap()};mq.addEventListener('change',oh);this.game.events.on('hidden',ap);this.game.events.on('blur',ap);this.events.once('shutdown',()=>{mq.removeEventListener('change',oh);this.game.events.off('hidden',ap);this.game.events.off('blur',ap)})}this.paused=false;this.pzo=null;this.treeO=null;this.rgT=null;this.gQ=null;this.lqT=null;this.lqH=0;this.xpT=null;this.xpL=null;this.cine=null;this.mq=null;this.mbOn=null;this.tel=[];this.mbb=[];this.skl=null;this.skCd=0;this.dsh=null;this.wallT=0;this.emb=[];this.emPull=null;this.emMir=0;this.rfl=null;this.rgL=null;this.rwNm=null;this.sil=0;this.boss=false;this.rwo=[];this.swOn=null;this.swNm=null;this.rec={m:[],mb:null,food:0,swT:null};this.recSaved=0;this.input.keyboard.off('keydown-T');this.input.keyboard.on('keydown-T',()=>{if(this.treeO)this.treeClose();else this.treeOpen()});this.input.keyboard.off('keydown-ENTER');this.input.keyboard.on('keydown-ENTER',()=>{if(this.treeO)this.treeClose()});this.input.keyboard.off('keydown-P');this.input.keyboard.off('keydown-ESC');this.input.keyboard.on('keydown-P',()=>this.pz());this.input.keyboard.on('keydown-ESC',()=>{if(!this.molt)this.pz()});this.vig=null;this.loW=0;this.qtx=null;this.eye=null;this.inBp=false;this.bl=[];this.bsp=[];this.bol=null;this.exTx=null;this.exR=0;this.exT=0;this.lastHit=null;this.kc=0;this.t0=this.time.now;this.plv=1;this.xp=0;this.st4=[5,5,5,5];this.lin={p:0,c:0,v:0};this.spO=0;this.spM=0;this.spV=0;this.ve=0;this.feast=0;this.cry=0;this.fam=[];this.pprj=[];this.hasteT=0;this.spitCd=0;this.cryS=null;this.lim=20;this.molts=0;this.shell=0;this.mb=0;this.mnb=0;this.molt=null;this.recalc();this.fade=null;this.tr=null;this.hlk=null;this.vp=null;this.prj=[];this.lsm=null;this.over=false;this.en=C.EN;this.org=0;this.mn=0;this.dir=0;this.joy=null;this.eat=null;this.vx=0;this.vy=0;this.req=0;this.bcd=0;this.inv=0;this.jx=0;this.jy=0;this.dk=null;
   this.zi=1;this.zt0=this.time.now;this.eprj=[];this.lit=0;this.litW=0;this.bmD=null;this.bmG=null;this.litTx=null;
   this.lv=gen(1);
   this.fl=this.add.tileSprite(400,180,800,360,'floor').setDepth(0);
@@ -404,7 +404,7 @@ class G extends Phaser.Scene{
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
   if(!window.__vpNoTree)this.time.delayedCall(30,()=>{const sv=this.loadSave();if(sv)this.resumeAsk(sv);else this.treeOpen(1)});this.glWatch();
   this.input.addPointer(2);
-  this.input.on('pointerdown',P=>{const p={x:P.x/VZ,y:P.y/VZ};if(this.over||this.rsO)return;if(this.cine){if(this.cine.t>.6)this.cine.t=this.cine.dur;return}if(this.treeO){this.treeTap(p.x,p.y);return}if(this.paused)return;if(!this.molt&&p.x>8&&p.x<240&&p.y>52&&p.y<122){this.treeOpen();return}if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
+  this.input.on('pointerdown',P=>{const p={x:P.x/VZ,y:P.y/VZ};if(this.over||this.rsO)return;if(this.cine){if(this.cine.t>.6)this.cine.t=this.cine.dur;return}if(this.treeO){this.treeTap(p.x,p.y);return}if(this.paused)return;if(!this.molt&&this.lqTap(p.x,p.y))return;if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
    if(this.skl&&Phaser.Math.Distance.Between(p.x,p.y,676,228)<28){this.skUse();return}
    if(Phaser.Math.Distance.Between(p.x,p.y,750,308)<50){this.eat=P;this.req=1}else if(p.x<420&&(!this.joy||!this.joy.isDown)){this.joy=P;this.jo={x:Phaser.Math.Clamp(p.x,61,400),y:Phaser.Math.Clamp(p.y,61,299)};window.__vpJoyUsed=1}});
   this.input.on('pointerup',p=>{if(this.joy===p)this.joy=null;if(this.eat===p)this.eat=null});
@@ -2232,6 +2232,46 @@ class G extends Phaser.Scene{
   const s=full?'경험치 MAX':'경험치 '+Math.floor(this.xp)+' / '+this.xpn()+'  ['+(r*100).toFixed(2)+'%]';
   if(!this.xpT)this.xpT=this.add.text(400,Y+H/2,'',ST({fontSize:'10px',fontStyle:'bold',color:'#ffffff',stroke:'#07040e',strokeThickness:2})).setOrigin(.5).setDepth(61);if(this.xpT.text!==s)this.xpT.setText(s);
   if(!this.xpL)this.xpL=this.add.text(6,Y+H/2,'',ST({fontSize:'10px',fontStyle:'bold',color:'#ffe066',stroke:'#07040e',strokeThickness:2})).setOrigin(0,.5).setDepth(61);const ls='Lv.'+this.plv;if(this.xpL.text!==ls)this.xpL.setText(ls);const vis=!this.gfx||this.gfx.visible;this.xpT.setVisible(vis);this.xpL.setVisible(vis)}
+ // ===== v43: 퀘스트 창 = 알리미(Q2) 고정 + 세 계통 펼치기/접기 · 경험치 막대 연하게 =====
+ lqFocus(Q){let f=Q.find(q=>q.st=='ready');if(!f){let br=-1;for(const q of Q)if(q.st=='prog'&&q.r>br){br=q.r;f=q}}return f||Q.find(q=>q.st=='need')||Q.find(q=>q.st!='done')||Q[0]}
+ lqMsg(q){return q.st=='ready'?'둥지(초록 방)에서 탈피하자!':q.st=='need'?'다른 계통을 1단계 올려야 열린다':q.st=='cap'?((this.zi||1)<2?'1구역 변이 한계 — 2구역에서 다시':'변이 한계 도달'):q.st=='done'?'모든 단계를 마쳤다':q.mat+(q.k=='v'?'를':'을')+' 모으자'}
+ lqTitle(q){return q.st=='done'?'['+q.nm+'] 완성':'['+q.nm+'] '+(q.t+1)+'단계 · '+q.next}
+ // 글자 재사용 시 색·크기·굵기도 갱신 (v42 lqTx는 처음 만들 때만 스타일을 정함)
+ lqTx(id,x,y,s,o){const T=this.lqT||(this.lqT={});let t=T[id];o=o||{};if(!t){t=T[id]=this.add.text(0,0,'',ST(Object.assign({fontSize:'11px'},o))).setDepth(61)}
+  else{if(o.color&&t.style.color!==o.color)t.setColor(o.color);const fs=o.fontSize||'11px';if(t.style.fontSize!==fs)t.setFontSize(fs);const st=o.fontStyle||'';if(t.style.fontStyle!==st)t.setFontStyle(st)}
+  t.setVisible(true).setPosition(x,y);if(t.text!==s)t.setText(s);t.__u=1;return t}
+ lqOpenGet(){if(this.lqO==null){try{this.lqO=localStorage.getItem('vp_lq')==='1'}catch(_){this.lqO=false}}return this.lqO}
+ lqToggle(){this.lqO=!this.lqOpenGet();try{localStorage.setItem('vp_lq',this.lqO?'1':'0')}catch(_){}}
+ // 퀘스트 창 누르기: 오른쪽 위 펼치기/접기 단추면 토글, 창 나머지는 진화 나무 · 처리했으면 true
+ lqTap(x,y){const X=8,Y=54,W=232,H=this.lqH||70;if(this.boss||x<X||x>X+W||y<Y-2||y>Y+H)return false;if(x>X+W-58&&y<Y+24)this.lqToggle();else this.treeOpen();return true}
+ lqDraw(){const g=this.gQ||(this.gQ=this.add.graphics().setDepth(50));g.clear();const T=this.lqT||(this.lqT={});for(const k in T)T[k].__u=0;
+  if((this.gfx&&!this.gfx.visible)||this.boss){for(const k in T)T[k].setVisible(false);return}
+  const now=this.time.now,pu=.6+.4*Math.sin(now/170),Q=LK.map(k=>this.lqInfo(k)),X=8,Y=54,W=232,open=this.lqOpenGet();
+  const mark=(x,y,rd,dn)=>{g.fillStyle(dn?0xffe066:rd?0x7be0a8:0xffd34a,rd?pu:1).fillCircle(x,y,6.5)};
+  const entry=(q,y0,id,big)=>{const rd=q.st=='ready',dn=q.st=='done';
+   mark(X+14,y0+9,rd,dn);this.lqTx(id+'q',X+14,y0+9,dn?'★':'!',{fontSize:'10px',fontStyle:'bold',color:'#2a1a00'}).setOrigin(.5);
+   this.lqTx(id+'t',X+25,y0+9,this.lqTitle(q),{fontSize:big?'12px':'11px',fontStyle:'bold',color:LCS[q.k]}).setOrigin(0,.5);
+   this.lqTx(id+'m',X+12,y0+(big?27:23),this.lqMsg(q),{fontSize:big?'11px':'10px',color:rd?'#7be0a8':dn?'#ffe9a8':'#c9c0de',fontStyle:rd?'bold':'normal'}).setOrigin(0,.5);
+   if(q.st=='prog'||rd)this.lqTx(id+'c',X+W-8,y0+(big?27:23),q.a+' / '+q.c,{fontSize:big?'11px':'10px',fontStyle:'bold',color:'#ece6f7'}).setOrigin(1,.5);
+   const by=y0+(big?36:30),bh=big?6:4;g.fillStyle(0x3a2f57,1).fillRoundedRect(X+10,by,W-20,bh,bh/2);g.fillStyle(this.lqCol(q),rd?pu:1).fillRoundedRect(X+10,by,Math.max(bh,(W-20)*q.r),bh,bh/2)};
+  let H;
+  if(!open){const f=this.lqFocus(Q);H=70;g.fillStyle(0x0d0818,.6).fillRoundedRect(X,Y,W,H,8);entry(f,Y+4,'f',1);
+   Q.forEach((q,i)=>{const x=X+18+i*52,y=Y+59,on=q===f;if(on)g.fillStyle(LCN[q.k],.18).fillRoundedRect(x-11,y-8,48,16,4);this.lqIcon(g,q.k,x,y,5,LCN[q.k],on?1:.6);
+    for(let j=0;j<3;j++)g.fillStyle(j<q.t?LCN[q.k]:0x3a2f57,on?1:.7).fillCircle(x+11+j*7,y,2.2);if(q.st=='ready')g.fillStyle(0x7be0a8,pu).fillCircle(x+33,y-5,2.5)});
+  }else{H=6+3*42;g.fillStyle(0x0d0818,.66).fillRoundedRect(X,Y,W,H,8);
+   Q.forEach((q,i)=>{const y0=Y+4+i*42;if(i)g.fillStyle(0x3a2f57,.7).fillRect(X+10,y0-3,W-20,1);if(q.st=='ready')g.fillStyle(0x7be0a8,.08+.07*pu).fillRoundedRect(X+3,y0-1,W-6,40,5);entry(q,y0,'e'+i,0)})}
+  this.lqH=H;
+  // 펼치기/접기 단추 (창 오른쪽 위)
+  g.fillStyle(0x2a2342,.95).fillRoundedRect(X+W-52,Y+3,46,15,4);this.lqTx('tg',X+W-29,Y+10.5,open?'▲ 접기':'▼ 모두',{fontSize:'9px',fontStyle:'bold',color:'#c8b8ff'}).setOrigin(.5);
+  if(this.time.now-this.t0<25000)this.lqTx('h',X+W/2,Y+H+7,this.sys.game.device.input.touch?'창을 누르면 진화 나무':'창 누르기 / T: 진화 나무',{fontSize:'9px',color:'#a99fc2'}).setOrigin(.5);
+  for(const k in T)if(!T[k].__u)T[k].setVisible(false)}
+ // 경험치 막대: 화면 맨 밑, 얇고 연하게
+ xpDraw(g){const Y=355,H=5,full=this.plv>=18,r=full?1:Math.min(1,this.xp/this.xpn());
+  g.fillStyle(0x07040e,.35).fillRect(0,Y,800,H);g.fillStyle(0x7cc4ff,.28).fillRect(0,Y,800*r,H);g.fillStyle(0xbfe4ff,.25).fillRect(0,Y,800*r,1);
+  const s=full?'경험치 MAX':'경험치 '+Math.floor(this.xp)+' / '+this.xpn()+'  ['+(r*100).toFixed(2)+'%]';
+  if(!this.xpT)this.xpT=this.add.text(400,Y-1,'',ST({fontSize:'8px',color:'#ffffff'})).setOrigin(.5,1).setDepth(61).setAlpha(.4);if(this.xpT.text!==s)this.xpT.setText(s);
+  if(!this.xpL)this.xpL=this.add.text(6,Y-1,'',ST({fontSize:'8px',color:'#ffe9a8'})).setOrigin(0,1).setDepth(61).setAlpha(.45);const ls='Lv.'+this.plv;if(this.xpL.text!==ls)this.xpL.setText(ls);
+  const vis=!this.gfx||this.gfx.visible;this.xpT.setVisible(vis);this.xpL.setVisible(vis)}
  end(a,b,c,tip){this.clearSave();
   this.over=true;this.pl.setVelocity(0,0);this.pl.anims.stop();
   this.add.rectangle(400,180,800,360,0x120e1a,.82).setDepth(200);
@@ -2343,7 +2383,7 @@ class G extends Phaser.Scene{
    const D={N:[-1,0],S:[1,0],W:[0,-1],E:[0,1]};for(const k in D){if(!this.cur.d[k])continue;const b=this.lv.at(this.cur.r+D[k][0],this.cur.c+D[k][1]);if(!b)continue;const n=Math.min(4,b.en.filter(e=>e.on&&e.k!='gna').length);for(let q=0;q<n;q++)GR2.fillStyle(0xff5a7a,1).fillRect(723+b.c*16+q*3,59+b.r*16,2,2)}}
   // HUD 패널 아래에 플레이어·몬스터가 있으면 패널을 투명하게 (가려진 적이 안 보이던 문제)
   {const occ=(x0,y0,x1,y1)=>{const p=this.pl;if(p.x>x0-12&&p.x<x1+12&&p.y>y0-12&&p.y<y1+18)return 1;for(const m of this.cur.en)if(m.on&&m.spr&&m.spr.visible&&!(m.k=='rek'&&m.st=='under')&&m.x>x0-14&&m.x<x1+14&&m.y>y0-14&&m.y<y1+22)return 1;return 0};
-   const tl=occ(8,6,240,122)?.22:1,tr=occ(640,6,794,130)?.22:1,k=.18;this.hA.L+=(tl-this.hA.L)*k;this.hA.R+=(tr-this.hA.R)*k;
+   const tl=occ(8,6,240,54+(this.lqH||70))?.22:1,tr=occ(640,6,794,130)?.22:1,k=.18;this.hA.L+=(tl-this.hA.L)*k;this.hA.R+=(tr-this.hA.R)*k;
    this.pnL.setAlpha(this.hA.L);this.gL.setAlpha(this.hA.L);this.t1.setAlpha(this.hA.L);if(this.gQ)this.gQ.setAlpha(this.hA.L);for(const k in this.lqT||{})this.lqT[k].setAlpha(this.hA.L);this.pnR.setAlpha(this.hA.R);this.gR.setAlpha(this.hA.R);this.t2.setAlpha(this.hA.R)}
  }
 }
