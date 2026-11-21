@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v55</title>
+<title>공허 기생충 v56</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v55';
+window.VP_VER='v56';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -548,7 +548,7 @@ class G extends Phaser.Scene{
   if(this.mbOn&&this.mbBite(fx,fy))hit=1;if(this.swOn&&this.swBite(fx,fy))hit=1;
   this.moStart('bite');this.brFx={t:0,x:p.x,y:p.y,an};
   for(const m of this.cur.en)if(m.on){const dx=m.x-p.x,dy=m.y-p.y,d=Math.hypot(dx,dy);
-   if(this.inBite(dx,dy,fx,fy,m.mb?m.br||0:m.k=='rw'||m.k=='em'?40:m.k=='sw'?18:0)&&!m.gone&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))){let dg=this.bdmg;if(m.k=='gna'){if(m.st=='curl')dg/=2;m.st='curl';m.tm=1.4;m.spr.setTexture('gnac').setRotation(0);for(const o of this.cur.en)if(o.on&&o.k=='gna'&&o!==m&&o.st!='curl'&&Math.hypot(o.x-m.x,o.y-m.y)<130){o.st='curl';o.tm=1.2;o.spr.setTexture('gnac').setRotation(0)}}hit=1;{const L=this.lin,mh=m.mh||MON(m.k).hp;if(L.p>=3&&m.hp<=mh*(m.k=='qn'||m.k=='wd'?.12:m.k=='sw'?(m.ex?.06:-1):m.k=='rw'||m.k=='em'||m.mb?.06:.25)){this.gulp(m);continue}m.bc=(m.bc||0)+1;if(L.p>=1&&m.bc%2==0){m.bl=3;this.dtx(m.x,m.y-14,'찢기','#ff7a9a')}}dg*=this.dmul(m,1);m.hp-=dg;if(this.lin.p>=2)this.en=Math.min(this.emax,this.en+dg*.15);m.spr.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.spr)m.spr.clearTint()});
+   if(this.inBite(dx,dy,fx,fy,m.mb?m.br||0:m.k=='rw'||m.k=='em'?40:m.k=='sw'?18:0)&&!m.gone&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))){let dg=this.bdmg;if(m.k=='gna'){if(m.st=='curl')dg/=2;m.st='curl';m.tm=1.4;m.spr.setTexture('gnac').setRotation(0);for(const o of this.cur.en)if(o.on&&o.k=='gna'&&o!==m&&o.st!='curl'&&Math.hypot(o.x-m.x,o.y-m.y)<130){o.st='curl';o.tm=1.2;o.spr.setTexture('gnac').setRotation(0)}}hit=1;{const L=this.lin,mh=m.mh||MON(m.k).hp;if(L.p>=3&&m.hp<=mh*(m.k=='qn'||m.k=='wd'?.12:m.k=='sw'?(m.ex?.06:-1):m.k=='rw'||m.k=='em'||m.mb?.06:.25)){this.gulp(m);continue}m.bc=(m.bc||0)+1;if(L.p>=1&&m.bc%2==0){m.bl=3;this.dtx(m.x,m.y-14,'찢기','#ff7a9a')}}dg*=this.dmul(m,1);m.hp-=dg;if(this.lin.p>=2)this.en=Math.min(this.emax,this.en+dg*.15);m.spr.setTintFill(0xffffff);this.bmAdd(m,an);this.time.delayedCall(80,()=>{if(m.spr)m.spr.clearTint()});
     if(d>0&&!m.mb&&!({spn:1,qn:1,wd:1,rw:1,em:1,sw:1})[m.k])this.mv(m,dx/d*18,dy/d*18,30);
     if(m.hp<=0){this.kill(m);if(this.lin.p>=2)this.feed()}}}if(this.emMir&&this.emMirBite(fx,fy))hit=1;{let bo=null,bq=C.BITE.range;for(const o of this.cur.cor||[])if(o.on){const dx=(o.c+.5)*C.T-p.x,dy=(o.r+.5)*C.T-p.y,d=Math.hypot(dx,dy);if(d<bq&&(dx*fx+dy*fy)/(d||1)>.3){bq=d;bo=o}}if(bo){this.corHit(bo,1);hit=1}}if(hit){this.lgT=.06;this.lgA=an}if(!hit&&this.lin.v>=2)this.spit()}
  foe(dt,p){const now=this.time.now;for(const m of this.cur.en)if(m.on){if(m.k){try{this[m.k+'AI'](m,dt,p)}catch(e){vpErr(e,m.k+'AI '+(m.st||''))}continue}const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,E=C.E,s=m.spr;m.cd-=dt;m.cq=(m.cq||0)-dt;m.cw=(m.cw||0)-dt;m.tm=(m.tm||0)-dt;let rot=null,sx=1,sy=1;m.hg=Math.max(0,(m.hg??70)-E.hd*(m.ag?.35:1)*dt);const hg=m.hg,hm=hg<15?1.25:1;m.fcd=(m.fcd||0)-dt;
@@ -2273,7 +2273,7 @@ class G extends Phaser.Scene{
   if(!this.xpL)this.xpL=this.add.text(6,Y-1,'',ST({fontSize:'8px',color:'#ffe9a8'})).setOrigin(0,1).setDepth(61).setAlpha(.45);const ls='Lv.'+this.plv;if(this.xpL.text!==ls)this.xpL.setText(ls);
   const vis=!this.gfx||this.gfx.visible;this.xpT.setVisible(vis);this.xpL.setVisible(vis)}
  // ===== v45: 물기·섭취 모션 = M3 용수철 꿈틀 (확정) =====
- moStart(k){this.mo={k,t:0,dur:.34}}
+ moStart(k){this.mo={k,t:0,dur:k=='bite'?.24:.34}}
  moApply(dt){const g=this.moG||(this.moG=this.add.graphics().setDepth(10.6));g.clear();if(this.over||!this.hd||!this.hd.visible)return;
   const hd=this.hd,S=this.bsc||1;let a=this.ang;
   // 먹는 동안: 머리가 먹이 쪽으로
@@ -2281,11 +2281,8 @@ class G extends Phaser.Scene{
   const fx=Math.cos(a),fy=Math.sin(a),px=-fy,py=fx,now=this.time.now/1000,seg=this.sg,mv=(o,dx,dy)=>o.setPosition(o.x+dx,o.y+dy);
   const mo=this.mo;let q=-1;if(mo){mo.t+=dt;q=mo.t/mo.dur;if(q>=1){this.mo=null;q=-1}}
   let L=0;
-  if(q>=0){ // 물기: 움츠렸다(S자) → 잔상 셋을 남기며 튀어 나가 할퀴는 호 → 돌아옴
-   L=q<.35?-5*q/.35:q<.6?-5+19*(q-.35)/.25:14*(1-(q-.6)/.4);const curl=q<.35?q/.35:q<.6?1-(q-.35)/.25:0;
-   seg.forEach((o,i)=>{const w=Math.sin(i*1.4+1)*6*curl*S;mv(o,fx*L*(.4-.08*i)-fx*curl*3*i+px*w,fy*L*(.4-.08*i)-fy*curl*3*i+py*w)});
-   if(q>.35&&q<.75){const back=Math.min(1,(q-.35)/.25);for(let j=1;j<=3;j++)g.fillStyle(0xc890ff,.35-j*.08).fillCircle(hd.x+fx*(L-j*6*back),hd.y+fy*(L-j*6*back),(7-j)*S)}
-   if(q>.5&&q<.75){const al=1-(q-.5)/.25;g.lineStyle(3.5*S,0xffd0f0,al).beginPath().arc(hd.x+fx*(L+4),hd.y+fy*(L+4),18*S,a-1.1,a+1.1,false).strokePath()}}
+  if(q>=0){ // 물기 (v56 S3): 몸은 그대로, 송곳니가 다무는 순간 머리만 4px 콕
+   L=q<.4?0:q<.6?4*(q-.4)/.2:4*(1-(q-.6)/.4)}
   else if(F){ // 섭취: 몸 전체가 머리→꼬리로 꿈틀 물결, 먹이가 보랏빛 알갱이로 녹아 머리로
    const T=now*6;seg.forEach((o,i)=>o.setScale(S*(1+.16*Math.max(0,Math.sin(T-i*1.2)))));hd.setScale(S*(1+.07*Math.max(0,Math.sin(T+1.2))));
    if(Math.random()<.6){const an=Math.random()*6.283,b=this.add.circle(F.spr.x+Math.cos(an)*8,F.spr.y+Math.sin(an)*8,1.8,0xc070ff,.8).setDepth(12);this.tweens.add({targets:b,x:hd.x,y:hd.y,scale:.3,alpha:0,duration:380,ease:'Quad.in',onComplete:()=>b.destroy()})}}
@@ -2306,12 +2303,16 @@ class G extends Phaser.Scene{
  inBite(dx,dy,fx,fy,ex){const f=(C.BITE.range+(ex||0))/C.BITE.range,x=(dx*fx+dy*fy)/f,y=(dy*fx-dx*fy)/f,P=this.brPoly();
   let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if((a.y>y)!=(b.y>y)&&x<(b.x-a.x)*(y-a.y)/(b.y-a.y)+a.x)c=!c}if(c)return true;
   for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[j],b=P[i],ux=b.x-a.x,uy=b.y-a.y,t=Math.max(0,Math.min(1,((x-a.x)*ux+(y-a.y)*uy)/(ux*ux+uy*uy||1)));if(Math.hypot(a.x+ux*t-x,a.y+uy*t-y)<=6)return true}return false}
- // 물기 효과: 부채꼴 + 입에서 퍼지는 물결 호 두 겹 + 머리 턱 다물기 (0.34초, 앞으로 12px 따라 밀림)
- brDraw(dt){const g=this.brG||(this.brG=this.add.graphics().setDepth(12));g.clear();const E=this.brFx;if(!E||this.over)return;E.t+=dt;const D=.34,q=E.t/D;if(q>=1){this.brFx=null;return}
-  const h=this.brDeg()*Math.PI/180,c=Math.cos(E.an),s=Math.sin(E.an),k=Math.min(1,q/.6),ox=E.x+c*12*k,oy=E.y+s*12*k,W=(x,y)=>({x:ox+c*x-s*y,y:oy+s*x+c*y}),al=q<.55?1:1-(q-.55)/.45;
-  const P=this.brPoly().map(p=>W(p.x,p.y));g.fillStyle(0xffffff,.11*al).fillPoints(P,true);g.lineStyle(1.5,0xffffff,.55*al).strokePoints(P,true);
-  for(const d of[0,.18]){const r=10+46*Math.max(0,Math.min(1,(q-d)/.5));if(q>d&&q<d+.6){const w=W(0,0);g.lineStyle(2.5,0xffd0f0,(1-(q-d)/.6)*.9).beginPath().arc(w.x,w.y,r,E.an-h*.92,E.an+h*.92,false).strokePath()}}
-  this.jawDraw(g,q,al)}
+ // ===== v56: 물기 효과 = S3 이빨 자국 (개발자 선택 2026-11-21, 시안 docs/v56/bite_options.png) =====
+ // 허공: 송곳니만 벌렸다가 다묾 + 머리 4px 콕 (0.24초). 맞으면 몬스터 몸의 물린 쪽에 좌우 이빨 자국 3개씩이 0.07초 뒤 나타나 0.5초에 사라짐(몬스터를 따라감).
+ // v55까지의 흰 부채꼴 · 물결 호 두 겹 · 잔상 · 할퀴기 호 · 몸 S자 돌진은 삭제. 판정(brPoly/inBite) · 피해 · 넉백 · 맞았을 때 전진(v51)은 그대로.
+ bmAdd(m,an){const L=this.bmk||(this.bmk=[]);if(L.length>8)L.shift();L.push({m,an,t:0,r:m.mb?Math.min(30,(m.br||0)*.5+8):8,rm:this.cur,x:m.x,y:m.y})}
+ brDraw(dt){const g=this.brG||(this.brG=this.add.graphics().setDepth(12));g.clear();if(this.over){this.bmk=null;this.brFx=null;return}
+  if(this.bmk)this.bmk=this.bmk.filter(k=>{k.t+=dt;if(k.t>.5||k.rm!==this.cur)return false;const m=k.m;if(m.on&&m.spr&&m.spr.active){k.x=m.spr.x;k.y=m.spr.y}if(k.t<.07)return true;
+   const al=k.t<.15?1:1-(k.t-.15)/.35,c=Math.cos(k.an),s=Math.sin(k.an),px=-s,py=c,bx=k.x-c*k.r,by=k.y-s*k.r;
+   for(const sg of[-1,1])for(let j=0;j<3;j++){const ox=bx+c*j*4.5+px*sg*5.5,oy=by+s*j*4.5+py*sg*5.5,tx=ox-px*sg*3.2,ty=oy-py*sg*3.2;g.lineStyle(3,0x2a1040,al*.9).lineBetween(ox,oy,tx,ty);g.lineStyle(1.6,0xfff4fa,al).lineBetween(ox,oy,tx,ty)}
+   return true});
+  const E=this.brFx;if(!E)return;E.t+=dt;const q=E.t/.24;if(q>=1){this.brFx=null;return}this.jawDraw(g,q,1)}
  // ===== v53: 송곳니 한 쌍 — 서로 절대 교차하지 않게 다시 그림 =====
  // 각 송곳니 = 머리 앞의 2차 곡선(밑동 → 바깥쪽으로 볼록 → 끝). 가운데 선에서 잰 옆 거리가 모든 점에서 ≥ 2.4px(다물었을 때 끝) → 중심선 사이 ≥ 4.8px.
  // 테두리도 끝으로 갈수록 가늘게(3.2→1.0) → 테두리까지 포함해 눈에 보이는 틈 ≥ 약 3.8px.
