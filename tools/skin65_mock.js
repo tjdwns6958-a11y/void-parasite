@@ -1,12 +1,12 @@
 const {chromium}=require('playwright');(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const ctx=await b.newContext({viewport:{width:800,height:360},deviceScaleFactor:3});const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()=='error')errs.push(m.text())});
 await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpNoSave=1;window.__vpZ=1});await p.goto('file://'+__dirname+'/v64.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(2500);
-for(const PART of ['p3']){
+for(const PART of ['p4']){
 const out=await p.evaluate((PART)=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();GAME.loop.sleep();
  let src=skinTex.toString();src=src.split("'wh_'+key").join("'wh_'+key+V.sf").split("'whj_'+key").join("'whj_'+key+V.sf").split("'_'+key").join("'_'+key+V.sf");
  const R=(a,b)=>{if(!src.includes(a))throw new Error('anchor '+a);src=src.split(a).join(b)};
  R("function skinTex(s,key,L){","function(s,key,L,V){");R("const pal=dom=='n'?PAL.n:PAL[dom][t-1]","const pal=V.pal&&V.pal[dom]?V.pal[dom][t-1]:(dom=='n'?PAL.n:PAL[dom][t-1])");
  R("if(L.p>=3&&!nj)","if(L.p>=3&&!nj&&!V.pm)");R("if(L.p>=2){const h=","if(L.p>=2&&!V.ps){const h=");
- R("const ec=","V.h&&V.h(x,c,r,L,px,ln,disc,pal);const ec=");R("if(L.p>=1&&!nj){ln(","if(L.p>=1&&!nj&&!V.nh){ln(");R("if(L.v>=2)disc(x,c,c,1.1","V.g&&V.g(x,c,r,L,px,ln,disc,pal,i);if(L.v>=2)disc(x,c,c,1.1");
+ R("const ec=","V.h&&V.h(x,c,r,L,px,ln,disc,pal);const ec=");R("if(L.p>=1&&!nj){ln(","if(L.p>=1&&!nj&&!V.nh){ln(");R("if(L.p>=3){disc(x,c,c+.3,r-1.1,'#3a0a30');","if(L.p>=3&&!V.nf){disc(x,c,c+.3,r-1.1,'#3a0a30');");R("if(L.p>=3){px(x,c-1,c-4,ec);px(x,c-1,c+3,ec)}","if(L.p>=3&&V.ne){}else if(L.p>=3){px(x,c-1,c-4,ec);px(x,c-1,c+3,ec)}");R("if(L.v>=2)disc(x,c,c,1.1","V.g&&V.g(x,c,r,L,px,ln,disc,pal,i);if(L.v>=2)disc(x,c,c,1.1");
  const SK=eval('('+src+')');
  // ---- 도우미 ----
  const hs=(i,j)=>{let h=(i*374761393+j*668265263)|0;h=(h^(h>>>13))*1274126177|0;return((h^(h>>>16))>>>0)/4294967296};
@@ -53,12 +53,23 @@ const out=await p.evaluate((PART)=>{const s=GAME.scene.scenes[0];if(s.hint)s.hin
  // E4 왕관이 곧 턱 (갈고리 턱 없음) — 평소: 이빨이 바깥으로 벌어짐 / 물 때: 앞쪽으로 오므라듦
  const e4=(cl)=>(x,c,r,L,px)=>{if(L.p<3)return;for(let a=-1.3;a<=1.31;a+=.325){const tilt=cl?-a*.75:a*.15,cx=Math.cos(a),sy=Math.sin(a),dx=Math.cos(a+tilt),dy=Math.sin(a+tilt),L2=2.6-Math.abs(a)*.5;px(x,c+cx*(r-.6),c+sy*(r-.6),'#ff9ac0');for(let k=.6;k<=L2;k+=.7)px(x,c+cx*r+dx*k,c+sy*r+dy*k,k+.7>L2?'#ffe8f0':'#ffffff')}};
  V.e4a={sf:'_e4a',pm:1,nh:1,h:e4(0),g:fseg};V.e4b={sf:'_e4b',pm:1,nh:1,h:e4(1),g:fseg};
+
+ // 거미 눈 4개: 앞쪽 큰 눈 둘(2x2, 흰 반짝임) + 뒤쪽 작은 눈 둘
+ const eyes4=(x,c,r,px)=>{for(const sg of[-1,1]){for(const[dx,dy]of[[0,0],[1,0],[0,1],[1,1],[-1,0],[-1,1],[2,0],[2,1],[0,-1],[1,-1],[0,2],[1,2]])px(x,c+1+dx,c+sg*1.6+(sg<0?-1:0)+dy,'#3d1b6b');for(const[dx,dy]of[[0,0],[1,0],[0,1],[1,1]])px(x,c+1+dx,c+sg*1.6+(sg<0?-1:0)+dy,'#ff3a5a');px(x,c+1,c+sg*1.6+(sg<0?-1:0),'#ffffff');
+   px(x,c-2,c+sg*3.2,'#3d1b6b');px(x,c-1,c+sg*3.2,'#ff5a7a');px(x,c-1,c+sg*3.2+(sg<0?-1:1),'#3d1b6b')}};
+ const crownE=(x,px,c,r)=>crown(x,px,c,r,-1.25,1.25,.31,()=>1.8);
+ V.ea={sf:'_ea',nf:1,pm:1,ne:1,h:(x,c,r,L,px)=>{if(L.p<3)return;crownE(x,px,c,r);eyes4(x,c,r,px)}};
+ V.eb={sf:'_eb',nf:1,pm:1,ne:1,h:(x,c,r,L,px)=>{if(L.p<3)return;for(let a=-1.3;a<=1.3;a+=.12)px(x,c+Math.cos(a)*(r-1.1),c+Math.sin(a)*(r-1.1),'#c0305a');crown(x,px,c,r,-1.25,1.25,.31,()=>1.8,'#d8406e');for(let a=-1.1;a<=1.1;a+=.31)px(x,c+Math.cos(a+.15)*(r-1.9),c+Math.sin(a+.15)*(r-1.9),'#ffd0e0');eyes4(x,c,r,px)}};
+ V.ec={sf:'_ec',nf:1,pm:1,ne:1,h:(x,c,r,L,px)=>{if(L.p<3)return;crown(x,px,c,r,-2.1,2.1,.31,a=>Math.max(.8,1.8-Math.max(0,Math.abs(a)-1.25)*1.1));eyes4(x,c,r,px)}};
+ const e4b=(cl)=>(x,c,r,L,px)=>{if(L.p<3)return;for(let a=-1.25;a<=1.26;a+=.31){const tilt=cl?-a*.75:a*.15,cx=Math.cos(a),sy=Math.sin(a),dx=Math.cos(a+tilt),dy=Math.sin(a+tilt);px(x,c+cx*(r-.6),c+sy*(r-.6),'#ff9ac0');for(let k=.6;k<=2.2;k+=.7)px(x,c+cx*r+dx*k,c+sy*r+dy*k,k+.7>2.2?'#ffe8f0':'#ffffff')}eyes4(x,c,r,px)};
+ V.eda={sf:'_eda',nf:1,pm:1,ne:1,nh:1,h:e4b(0)};V.edb={sf:'_edb',nf:1,pm:1,ne:1,nh:1,h:e4b(1)};
+ V.e0={sf:'_e0',nf:1,pm:1,h:(x,c,r,L,px)=>{if(L.p<3)return;crownE(x,px,c,r)}};
  // ---- 그리기 ----
  s.add.rectangle(400,180,800,360,0x0b0716,1).setDepth(500);const TX=(x,y,t,o)=>s.add.text(x,y,t,ST(Object.assign({fontSize:'15px',color:'#ece6f7'},o||{}))).setOrigin(.5).setDepth(503);
  const worm=(x,y,L,v,sc)=>{const key='p'+L.p+'c'+L.c+'v'+L.v;let sf='';if(v){SK(s,key,L,v);sf=v.sf}else skinTex(s,key,L);for(let n=4;n>=1;n--)s.add.image(x-6.5*sc*n,y+1.5*sc*Math.sin(n*1.3),'ws'+n+'_'+key+sf).setScale(.5*sc).setDepth(501);s.add.image(x,y,'wh_'+key+sf).setScale(.5*sc).setDepth(502)};
  if(PART=='c'){const rows=[['지금 (v61)',null],['A 결정이 박힘',V.cA],['B 광맥 껍질',V.cB],['C 정동 (바위 속 자수정)',V.cC]];
   rows.forEach(([nm,v],ri)=>{const y=62+ri*84;TX(88,y,nm,{fontSize:'13px',color:ri?'#ffe082':'#ff9a9a'});for(let t=1;t<=3;t++){worm(130+t*215,y,{p:0,c:t,v:0},v,2.9);if(ri==0)TX(85+t*215,16,'갑각 '+t+'단계'+(t==3?' (공명 갑각)':''),{fontSize:'12px',color:'#9fd8ff'})}})}
- else{const rows=[['지금 (v64 D+F)',null],['E1 왕관 + 비치는 몸',V.e1],['E2 두 겹 왕관',V.e2],['E3 이빨 갈기',V.e3],['E4 왕관이 곧 턱 — 평소',V.e4a],['E4 — 물 때 (오므라듦)',V.e4b]];
+ else{const rows=[['처음 E (눈 2개)',V.e0],['E-a 거미 눈 4개',V.ea],['E-b + 안쪽 잇몸·이빨',V.eb],['E-c + 이빨 갈기',V.ec],['E-d 왕관이 턱 — 평소',V.eda],['E-d — 물 때',V.edb]];
   rows.forEach(([nm,v],ri)=>{const x=(ri%3)*266,y=Math.floor(ri/3)*180;TX(x+133,y+26,nm,{fontSize:'13px',color:ri?'#ffe082':'#ff9a9a'});worm(x+190,y+112,{p:3,c:0,v:0},v,3.7)})}
  GAME.renderer.preRender();GAME.scene.render(GAME.renderer);GAME.renderer.postRender();return 'ok'},PART);
  await p.waitForTimeout(300);await p.screenshot({path:__dirname+'/skinopt_'+PART+'.png'});await p.reload({waitUntil:'domcontentloaded'});await p.waitForTimeout(2500)}
