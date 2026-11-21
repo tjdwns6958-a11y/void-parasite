@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v40</title>
+<title>공허 기생충 v41</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,11 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v40';
+window.VP_VER='v41';
+// 전체 화면 (v41)
+window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
+ toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
+  const lock=()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(_){}};if(r&&r.then)r.then(lock).catch(()=>{});else lock();return true}catch(_){return false}}};
 // 렌더링 배율: 화면의 실제 픽셀 수에 맞춰 캔버스를 키운다 (0.5 단위, 1~3). 테스트에서 window.__vpZ로 고정 가능
 window.VZ=window.__vpZ||Math.max(1,Math.min(3,Math.ceil(Math.max(screen.width,screen.height,innerWidth,innerHeight)*(window.devicePixelRatio||1)/800*2)/2));
 window.vpErr=function(e,where){try{const n=(window.__vpErrN=(window.__vpErrN||0)+1);if(n<=5)console.error('[vpErr]',where||'',e);
@@ -530,7 +534,7 @@ class G extends Phaser.Scene{
    const o=[];o.push(this.add.rectangle(400,180,800,360,0x0d0818,.78).setDepth(300).setInteractive());o.push(this.add.text(400,62,'일시정지',ST({fontSize:'26px',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
    const tm=Math.round((this.time.now-this.t0)/1000);o.push(this.add.text(400,94,this.zi+'구역  ·  생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  방 '+this.lv.rooms.filter(r=>r.seen).length+' / 16',ST({fontSize:'13px',color:'#a99fc2'})).setOrigin(.5).setDepth(301));
    const b1=this.add.text(320,140,'계속하기',ST({fontSize:'17px',color:'#12091f',fontStyle:'bold',backgroundColor:'#a65cff',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>this.pz());
-   const b2=this.add.text(480,140,'처음부터',ST({fontSize:'17px',color:'#ece6f7',fontStyle:'bold',backgroundColor:'#3a2f57',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>{this.paused=false;this.time.paused=false;this.scene.restart()});o.push(b1,b2);
+   const b2=this.add.text(480,140,'처음부터',ST({fontSize:'17px',color:'#ece6f7',fontStyle:'bold',backgroundColor:'#3a2f57',padding:{x:22,y:11}})).setOrigin(.5).setDepth(301).setInteractive().on('pointerdown',()=>{this.paused=false;this.time.paused=false;this.scene.restart()});o.push(b1,b2,this.fsBtn(782,14,301));
    {const g=this.add.graphics().setDepth(301);o.push(g);const row=(y,items)=>{let x=400-items.reduce((a,it)=>a+it[2],0)/2;for(const[c,lb,w,sz]of items){g.fillStyle(c,1).fillRect(x,y-(sz||12)/2,sz||12,sz||12);o.push(this.add.text(x+(sz||12)+5,y,lb,ST({fontSize:'11px',color:'#c9c0de'})).setOrigin(0,.5).setDepth(301));x+=w}};
     o.push(this.add.text(400,190,'지도 보는 법',ST({fontSize:'12px',color:'#8f86a8',fontStyle:'bold'})).setOrigin(.5).setDepth(301));
     row(214,[[0xece6f7,'지금 있는 방',100],[0xa65cff,'가 본 방',82],[0x3a2f57,'안 가 본 방',94],[0xe0457b,'출구',58]]);
@@ -917,6 +921,7 @@ class G extends Phaser.Scene{
   A(this.add.text(20,12,'진화 나무',ST({fontSize:'20px',fontStyle:'bold'})).setDepth(321));
   A(this.add.text(20,40,'먹은 것에 따라 몸이 3갈래로 분화한다\n재료를 모아 둥지(초록 방)에서 탈피하면 한 단계',ST({fontSize:'11px',color:'#a99fc2',lineSpacing:3})).setDepth(321));
   A(this.add.text(782,14,st?'화면을 누르면 시작 ▶':(this.sys.game.device.input.touch?'닫기 ✕':'닫기 ✕  (T)'),ST({fontSize:'13px',fontStyle:'bold',color:st?'#12091f':'#ece6f7',backgroundColor:st?'#a65cff':'#3a2f57',padding:{x:10,y:6}})).setOrigin(1,0).setDepth(321));
+  {const cl=O[O.length-1];O.fs=A(this.fsBtn(cl.x-cl.width-8,14,321))}
   O.g=A(this.add.graphics().setDepth(321));this.treeDraw()}
  treePos(k,j){const cx=400,cy=204;return k=='p'?[cx,cy-48*(j+1)]:k=='c'?[cx+84*(j+1),cy+27*(j+1)]:[cx-84*(j+1),cy+27*(j+1)]}
  treeDraw(){const O=this.treeO,g=O.g;g.clear();O.tx.forEach(t=>t.destroy());O.tx=[];
@@ -939,7 +944,7 @@ class G extends Phaser.Scene{
   if(O.sel){const[k,j]=O.sel,t=this.lin[k];a=LN[k]+' '+(j+1)+'단계 · '+ND[k][j][0]+(j==2?'      ★ 특수 퀘스트 「'+MBQ[k].q+'」 → 특수 스킬 「'+MBQ[k].s+'」':'');b=ND[k][j][1]+'   —   '+(j<t?'획득함':j==t?(this.nodeOk(k)?'재료가 모였다 — 둥지에서 탈피하면 얻는다':this.nodeLock(k)):'앞 단계를 먼저 얻어야 한다')}
   else{a='포식 = 유기물 (유충·몬스터 껍질)    갑각 = 무기물 (결정·유생·땅울음 껍질)    공허 = 공허 정수 (껍질·보이드링·산호·정예)';b='3단계는 다른 계통 1단계가 있어야 열린다 · 탈피는 1구역 3번 · 2구역부터 5번까지, 할수록 재료가 늘어난다 · 동그라미를 누르면 자세한 설명'}
   T(28,323,a,{fontSize:'11px',fontStyle:'bold',color:'#ece6f7'},0,.5);T(28,343,b,{fontSize:'10px',color:'#a99fc2',wordWrap:{width:750}},0,.5)}
- treeTap(x,y){const O=this.treeO;if(!O)return;let best=null,bd=22;for(const k of LK)for(let j=0;j<3;j++){const[nx,ny]=this.treePos(k,j),d=Math.hypot(nx-x,ny-y);if(d<bd){bd=d;best=[k,j]}}
+ treeTap(x,y){const O=this.treeO;if(!O)return;if(O.fs&&O.fs.getBounds().contains(x,y))return;let best=null,bd=22;for(const k of LK)for(let j=0;j<3;j++){const[nx,ny]=this.treePos(k,j),d=Math.hypot(nx-x,ny-y);if(d<bd){bd=d;best=[k,j]}}
   if(best){O.sel=best;this.treeDraw();return}if(y>308&&!O.st)return;this.treeClose()}
  treeClose(){const O=this.treeO;if(!O)return;O.tx.forEach(t=>t.destroy());O.forEach(o=>o.destroy());this.treeO=null;this.paused=false;this.physics.resume();this.tweens.resumeAll();this.time.paused=false}
  // ===== 보스: 공허를 걷는 자 =====
@@ -2172,6 +2177,10 @@ class G extends Phaser.Scene{
    if(t>.3&&t<.32)cam.zoomTo(1.1,2200,'Sine.easeInOut');if(t>3.1&&t<3.12)cam.zoomTo(1,1300,'Sine.easeInOut')},
    ()=>{kill();g.clear();dk.setAlpha(1);cam.zoomTo(1,300);this.hudVis(false);this.ending('흩어진 무리가 빨려 든 자리에, 빛 한 점만이 남았다.',2);
     let tt=0;I.ev=this.time.addEvent({delay:16,loop:true,callback:()=>{tt+=.016;if(!pt.scene){I.ev.remove();return}drawPt(CX,CY,2.4+.4*Math.sin(tt*2.2),1)}})})}
+ fsBtn(x,y,dp){const lb=()=>vpFS.on()?'전체 화면 끄기':'⛶ 전체 화면';const b=this.add.text(x,y,lb(),ST({fontSize:'13px',fontStyle:'bold',color:'#ece6f7',backgroundColor:'#2a2342',padding:{x:10,y:6}})).setOrigin(1,0).setDepth(dp).setInteractive();
+  b.on('pointerup',()=>{const was=vpFS.on();if(vpFS.toggle()){setTimeout(()=>{if(b.scene)b.setText(vpFS.on()?'전체 화면 끄기':'⛶ 전체 화면')},400);if(!was)setTimeout(()=>{if(b.scene&&!vpFS.on())this.fsMsg(b)},700)}else this.fsMsg(b)});return b}
+ fsMsg(b){if(b.msg&&b.msg.scene)return;const t=this.add.text(782,b.y+b.height+6,'이 화면에서는 전체 화면을 쓸 수 없어요\n링크를 크롬·사파리 같은 브라우저에서 열어 주세요\n(아이폰: 사파리 공유 → 홈 화면에 추가)',ST({fontSize:'11px',color:'#ffe9a8',backgroundColor:'#1a1428',padding:{x:8,y:6},align:'right',lineSpacing:3})).setOrigin(1,0).setDepth(b.depth+1);
+  b.msg=t;(this.pzo||this.treeO||[]).push(t);setTimeout(()=>{if(t.scene)t.destroy()},5000)}
  end(a,b,c,tip){this.clearSave();
   this.over=true;this.pl.setVelocity(0,0);this.pl.anims.stop();
   this.add.rectangle(400,180,800,360,0x120e1a,.82).setDepth(200);

@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});
+const ctx=await b.newContext({viewport:{width:844,height:390},deviceScaleFactor:2,hasTouch:true,isMobile:true});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoSave=1;window.__vpZ=2});
+await p.goto('file://'+__dirname+'/v41.html');await p.waitForTimeout(3000);
+const box=await p.evaluate(()=>{const r=GAME.canvas.getBoundingClientRect();return{l:r.left,t:r.top,w:r.width,h:r.height}});
+const tap=async(x,y)=>{await p.touchscreen.tap(box.l+x*box.w/800,box.t+y*box.h/360);await p.waitForTimeout(600)};
+const st=()=>p.evaluate(()=>{const s=GAME.scene.scenes[0];const fb=s.treeO&&s.treeO.fs;return{tree:!!s.treeO,paused:!!s.paused,fs:vpFS.on(),fsOk:vpFS.ok(),btn:fb?[Math.round(fb.x),fb.y,Math.round(fb.width),fb.text]:null}});
+let s=await st();console.log('start',s);await p.screenshot({path:'fs_tree.png'});
+const bx=s.btn[0]-s.btn[2]/2;await tap(bx,26);console.log('after fs tap (tree)',await st());
+await p.screenshot({path:'fs_tree2.png'});
+await tap(400,200);console.log('tap elsewhere -> start',await st());
+await tap(264,30);console.log('pause',await st());
+const pb=await p.evaluate(()=>{const s=GAME.scene.scenes[0];const t=s.pzo.find(o=>o.text&&o.text.includes('전체'));return [t.x-t.width/2,t.y+t.height/2,t.text]});console.log('pause btn',pb);
+await tap(pb[0],pb[1]);console.log('after fs tap (pause)',await st(),await p.evaluate(()=>GAME.scene.scenes[0].pzo.find(o=>o.text&&o.text.includes('전체')).text));
+await p.screenshot({path:'fs_pause.png'});
+console.log('errs',errs);await b.close()})();
