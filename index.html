@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v49</title>
+<title>공허 기생충 v50</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v49';
+window.VP_VER='v50';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -542,7 +542,7 @@ class G extends Phaser.Scene{
     row(262,[[0x8a7ab0,'동굴 통로',84,6],[0xa07850,'땅울음 굴',96,6],[0xc070ff,'공허 균열',86,6]])}
    o.push(this.add.text(400,322,this.sys.game.device.input.touch?'조이스틱: 이동 (반만 밀면 살금살금)  ·  섭취 버튼: 탭 = 물기, 누르고 있기 = 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금  ·  Space: 물기/섭취  ·  E: 탈피  ·  P·Esc: 일시정지',ST({fontSize:'12px',color:'#8f86a8'})).setOrigin(.5).setDepth(301));this.pzo=o}
   else{this.physics.resume();this.tweens.resumeAll();this.time.paused=false;(this.pzo||[]).forEach(x=>x.destroy());this.pzo=null}}
- bite(){const p=this.pl,an=this.ang,fx=Math.cos(an),fy=Math.sin(an);this.bcd=C.BITE.cd;let hit=0;if(this.sil>0){this.bcd=.3;this.dtx(p.x,p.y-24,'침묵 — 물 수 없다','#b0a0d0');return}this.rwNoise();
+ bite(){this.aimAssist();const p=this.pl,an=this.ang,fx=Math.cos(an),fy=Math.sin(an);this.bcd=C.BITE.cd;let hit=0;if(this.sil>0){this.bcd=.3;this.dtx(p.x,p.y-24,'침묵 — 물 수 없다','#b0a0d0');return}this.rwNoise();
   for(const q of this.rwo||[])if(q.on){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<C.BITE.range&&(dx*fx+dy*fy)/(d||1)>.2){q.on=0;q.o.destroy();this.en=Math.min(this.emax,this.en+6);this.dtx(q.x,q.y-14,'무(無)를 삼켰다 · 에너지 +6','#c8b8ff');hit=1}}
   for(const q of this.mbb||[])if(!q.ref&&q.k=='spk'){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<C.BITE.range+14&&(dx*fx+dy*fy)/(d||1)>-.1){q.ref=1;q.t=3;q.o.setTint(0x8ad8ff);this.dtx(q.x,q.y-14,'되받아쳤다!','#8ad8ff');hit=1}}
   if(this.mbOn&&this.mbBite(fx,fy))hit=1;if(this.swOn&&this.swBite(fx,fy))hit=1;
@@ -2291,7 +2291,12 @@ class G extends Phaser.Scene{
    if(Math.random()<.6){const an=Math.random()*6.283,b=this.add.circle(F.spr.x+Math.cos(an)*8,F.spr.y+Math.sin(an)*8,1.8,0xc070ff,.8).setDepth(12);this.tweens.add({targets:b,x:hd.x,y:hd.y,scale:.3,alpha:0,duration:380,ease:'Quad.in',onComplete:()=>b.destroy()})}}
   if(L)mv(hd,fx*L,fy*L)}
  // ===== v49: 물기 범위 = R1 둥근 부채꼴 확정, 각도 좁힘 (반지름 58 · 기본 ±40°, 테스트용 window.__vpBRA = 각도) + 턱 다무는 모션 =====
- brDeg(){return +(window.__vpBRA||40)}
+ brDeg(){return +(window.__vpBRA||45)}
+ // 조준 보정 (v50): 앞쪽 ±60°·거리 84 안의 가장 가까운 일반 몬스터 쪽으로 머리를 돌림. 테스트에서 끄기: window.__vpNoAim=1
+ aimAssist(){if(window.__vpNoAim||this.sil>0)return;const p=this.pl,a=this.ang;let best=null,bd=1e9;
+  for(const m of this.cur.en){if(!m.on||m.gone||!m.spr||!m.spr.visible||m.mb||m.k=='sw'||m.k=='rw'||m.k=='em'||(m.k=='rek'&&(m.st=='under'||m.st=='warn')))continue;
+   const dx=m.x-p.x,dy=m.y-p.y,d=Math.hypot(dx,dy);if(d>84||d<1)continue;const da=Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy,dx)-a));if(da>Math.PI/3)continue;const sc=d+da*20;if(sc<bd){bd=sc;best=m}}
+  if(best){this.ang=Math.atan2(best.y-p.y,best.x-p.x);if(this.hd)this.hd.setRotation(this.ang);this.aimT=best}else this.aimT=null}
  brPoly(){const D=this.brDeg();this._bp=this._bp||{};if(this._bp[D])return this._bp[D];
   const ch=(P,n)=>{for(let k=0;k<n;k++){const Q=[];for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length];Q.push({x:a.x*.75+b.x*.25,y:a.y*.75+b.y*.25},{x:a.x*.25+b.x*.75,y:a.y*.25+b.y*.75})}P=Q}return P};
   const L=(P,a,b,n)=>{for(let i=0;i<n;i++){const t=i/n;P.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t})}};const r=58,h=D*Math.PI/180;let P=[];
