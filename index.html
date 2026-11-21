@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v69</title>
+<title>공허 기생충 v70</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v69';
+window.VP_VER='v70';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -54,7 +54,7 @@ const SCS=['#7be0a8','#c0a0ff','#ffd060','#ff7a9a'],SCN=[0x7be0a8,0xc0a0ff,0xffd
 const FF='system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
 const ST=o=>Object.assign({fontFamily:FF,resolution:Math.max(2,VZ),color:'#ece6f7'},o);
 const rnd=n=>Math.random()*n|0,pick=a=>a[rnd(a.length)];
-const MBQ={p:{q:'허기의 왕관',b:'허기의 왕관',s:'포식 돌진',d:'턱들이 흩어져 사냥하는 동안만 가운데 구멍을 물 수 있다 — 맞물리는 두 턱 사이를 피하고, 들숨에 빨려 가기 전에 유충을 먼저 먹어 둘 것.',sd:'앞으로 돌진하며 지나간 자리의 적을 모두 물어뜯는다 (처치하면 체력 회복) · 재사용 6초'},c:{q:'숨 쉬는 산호 환초',b:'환초의 가면',s:'수정 돌진',d:'고리의 틈으로 들어가야 가운데 가면을 물 수 있다 — 고리가 부풀면 점선 안쪽 바깥이 터지고, 안에서는 가면의 눈빛을 피할 것. 묶인 산호충을 물어 끊으면 고리가 무너진다.',sd:'짧게 돌진해 처음 부딪힌 적에게 큰 피해를 주고 멀리 밀쳐 낸다 · 재사용 7초'},v:{q:'틈 너머의 관찰자',b:'틈 너머의 관찰자',s:'균열 도약',d:'시선 안에 오래 있으면 응시가 차오른다 — 떠 있는 갑주 조각 그림자에 숨을 것. 가장자리에서 뜬 눈을 모두 물어 감기면 큰 눈이 끌려 나온다.',sd:'바라보는 쪽으로 순간이동하고 도착한 자리에서 균열이 터진다 · 재사용 7초'}};
+const MBQ={p:{q:'허기의 왕관',b:'허기의 왕관',s:'통째 삼키기',d:'턱들이 흩어져 사냥하는 동안만 가운데 구멍을 물 수 있다 — 맞물리는 두 턱 사이를 피하고, 들숨에 빨려 가기 전에 유충을 먼저 먹어 둘 것.',sd:'앞의 적 하나를 큰 칼날 턱으로 물어 삼킨다 — 체력 30% 이하 일반 몬스터는 통째로 삼키고 체력 25% 회복, 그 밖엔 물기 ×3 피해 + 출혈 · 재사용 6초'},c:{q:'숨 쉬는 산호 환초',b:'환초의 가면',s:'수정 돌진',d:'고리의 틈으로 들어가야 가운데 가면을 물 수 있다 — 고리가 부풀면 점선 안쪽 바깥이 터지고, 안에서는 가면의 눈빛을 피할 것. 묶인 산호충을 물어 끊으면 고리가 무너진다.',sd:'짧게 돌진해 처음 부딪힌 적에게 큰 피해를 주고 멀리 밀쳐 낸다 · 재사용 7초'},v:{q:'틈 너머의 관찰자',b:'틈 너머의 관찰자',s:'균열 도약',d:'시선 안에 오래 있으면 응시가 차오른다 — 떠 있는 갑주 조각 그림자에 숨을 것. 가장자리에서 뜬 눈을 모두 물어 감기면 큰 눈이 끌려 나온다.',sd:'바라보는 쪽으로 순간이동하고 도착한 자리에서 균열이 터진다 · 재사용 7초'}};
 const TR={mbp:['허기의 왕관',0xe8b0d0],mbc:['숨 쉬는 산호 환초',0xb8b0f0],mbv:['틈 너머의 관찰자',0xc0b0e0],coral:['공허 산호 숲 (산호는 물어서 부술 수 있다 · 가시 산호충)',0xff8a70],watch:['심연의 감시탑 (빛줄기에 닿으면 들킨다 · 그림자로 다닐 것)',0x78c8d8],haven:['둥지 (안전 · 적 없음)',0xffe9a0],brood:['번식지 (먹이 많음 · 낫그늘 주의)',0xff9ec0],mine:['광맥 동굴 (무기물)',0xb4b4c8],dark:['암흑 구역 (시야 제한)',0xffffff],swamp:['독 늪 (웅덩이 · 대 유충)',0x8fe070],flow:['공허의 소용돌이 (몸이 휩쓸린다 · 보이드링 무리)',0xa08cff],lair:['포식자 둥지 (보물 + 낫그늘)',0xff7a6a],void:['무리의 둥지 — 여왕의 영역',0x8a78c8]};
 
 const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98bff'},LCN={p:0xff7a9a,c:0x9fd8ff,v:0xc98bff},LRS={p:'유기물',c:'무기물',v:'공허 정수'},LK=['p','c','v'],
@@ -63,7 +63,7 @@ const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98
   c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 충전','결정을 먹으면 수정 1개 충전(최대 3) — 맞을 때 피해 60%를 막고 주변에 파편 피해 6'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 3개)']],
   v:[['공허 감각','숨은 위협이 보인다(땅속 땅울음, 매복한 낫그늘, 이웃 방 몬스터 수) · 공허 정수를 얻을 때마다 체력 +8 · 공허가 가장 높으면 공격이 검은 구체 뱉기(원거리)'],['공허 침','검은 구체가 앞쪽 적을 따라가고 맞으면 둔화 (공허가 가장 높지 않으면 빗나간 물기 대신 공허 침, 피해 8) · 산호는 한 방에 녹인다'],['공허 권속','보이드링을 처치하면 아군으로 거둔다 (최대 2마리)']]};
 // 진화 계통별 몸 모양 (머리 24px · 마디 20px, 2배 확대)
-function skBlade(px,x,c,r,sg){const B=[[r-1.8,4.2],[r+1.2,5.1],[r+3.6,4.1],[r+5.1,.9],[r+3.3,2.3],[r+2.8,1.7],[r+2.1,2.6],[r+1.4,2.1],[r+.8,2.9],[r-1.2,2.2]].map(([X,Y])=>[c+X,c+sg*Y-sg*.0]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
+function skBlade(px,x,c,r,sg,K){K=K||1;const B=[[r-1.8,4.2],[r+1.2,5.1],[r+3.6,4.1],[r+5.1,.9],[r+3.3,2.3],[r+2.8,1.7],[r+2.1,2.6],[r+1.4,2.1],[r+.8,2.9],[r-1.2,2.2]].map(([X,Y])=>[c+(r-1)+(X-(r-1))*K*.86,c+sg*(3+(Y-3)*K)]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
 function skCry(px,x,bx,by,ang,len,w){const ca=Math.cos(ang),sa=Math.sin(ang),C=['#24304a','#e8f6ff','#8fc4ee','#ffffff'];for(const pass of[0,1])for(let t=0;t<=len;t+=.4){const ww=w*(t<len*.35?t/(len*.35):(len-t)/(len*.65))+(pass?0:.7);for(let q=-ww;q<=ww;q+=.4)px(x,bx+ca*t-sa*q,by+sa*t+ca*q,pass?(q<0?C[1]:C[2]):C[0])}px(x,bx+ca*len,by+sa*len,C[3])}
 function skinTex(s,key,L){if(s.textures.exists('wh_'+key))return;
  const dom=L.p>0&&L.p>=L.c&&L.p>=L.v?'p':L.c>0&&L.c>=L.v?'c':L.v>0?'v':'n',t=dom=='n'?0:L[dom];
@@ -73,7 +73,7 @@ function skinTex(s,key,L){if(s.textures.exists('wh_'+key))return;
   if(L.v>=1)disc(x,c,c,r+2.2,'rgba(200,140,255,.28)');disc(x,c,c,r+.9,'#3d1b6b');disc(x,c,c,r,pal[0]);
   if(L.v>=3)for(let a=Math.PI*.55;a<Math.PI*1.45;a+=.12)px(x,c+Math.cos(a)*(r-.6),c+Math.sin(a)*(r-.6),'#dfe6ff');
   if(L.c>=1){const t=L.c;skCry(px,x,c-2,c-r+1,-1.97,t>=3?3.8:3,t>=3?1.3:1.2);if(t>=2){skCry(px,x,c-2,c+r-1,1.97,t>=3?3.4:3,t>=3?1.05:1.2);skCry(px,x,c+1.5,c-r+1.5,-1.45,2,.9)}if(t>=3){skCry(px,x,c-4,c-r+2,-2.4,2.6,.9);skCry(px,x,c+.5,c+r-1,1.6,1.9,.8);for(const[a,b]of[[-1,1],[1,-1],[-3,0]])px(x,c+a,c+b,'#bfeaff')}}
-  if(L.p>=1&&!nj){skBlade(px,x,c,r,-1);skBlade(px,x,c,r,1)}
+  if(L.p>=1&&!nj){{const K=L.p>=3?1:L.p>=2?.82:.66;skBlade(px,x,c,r,-1,K);skBlade(px,x,c,r,1,K)}}
   if(L.p>=3){for(let a=-.63;a<=.6301;a+=.31){const cx=Math.cos(a),sy=Math.sin(a);px(x,c+cx*(r-.6),c+sy*(r-.6),'#ff9ac0');for(let k=.6;k<=1.8;k+=.8)px(x,c+cx*(r+k),c+sy*(r+k),k+.8>1.8?'#ffe8f0':'#ffffff')}}
   const ec=L.p>=2?'#ff5a7a':'#ffffff';if(L.p>=3){px(x,c+1,c-2,'#ff7a96');px(x,c+2,c-2,'#ff7a96');px(x,c+1,c+1,'#ff7a96');px(x,c+2,c+1,'#ff7a96');px(x,c-1,c-3,'#d0607e');px(x,c,c-3,'#d0607e');px(x,c-1,c+2,'#d0607e');px(x,c,c+2,'#d0607e')}else{px(x,c+2,c-2,ec);px(x,c+2,c+1,ec)}
   if(L.v>=1){disc(x,c-1,c,1.9,'#ffe0ff');disc(x,c-1,c,1.1,'#c070ff');px(x,c-1,c,'#fff')}
@@ -931,8 +931,7 @@ class G extends Phaser.Scene{
     g.lineStyle(2.2*s,0xdff4ff,.85).strokeCircle(X(30),Y(0),9*s);for(let i=0;i<6;i++){const an=Math.PI+(i-2.5)*.6,d=16+5*(i%2);dia(X(30)+Math.cos(an)*d*s,Y(0)+Math.sin(an)*d*s,(i%3?2.2:2.8)*s,i%2?0xbfeaff:0xffffff,1)}}
    else{this.artWorm(A,X(-30),Y(0),L,1.4*s,dep);mob(52,0,26);for(let i=1;i<=5;i++)g.fillStyle(0x3a1060,.9-i*.15).fillCircle(X(14-i*7),Y(Math.sin(i)*1.5),(2.6-i*.3)*s);g.fillStyle(0x0a0412,1).fillCircle(X(16),Y(0),5.5*s);g.lineStyle(1.8*s,0xc070ff,1).strokeCircle(X(16),Y(0),5.5*s)}}
   else{
-   if(k=='p'){for(let i=4;i>=1;i--){g.fillStyle(0xff7a9a,.12+.08*(4-i)).fillCircle(X(-4-i*14),Y(0),(7-i*.6)*s)}for(let i=0;i<3;i++)g.lineStyle(1.4*s,0xff9ad0,.6).lineBetween(X(-62),Y(-10+i*10),X(-40),Y(-10+i*10));this.artWorm(A,X(14),Y(0),L,1.5*s,dep);mob(50,0,26);
-    for(let i=0;i<3;i++)g.lineStyle(2*s,0xff4a6a,.95).lineBetween(X(42+i*5),Y(-9),X(48+i*5),Y(9))}
+   if(k=='p'){this.artWorm(A,X(-36),Y(0),L,1.5*s,dep);mob(30,0,26).setTint(0x6a3a5a);for(const sg of[-1,1]){const an=sg*.55,ca=Math.cos(an),sa=Math.sin(an),P=this.pjBlade(sg,0).map(([x,y])=>({x:X(8)+(x*ca-y*sa)*4*s,y:Y(sg*4)+(x*sa+y*ca)*4*s}));g.lineStyle(1.8*s,0x3d1b6b,1).strokePoints(P,true);g.fillStyle(0xf0c8d8,1).fillPoints(P,true);g.lineStyle(.9*s,0xffffff,1).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}for(let i=0;i<4;i++)g.fillStyle(0x7be0a8,.9).fillCircle(X(-58+i*10),Y(-22-(i%2)*5),2*s)}
    else if(k=='c'){for(let i=0;i<3;i++)g.lineStyle(1.6*s,0xbfeaff,.55).lineBetween(X(-62),Y(-8+i*8),X(-30),Y(-8+i*8));for(let i=0;i<4;i++)dia(X(-50+i*10),Y(10-i*5),1.6*s,0xbfeaff,.8);this.artWorm(A,X(10),Y(0),L,1.4*s,dep);mob(52,-2,24);g.lineStyle(2.4*s,0xdff4ff,.9).strokeCircle(X(32),Y(0),11*s);for(let i=0;i<7;i++){const an=Math.PI+(i-3)*.5;dia(X(32)+Math.cos(an)*18*s,Y(0)+Math.sin(an)*14*s,(i%2?2.2:2.8)*s,i%2?0xbfeaff:0xffffff,1)}for(let i=0;i<3;i++)g.lineStyle(1.4*s,0xffffff,.6).lineBetween(X(64),Y(-8+i*8),X(72),Y(-8+i*8))}
    else if(k=='c0'){this.artWorm(A,X(14),Y(0),L,1.4*s,dep);g.lineStyle(2*s,0x9fd8ff,.85).strokeEllipse(X(-4),Y(0),70*s,46*s);for(let i=0;i<6;i++){const a=i/6*6.283+.3;dia(X(-4)+Math.cos(a)*35*s,Y(0)+Math.sin(a)*23*s,3*s,0x8ad8ff,1)}
     g.fillStyle(0xff9a4a,1).fillCircle(X(54),Y(-14),3.2*s);g.lineStyle(1.6*s,0xffc890,.9).beginPath().arc(X(44),Y(-4),12*s,-2.4,-.4,false).strokePath();g.fillStyle(0xffc890,.9).fillTriangle(X(53),Y(-8),X(57),Y(-3),X(50),Y(-2))}
@@ -1537,14 +1536,14 @@ class G extends Phaser.Scene{
   s.setPosition(m.x,m.y).setRotation(m.fa)}
  // ----- 특수 스킬 -----
  skUse(){const k=this.skl;if(!k||this.skCd>0||this.cine||this.over)return;const p=this.pl,a=this.ang,fx=Math.cos(a),fy=Math.sin(a);
-  if(k=='p'){this.skCd=6;this.dsh={t:.22,vx:fx*780,vy:fy*780,hit:new Set()};this.inv=Math.max(this.inv,.35);this.dtx(p.x,p.y-26,'포식 돌진!','#ff9ad0')}
+  if(k=='p'){this.dvUse()}
   else if(k=='c'){this.skCd=7;this.cdsh={t:.2,vx:fx*560,vy:fy*560};this.inv=Math.max(this.inv,.25)}
   else{this.skCd=7;let L=140;for(;L>20;L-=10){const x=p.x+fx*L,y=p.y+fy*L;if(x>50&&x<750&&y>50&&y<310&&!this.blk(x,y,22))break}const ox=p.x,oy=p.y,nx=p.x+fx*L,ny=p.y+fy*L;
    const r1=this.add.image(ox,oy,'rift').setDepth(5.5).setTint(0xc98bff);this.tweens.add({targets:r1,scale:0,alpha:0,duration:400,onComplete:()=>r1.destroy()});
    p.body.reset(nx,ny);this.sp.forEach((q,i)=>{q.x=nx-fx*7*(i+1);q.y=ny-fy*7*(i+1)});this.inv=Math.max(this.inv,.3);
    const r2=this.add.circle(nx,ny,64,0xc98bff,.35).setDepth(12).setScale(.2);this.tweens.add({targets:r2,scale:1,alpha:0,duration:350,onComplete:()=>r2.destroy()});this.cameras.main.shake(150,.006);
    for(const m of this.cur.en)if(m.on&&Math.hypot(m.x-nx,m.y-ny)<64+(m.mb?24:0)){this.dmgM(m,22*(1+.04*this.plv));m.slw=1.5}}}
- skU(dt){if(this.skCd>0)this.skCd-=dt;const p=this.pl;this.cdU(dt);
+ skU(dt){if(this.skCd>0)this.skCd-=dt;const p=this.pl;this.cdU(dt);this.dvU(dt);
   if(this.dsh){const D=this.dsh;D.t-=dt;p.setVelocity(D.vx,D.vy);if(!this.fxLow&&Math.random()<.8){const b=this.add.circle(p.x,p.y,5,0xff7a9a,.5).setDepth(9);this.tweens.add({targets:b,scale:.2,alpha:0,duration:260,onComplete:()=>b.destroy()})}
    for(const m of this.cur.en)if(m.on&&!D.hit.has(m)&&!m.gone&&Math.hypot(m.x-p.x,m.y-p.y)<44+(m.br||0)){D.hit.add(m);m.bl=3;const k=this.dmgM(m,this.bdmg*1.6);this.dtx(m.x,m.y-20,'물어뜯기','#ff9ad0');if(k)this.en=Math.min(this.emax,this.en+12)}
    if(D.t<=0)this.dsh=null}
@@ -2429,13 +2428,30 @@ class G extends Phaser.Scene{
   const idle=ph<.36?.18+.4*Math.abs(Math.sin(ph/.18*Math.PI)):.22+.1*Math.sin(T*4.5),op=q<0?idle:q<.35?idle+(1-idle)*q/.35:q<.52?1-(q-.35)/.17:idle*Math.min(1,(q-.52)/.48);
   const a=hd.rotation,fx=Math.cos(a),fy=Math.sin(a),u=hd.displayWidth/24,al=hd.alpha,r=4.9*(1+(L.p>=3?.16:L.p>=2?.06:0)+(L.c>=3?.08:0));
   const W=(x,y)=>({x:hd.x+(fx*x-fy*y)*u,y:hd.y+(fy*x+fx*y)*u});
-  const big=q>=0&&L.p>=2?(q<.52?Math.max(0,op-idle)/Math.max(.1,1-idle):Math.max(0,1-(q-.52)/.3))*(L.p>=3?1:.55):0,S=(L.p>=2?1.15:.9)*(1+.35*big);
+  const big=q>=0&&L.p>=2?(q<.52?Math.max(0,op-idle)/Math.max(.1,1-idle):Math.max(0,1-(q-.52)/.3))*(L.p>=3?1:.55):0,S=(L.p>=3?1.15:L.p>=2?.92:.72)*(1+.35*big);
   for(const sg of[-1,1]){const bx=r-1,by=sg*3,an=sg*(op*(.6+.18*big)-.06),c=Math.cos(an),s=Math.sin(an);
-   const P=this.pjBlade(sg,r).map(([x,y])=>{const dx=(x-bx)*S,dy=(y-by)*S;return W(bx+dx*c-dy*s,by+dx*s+dy*c)});
+   const P=this.pjBlade(sg,r).map(([x,y])=>{const dx=(x-bx)*S*.86,dy=(y-by)*S;return W(bx+dx*c-dy*s,by+dx*s+dy*c)});
    g.lineStyle(2.2*u,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);
    g.fillStyle(0xb85c84,al).fillTriangle(P[0].x,P[0].y,P[1].x,P[1].y,P[9].x,P[9].y);
    g.lineStyle(.9*u,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
   if(q>=.5&&q<.66){const t=W(r+5.5*S,0);g.fillStyle(0xffffff,(1-Math.abs(q-.58)/.08)*al).fillCircle(t.x,t.y,1.1*u)}}
+ // ===== v70: 포식 특수 스킬 = 통째 삼키기 (포식 돌진 대체) =====
+ // 앞 ±55°·80px 안 적 하나 → 큰 칼날 턱 둘이 위아래에서 감쌌다(0~0.14초) 콱 닫힘(0.14~0.24초).
+ // 닫히는 순간: 체력 30% 이하 일반 몬스터 = 통째로 삼킴(gulp) + 체력 25% 회복 / 그 밖 = 물기 ×3 피해 + 출혈 + 체력 6. 재사용 6초(빗나가면 2.5초)
+ dvUse(){const p=this.pl,a=this.ang;let best=null,bd=1e9;
+  for(const m of this.cur.en){if(!m.on||m.gone||!m.spr||m.spr.visible===false||(m.k=='rek'&&(m.st=='under'||m.st=='warn')))continue;const dx=m.x-p.x,dy=m.y-p.y,d=Math.hypot(dx,dy)-(m.br||0);if(d>80)continue;const da=Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(dy,dx)-a));if(da>.95)continue;const sc=d+da*30;if(sc<bd){bd=sc;best=m}}
+  const tx=best?best.x:p.x+Math.cos(a)*50,ty=best?best.y:p.y+Math.sin(a)*50;if(best){this.ang=Math.atan2(ty-p.y,tx-p.x);if(this.hd)this.hd.setRotation(this.ang)}
+  this.dvr={t:0,m:best,x:tx,y:ty,an:this.ang,done:0,rm:this.cur};this.skCd=best?6:2.5;this.inv=Math.max(this.inv,.3);this.moStart('bite');this.mo.bk='p';this.brFx={t:0,x:p.x,y:p.y,an:this.ang,k:'p'}}
+ dvU(dt){const D=this.dvr,g=this.dvG||(this.dvG=this.add.graphics().setDepth(12.5));g.clear();if(!D)return;if(this.over||D.rm!==this.cur){this.dvr=null;return}D.t+=dt;const m=D.m;if(m&&m.on&&m.spr){D.x=m.x;D.y=m.y}
+  const T=D.t,op=T<.14?T/.14:T<.24?1-(T-.14)/.1:0,K=4.4*(m&&m.mb?1.5:1)*(1+.2*Math.min(1,T/.14)),al=T<.3?1:Math.max(0,1-(T-.3)/.15),c=Math.cos(D.an),s=Math.sin(D.an);
+  if(al>0)for(const sg of[-1,1]){const rot=sg*(op*.75-.08),rc=Math.cos(rot),rs=Math.sin(rot),bx=D.x-c*K*2.2,by=D.y-s*K*2.2;
+   const P=this.pjBlade(sg,0).map(([x,y])=>{const lx=(x+1)*K,ly=(y-sg*3)*K+sg*1.2*K,rx=lx*rc-ly*rs,ry=lx*rs+ly*rc;return{x:bx+rx*c-ry*s,y:by+rx*s+ry*c}});
+   g.lineStyle(2.4,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);g.lineStyle(1.2,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
+  if(T>=.22&&!D.done){D.done=1;g.fillStyle(0xffffff,.9).fillCircle(D.x,D.y,6);
+   if(m&&m.on){const mh=m.mh||MON(m.k).hp,boss=m.mb||({sw:1,em:1,rw:1,qn:1,wd:1})[m.k];
+    if(!boss&&m.hp<=mh*.3){this.gulp(m);this.en=Math.min(this.emax,this.en+this.emax*.25)}
+    else{this.dmgM(m,this.bdmg*3);if(m.on){m.bl=3;if(m.spr){m.spr.setTintFill(0xffffff);this.time.delayedCall(90,()=>{if(m.spr)m.spr.clearTint()})}this.bmAdd(m,D.an)}this.en=Math.min(this.emax,this.en+6);this.dtx(D.x,D.y-24,'물어뜯기!','#ff9ad0')}}}
+  if(T>.45)this.dvr=null}
  // 갑각 수정 돌진: 짧게(약 110px) 돌진, 처음 부딪힌 적에게 큰 피해 + 멀리 밀쳐 냄 + 충격 고리·수정 파편, 부딪히면 그 자리에서 멈춤
  cdU(dt){const p=this.pl,D=this.cdsh;if(D){D.t-=dt;p.setVelocity(D.vx,D.vy);if(!this.fxLow&&Math.random()<.9){const b=this.add.rectangle(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,3,3,Math.random()<.5?0xbfeaff:0xffffff,.8).setAngle(45).setDepth(9);this.tweens.add({targets:b,scale:.2,alpha:0,duration:280,onComplete:()=>b.destroy()})}
    for(const m of this.cur.en)if(m.on&&!m.gone&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))&&Math.hypot(m.x-p.x,m.y-p.y)<30+(m.br||0)){const l=Math.hypot(D.vx,D.vy)||1,ux=D.vx/l,uy=D.vy/l,an=Math.atan2(uy,ux);
