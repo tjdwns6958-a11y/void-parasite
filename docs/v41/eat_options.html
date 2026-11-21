@@ -1,0 +1,60 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}
+body{margin:0;background:#0a0612;color:#e8e0f4;font-family:"WenQuanYi Zen Hei",sans-serif;width:1260px;padding:28px 30px 30px}
+h1{font-size:26px;margin:0 0 6px;color:#f0e8ff}.sub{color:#b8acd0;font-size:14.5px;margin:0 0 22px;line-height:1.6}
+.opt{margin-bottom:30px}.hd{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.tag{font-size:14px;padding:2px 10px;border-radius:10px;color:#140a20;font-weight:700}.hd h2{margin:0;font-size:22px;color:#fff}
+.hd .one{font-size:15px;color:#ffe9a8}
+.rule{font-size:14.5px;color:#d4cae6;margin:4px 0 10px;line-height:1.6}.rule b{color:#fff}
+.pn{display:flex;gap:14px}
+.p{position:relative;width:390px;height:221px;background-image:url(z1np_clean.png);background-size:1040px 468px;background-position:-468px -130px;image-rendering:pixelated;border-radius:6px;overflow:hidden}
+.p svg{position:absolute;left:0;top:0}
+.p .cap{position:absolute;left:8px;bottom:6px;right:8px;font-size:13px;color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;line-height:1.4}
+.p .n{position:absolute;left:8px;top:6px;width:22px;height:22px;border-radius:50%;background:#000a;border:1.5px solid #fff8;font-size:12px;display:flex;align-items:center;justify-content:center}
+.pc{display:flex;gap:22px;font-size:13.5px;color:#c8bcdc;margin-top:8px}.pc b{color:#7be0a8}.pc i{font-style:normal;color:#ff9ab0}
+.rec{background:#141e18;border-left:3px solid #7be0a8;padding:12px 16px;font-size:15px;line-height:1.7;color:#d8f0e0}
+</style></head><body>
+<h1>먹는 방식 새 시안 4안 (F1~F4)</h1>
+<p class="sub">'버튼을 누르고 있기'를 없애고, <b>기생충의 몸·번식·혀</b>로 먹게 만드는 방향. 모두 물기(공격)는 따로 남김. 그림은 3컷 흐름(① → ② → ③).</p>
+<div id="opts"></div>
+<div class="rec"><b>Claude 의견.</b> 가장 이 게임다운 것은 <b>F1 감아 삼키기</b>(긴 몸을 쓰는 조작이라 다른 게임과 확실히 다름)와 <b>F2 몸속 소화관</b>(먹은 것이 몸에 보여서 UI 시안 W1과 짝이 맞음). <b>F3 알 낳기</b>는 '한 몸의 무리' 보스와 이야기가 이어지고, <b>F4 혀 채찍</b>은 폰 손맛이 가장 좋음. 섞기도 가능 (예: F1 + F4).</div>
+<script>
+const W=300,H=170;
+const wormPts=(pts,col='#a65cff')=>{let s='';const n=pts.length;for(let i=n-1;i>=0;i--){const[x,y]=pts[i],r=7.5-5*(i/(n-1||1));s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${i==0?'#c890ff':col}" stroke="#2a1048" stroke-width="1"/>`}
+ const[hx,hy]=pts[0],[nx,ny]=pts[1]||[hx+1,hy],a=Math.atan2(hy-ny,hx-nx),px=-Math.sin(a),py=Math.cos(a);
+ s+=`<circle cx="${hx+Math.cos(a)*3+px*3}" cy="${hy+Math.sin(a)*3+py*3}" r="1.6" fill="#fff"/><circle cx="${hx+Math.cos(a)*3-px*3}" cy="${hy+Math.sin(a)*3-py*3}" r="1.6" fill="#fff"/>`;return s};
+const arc=(cx,cy,r,a0,a1,n)=>{const o=[];for(let i=0;i<n;i++){const a=a0+(a1-a0)*i/(n-1);o.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r])}return o};
+const line=(x0,y0,x1,y1,n)=>{const o=[];for(let i=0;i<n;i++){o.push([x0+(x1-x0)*i/(n-1),y0+(y1-y0)*i/(n-1)])}return o};
+const food=(x,y,c='#7be0a8')=>`<rect x="${x-4}" y="${y-6}" width="8" height="12" rx="2" fill="${c}" stroke="#0a2014" stroke-width="1" transform="rotate(20 ${x} ${y})"/>`;
+const larva=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="8" ry="5" fill="#7be0a8"/><ellipse cx="9" cy="0" rx="5.5" ry="4.5" fill="#7be0a8"/><circle cx="11" cy="-1.5" r="1.1" fill="#0a2014"/></g>`;
+const mon=(x,y,c='#c8a0ff')=>`<g transform="translate(${x} ${y})"><path d="M-14 6 L-6 -10 L0 -2 L6 -12 L14 6 Q0 14 -14 6Z" fill="#3a2a5a" stroke="${c}" stroke-width="1.5"/><circle cx="-4" cy="0" r="2" fill="#ff5a7a"/><circle cx="4" cy="0" r="2" fill="#ff5a7a"/></g>`;
+const T=(x,y,t,c='#7be0a8',s=11)=>`<text x="${x}" y="${y}" fill="${c}" font-size="${s}" font-weight="700" text-anchor="middle" style="paint-order:stroke" stroke="#000" stroke-width="3">${t}</text>`;
+const O=[
+{id:'F1',col:'#ff8ab8',name:'감아 삼키기',one:'몸으로 둘러싸면 먹는다',
+ rule:'<b>섭취 버튼 없음.</b> 머리가 자기 몸(어느 마디든)에 닿아 <b>고리가 닫히면 고리 안의 먹이를 모두 삼킨다.</b> 몬스터를 감으면 조여서 기절 + 피해. 몸이 길수록(레벨·탈피) 큰 고리를 만들 수 있다. 버튼은 물기 하나.',
+ pros:'긴 몸을 쓰는 이 게임만의 조작 · 여러 개를 한 번에 = 실력 보상',cons:'처음엔 낯섦 → 첫 방에서 점선 고리로 안내 · 먹이 1개는 닿아 있으면 천천히 먹게 보조',
+ p:[[()=>{const f=[[150,80],[166,92],[140,98]];return f.map(q=>food(...q)).join('')+wormPts(arc(150,90,38,-0.3,4.9,22))+`<path d="M${150+Math.cos(-0.3)*38} ${90+Math.sin(-0.3)*38} A38 38 0 0 1 ${150+Math.cos(4.9-6.283)*38} ${90+Math.sin(4.9-6.283)*38}" stroke="#ffe066" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`},'몸으로 먹이를 둘러싼다 — 머리가 몸에 닿으려는 순간'],
+  [()=>`<circle cx="150" cy="90" r="38" fill="#ffe06622" stroke="#ffe066" stroke-width="3"/>`+wormPts(arc(150,90,38,-0.2,6.0,24))+T(150,95,'꿀꺽 ×3','#ffe066',13)+T(150,40,'에너지 +15 · 유기 +6'),'고리가 닫히면 번쩍 — 안의 먹이를 한꺼번에 삼킨다'],
+  [()=>mon(150,90,'#ffe066')+`<circle cx="150" cy="90" r="27" fill="none" stroke="#ff8ab8" stroke-width="2" stroke-dasharray="2 3"/>`+wormPts(arc(150,90,27,-0.2,6.0,22),'#b070ff')+T(150,52,'조이기! 기절 1.5초','#ff8ab8',12),'몬스터를 감으면 조여서 기절 + 피해 (큰 적은 큰 고리)']]},
+{id:'F2',col:'#7be0a8',name:'몸속 소화관',one:'먹은 것이 몸을 타고 올라온다',
+ rule:'<b>섭취 버튼 없음.</b> 먹이에 닿으면 <b>꼬리 끝에 달라붙고</b>, 몸 마디를 타고 머리로 올라와 <b>머리에 닿는 순간 에너지</b>가 된다(몸이 길수록 오래 걸림). 소화 중인 혹이 많으면 몸이 무거워져 조금 느려짐. <b>맞으면 소화 중인 먹이를 토해 낸다.</b>',
+ pros:'무엇을 소화 중인지 몸에 그대로 보임 (UI W1과 짝) · 위험과 보상',cons:'에너지가 바로 차지 않음 → 급할 때 답답 (작은 먹이는 빨리 소화)',
+ p:[[()=>{const pts=line(110,60,220,120,14);return food(232,126)+wormPts(pts)+`<circle cx="${pts[13][0]}" cy="${pts[13][1]}" r="5" fill="#7be0a8" stroke="#fff" stroke-width="1"/>`+T(250,110,'찰싹','#7be0a8',12)},'지나가다 닿은 먹이가 꼬리 끝에 달라붙는다'],
+  [()=>{const pts=line(90,70,230,110,16);let s=wormPts(pts);[4,8,12].forEach(i=>{s+=`<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="${7-i*.25}" fill="#7be0a8" opacity=".85" stroke="#d8ffe8" stroke-width="1"/>`});s+=`<path d="M200 128 L120 106" stroke="#7be0a8" stroke-width="1.5" marker-end="url(#ar)"/>`+T(160,140,'머리 쪽으로 →','#7be0a8',11).replace('→','');return `<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#7be0a8"/></marker></defs>`+s+T(90,52,'에너지 +5','#7be0a8',12)},'혹이 마디를 타고 올라와 머리에 닿으면 에너지'],
+  [()=>{const pts=line(130,90,240,100,14);let s=mon(100,70)+wormPts(pts);[[150,60],[180,58],[205,70]].forEach(([x,y])=>{s+=food(x,y)+`<path d="M${x} ${y+8} l0 10" stroke="#fff6" stroke-dasharray="2 2"/>`});return s+T(118,48,'쾅','#ff8ab8',13)+T(180,40,'토해 냄!','#ff9ab0',12)},'맞으면 소화 중인 먹이를 토해 냄 — 다시 주워야 함']]},
+{id:'F3',col:'#a65cff',name:'알 낳기 · 새끼 무리',one:'내가 무리의 시작이 된다',
+ rule:'버튼: <b>물기 + 산란</b>(알 2개까지, 하나 다시 차는 데 6초). 먹이 더미·몬스터 껍질 옆에서 산란하면 1.5초 뒤 <b>새끼 무리가 깨어나 둘레 먹이를 갉아 먹고, 다 먹으면 돌아와 몸에 합쳐진다.</b> 새끼는 작은 적도 갉음. 그냥 닿아도 1개씩은 천천히 먹음.',
+ pros:'\'한 몸의 무리\' 보스와 이야기가 이어짐 (마지막에 같은 힘을 가진 둘의 대결) · 여러 먹이 동시 처리',cons:'바로 먹는 맛이 덜함 · 적이 새끼를 먹어 버릴 수 있음(새 위험)',
+ p:[[()=>[[140,70],[160,80],[150,96],[128,90]].map(q=>food(...q)).join('')+wormPts(line(200,110,270,140,10))+`<ellipse cx="170" cy="100" rx="7" ry="9" fill="#e8d0ff" stroke="#a65cff" stroke-width="2"/><circle cx="170" cy="100" r="13" fill="none" stroke="#e0c0ff" opacity=".5"/>`+T(250,98,'산란','#d0a8ff',12),'먹이 더미 옆에 알을 낳는다 (산란 버튼)'],
+  [()=>{let s=[[140,70],[160,80],[150,96]].map(q=>food(...q)).join('');for(let i=0;i<34;i++){const a=i*2.4,r=8+((i*37)%28);s+=`<circle cx="${148+Math.cos(a)*r}" cy="${84+Math.sin(a)*r*.8}" r="1.8" fill="${i%5?'#c890ff':'#ffe066'}"/>`}return s+mon(225,60)+`<path d="M180 75 L212 62" stroke="#c890ff" stroke-dasharray="2 2"/>`+wormPts(line(240,120,290,150,8))+T(148,40,'사각사각','#d0a8ff',12)},'깨어난 새끼 무리가 둘레 먹이를 갉아 먹는다 — 나는 자유'],
+  [()=>{let s=wormPts(line(200,110,270,140,10));for(let i=0;i<22;i++){const t=i/21,x=130+t*66,y=80+t*28+Math.sin(i)*5;s+=`<circle cx="${x}" cy="${y}" r="1.8" fill="#c890ff" opacity="${.4+.6*t}"/>`}return s+T(205,90,'에너지 +20 · 유기 +8','#7be0a8',12)},'다 먹으면 줄지어 돌아와 몸에 합쳐진다']]},
+{id:'F4',col:'#ffe066',name:'혀 채찍',one:'쓸어 넘기면 혀가 낚아챈다',
+ rule:'버튼 대신 <b>오른쪽 화면을 손가락으로 쓸기</b>. 짧게 탭 = 물기, <b>쓸기 = 그 방향으로 갈고리 혀</b>(1초마다, 사거리 160). 먹이에 꽂히면 끌어와 바로 삼킴, <b>몬스터에 꽂히면 내 앞으로 끌어당김</b> → 이어서 물기. 쓴 방향 ±20° 안의 가장 가까운 것을 자동 조준.',
+ pros:'폰 손맛이 가장 좋음 · 버튼 자리를 몰라도 됨 · 도망치는 유충·먼 먹이를 잡음',cons:'PC 키보드는 따로(마우스 방향 또는 Shift+방향) · 쓸기와 탭을 헷갈리지 않게 손질 필요',
+ p:[[()=>wormPts(line(90,110,30,140,10))+food(230,60)+`<path d="M250 150 Q262 120 282 104" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/><circle cx="250" cy="150" r="7" fill="#fff4"/><path d="M98 104 L224 62" stroke="#ffe066" stroke-width="1.5" stroke-dasharray="4 4"/>`+T(266,94,'휙','#fff',12),'오른쪽 화면을 휙 쓸면 그 방향으로 조준'],
+  [()=>wormPts(line(90,110,30,140,10))+food(230,60)+`<path d="M98 104 Q160 70 226 62" stroke="#ff8ab8" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M226 62 l8 -6 M226 62 l9 4" stroke="#ffd0e0" stroke-width="2.5"/>`+T(232,46,'꽂힘!','#ff8ab8',12),'갈고리 혀가 날아가 먹이를 꿴다'],
+  [()=>wormPts(line(90,110,30,140,10))+mon(170,90)+`<path d="M98 106 L160 94" stroke="#ff8ab8" stroke-width="3" stroke-linecap="round"/><path d="M200 82 L182 88" stroke="#fff8" stroke-dasharray="3 3"/>`+T(104,80,'꿀꺽 · 에너지 +5','#7be0a8',11)+T(178,64,'끌려온다','#ff9ab0',12),'먹이는 끌어와 삼키고, 몬스터는 내 앞으로 끌어당김']]}];
+const box=document.getElementById('opts');
+for(const o of O){const d=document.createElement('div');d.className='opt';
+ d.innerHTML=`<div class="hd"><span class="tag" style="background:${o.col}">${o.id}</span><h2>${o.name}</h2><span class="one">${o.one}</span></div><div class="rule">${o.rule}</div><div class="pn">${o.p.map((q,i)=>`<div class="p"><svg width="390" height="221" viewBox="0 0 ${W} ${H}">${q[0]()}</svg><div class="n">${i+1}</div><div class="cap">${q[1]}</div></div>`).join('')}</div><div class="pc"><span><b>좋은 점</b> ${o.pros}</span><span><i>아쉬운 점</i> ${o.cons}</span></div>`;box.appendChild(d)}
+</script></body></html>
