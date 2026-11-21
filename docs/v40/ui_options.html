@@ -1,0 +1,156 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+@font-face{font-family:G11;src:url(Galmuri11.woff2)}@font-face{font-family:G11;font-weight:700;src:url(Galmuri11-Bold.woff2)}
+*{box-sizing:border-box}
+body{margin:0;background:#0a0612;color:#e8e0f4;font-family:"WenQuanYi Zen Hei",sans-serif;width:1260px;padding:28px 30px 34px}
+h1{font-size:26px;margin:0 0 4px;font-weight:700;color:#f0e8ff}
+.sub{color:#a99cc4;font-size:14px;margin:0 0 22px}
+.row{display:flex;gap:26px;margin-bottom:26px;align-items:flex-start}
+.scr{position:relative;width:800px;height:360px;flex:none;background-size:800px 360px;image-rendering:pixelated;overflow:hidden;border-radius:6px}
+.cap{width:374px}
+.cap h2{margin:2px 0 8px;font-size:22px;color:#fff}
+.cap .tag{display:inline-block;font-size:13px;padding:2px 9px;border-radius:10px;margin-bottom:10px;color:#140a20;font-weight:700}
+.cap ul{margin:0;padding-left:18px;font-size:14.5px;line-height:1.62;color:#d4cae6}
+.cap li{margin-bottom:3px}
+.cap b{color:#fff}
+.a{position:absolute}
+/* ---------- 현재 ---------- */
+.now{width:400px;height:180px;background-size:400px 180px}
+/* ---------- U1 살갗 ---------- */
+.u1 .seg{position:absolute;top:0;width:24px;height:20px;border-radius:50%/55%;background:radial-gradient(circle at 40% 35%,#ff9ec8,#d94f8c 55%,#7a1f4c);box-shadow:inset 0 0 0 1.5px #ffd0e4,0 0 8px #d94f8c88}
+.u1 .seg.off{background:radial-gradient(circle at 40% 35%,#4a2a46,#2a1630);box-shadow:inset 0 0 0 1.5px #5a3a5a}
+.u1 .mem{background:radial-gradient(ellipse at 50% 40%,#2a1530cc,#16091ccc 70%);border:1.5px solid #6b3a62;box-shadow:0 0 0 3px #2a12281a,inset 0 0 14px #d94f8c33}
+.u1 .sac{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* ---------- U2 틈 ---------- */
+.u2 .gold{color:#ffe066}
+.u2 .eye{position:absolute;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,#3a1660 0,#14082a 60%,#0a0414 100%);box-shadow:0 0 0 1.5px #ffe066,0 0 14px #ffe06655,inset 0 0 16px #a65cff88}
+/* ---------- U3 픽셀 껍질 ---------- */
+.u3{font-family:G11}
+.u3 .plate{position:absolute;background:#1c1830e6;box-shadow:0 0 0 2px #0a0814,0 0 0 4px #5f78b8,0 0 0 6px #0a0814,inset 2px 2px 0 #8fb0ff55,inset -2px -2px 0 #00000088}
+.u3 .pbar{position:absolute;display:flex;gap:2px}
+.u3 .pbar i{width:8px;height:12px;background:#ff5ea0;box-shadow:inset -2px -2px 0 #a8306a,inset 2px 2px 0 #ffb0d0}
+.u3 .pbar i.off{background:#2e2440;box-shadow:inset -2px -2px 0 #1a1428}
+.u3 .oct{position:absolute;display:flex;align-items:center;justify-content:center;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%)}
+</style></head><body>
+<h1>UI 시안 — 게임 컨셉에 맞춘 HUD 3안</h1>
+<p class="sub">같은 1구역 장면 위에 HUD만 바꿔 그림. 배치(왼쪽 위 에너지 · 가운데 위 일시정지 · 오른쪽 위 자원·지도 · 오른쪽 아래 버튼)는 그대로, 모양·글꼴·색만 다름. 오른쪽 아래 버튼은 3번(초반 스킬) 결과에 맞춰 바뀔 수 있음.</p>
+
+<div class="row"><div class="scr now" style="background-image:url(z1.png)"></div><div class="cap" style="width:auto"><h2 style="font-size:18px">지금 (v39)</h2><ul><li>어두운 둥근 상자 + 분홍 막대 — 앱 화면 같은 기본 모양</li><li>글자는 기기 기본 글꼴</li></ul></div></div>
+
+<!-- U1 -->
+<div class="row"><div class="scr u1" id="u1" style="background-image:url(z1_clean.png)">
+ <!-- 머리 + 몸통 마디 = 에너지 -->
+ <div class="a" style="left:14px;top:12px;width:250px;height:58px">
+  <svg class="a" style="left:0;top:0" width="44" height="44" viewBox="0 0 44 44"><defs><radialGradient id="hd" cx=".4" cy=".35"><stop offset="0" stop-color="#e8b0ff"/><stop offset=".6" stop-color="#a65cff"/><stop offset="1" stop-color="#4a1f7a"/></radialGradient></defs>
+   <path d="M6 22 C6 10 16 4 26 6 C36 8 40 16 40 22 C40 28 36 36 26 38 C16 40 6 34 6 22Z" fill="url(#hd)" stroke="#f0d8ff" stroke-width="1.5"/>
+   <path d="M38 15 L44 11 L41 19Z M38 29 L44 33 L41 25Z" fill="#f0d8ff"/></svg>
+  <div class="a" style="left:9px;top:12px;width:30px;text-align:center;font-size:15px;font-weight:700;color:#1a0a28">13</div>
+  <div class="a" id="segs" style="left:40px;top:12px"></div>
+  <div class="a" style="left:46px;top:36px;font-size:12.5px;color:#ffc0dc">에너지 <b style="color:#fff">112</b> / 145</div>
+  <!-- 핏줄 = 경험치 -->
+  <svg class="a" style="left:40px;top:52px" width="210" height="8"><path d="M0 4 Q 26 0 52 4 T 104 4 T 156 4 T 208 4" stroke="#3a2440" stroke-width="3" fill="none"/><path d="M0 4 Q 26 0 52 4 T 104 4 T 128 3" stroke="#7be0a8" stroke-width="3" fill="none" style="filter:drop-shadow(0 0 3px #7be0a8)"/></svg>
+ </div>
+ <!-- 일시정지 = 세포 -->
+ <div class="sac mem" style="left:286px;top:14px;width:34px;height:32px"><svg width="14" height="14"><rect x="2" y="1" width="4" height="12" rx="2" fill="#ffc0dc"/><rect x="8" y="1" width="4" height="12" rx="2" fill="#ffc0dc"/></svg></div>
+ <!-- 자원 주머니 -->
+ <div class="a" style="right:14px;top:10px;display:flex;gap:8px;align-items:center">
+  <div class="sac mem" style="position:relative;width:52px;height:40px;border-color:#a8406a"><div style="font-size:16px;font-weight:700;color:#ff9ec8">24</div><div style="font-size:10px;color:#c8a0b8;margin-top:-3px">유기</div></div>
+  <div class="sac mem" style="position:relative;width:52px;height:40px;border-color:#4a7ab0"><div style="font-size:16px;font-weight:700;color:#9fd8ff">11</div><div style="font-size:10px;color:#a0b8c8;margin-top:-3px">무기</div></div>
+  <div class="sac mem" style="position:relative;width:52px;height:40px;border-color:#7a4ab0"><div style="font-size:16px;font-weight:700;color:#d0a8ff">2</div><div style="font-size:10px;color:#b8a8c8;margin-top:-3px">정수</div></div>
+ </div>
+ <div class="a" style="right:16px;top:56px;font-size:12px;color:#c8b0c8">구역 1 / 3 · 포식 1단계까지 24/40</div>
+ <!-- 지도 = 세포 군체 -->
+ <svg class="a" style="right:14px;top:76px" width="92" height="64" id="cellmap"></svg>
+ <!-- 계통 = 세포핵 -->
+ <div class="a" style="right:14px;top:150px;display:flex;gap:7px">
+  <div class="sac mem" style="position:relative;width:28px;height:28px;border-color:#ff6a9a;font-size:12px;color:#ff9ec8">포</div>
+  <div class="sac mem" style="position:relative;width:28px;height:28px;border-color:#4a7ab0;font-size:12px;color:#9fd8ff">갑</div>
+  <div class="sac mem" style="position:relative;width:28px;height:28px;border-color:#7a4ab0;font-size:12px;color:#d0a8ff">공</div>
+ </div>
+ <!-- 버튼 = 아가리 주머니 -->
+ <div class="sac mem" style="left:694px;top:252px;width:88px;height:84px;border-width:2px;border-color:#d94f8c">
+  <svg width="40" height="30" viewBox="0 0 40 30"><path d="M2 8 Q20 -2 38 8 L34 12 L30 7 L26 13 L22 7 L18 13 L14 7 L10 13 L6 7Z M2 22 Q20 32 38 22 L34 18 L30 23 L26 17 L22 23 L18 17 L14 23 L10 17 L6 23Z" fill="#ffd0e4"/></svg>
+  <div style="font-size:13px;font-weight:700;color:#fff;margin-top:2px">물기</div></div>
+ <div class="sac mem" style="left:628px;top:290px;width:54px;height:50px;border-color:#7be0a8"><div style="font-size:11px;color:#bff0d4;font-weight:700">스킬</div></div>
+</div>
+<div class="cap"><span class="tag" style="background:#ff8ab8">U1</span><h2>숙주의 살갗</h2><ul>
+<li><b>에너지 = 기생충의 몸통 마디.</b> 머리(레벨)에 마디 10개가 이어지고, 에너지가 줄면 꼬리부터 마디가 꺼진다</li>
+<li>경험치는 그 밑의 <b>초록 핏줄</b>에 체액이 차오르는 모양</li>
+<li>상자 대신 <b>반투명한 막(세포막)</b>. 자원은 주머니 3개, 지도는 세포가 이어진 군체</li>
+<li>물기 버튼은 <b>이빨 달린 아가리</b> 그림</li>
+<li>살아 있는 몸 느낌. 분홍·초록이 많아 가장 생물적</li></ul></div></div>
+
+<!-- U2 -->
+<div class="row"><div class="scr u2" id="u2" style="background-image:url(z1_clean.png)">
+ <div class="a" style="left:18px;top:12px;font-size:12px;color:#c8b8ff">Lv <span class="gold" style="font-size:20px;font-weight:700">13</span></div>
+ <svg class="a" id="crack" style="left:60px;top:14px" width="210" height="30"></svg>
+ <div class="a" style="left:62px;top:42px;font-size:12px;color:#c8b8ff">에너지 <span style="color:#fff">112</span><span style="color:#8a7aa8"> / 145</span></div>
+ <svg class="a" style="left:18px;top:62px" width="252" height="4"><line x1="0" y1="2" x2="252" y2="2" stroke="#2a2040" stroke-width="1.5"/><line x1="0" y1="2" x2="150" y2="2" stroke="#9fd8ff" stroke-width="1.5" stroke-dasharray="1 3"/></svg>
+ <!-- 일시정지 = 두 틈 -->
+ <svg class="a" style="left:290px;top:14px" width="26" height="30"><path d="M8 2 Q12 15 8 28 Q4 15 8 2Z M18 2 Q22 15 18 28 Q14 15 18 2Z" fill="#ffe066" opacity=".85"/></svg>
+ <!-- 오른쪽 위 -->
+ <div class="a" style="right:18px;top:12px;text-align:right;font-size:12px;color:#c8b8ff;line-height:1.7">
+  <div><span style="color:#8a7aa8">구역</span> <span class="gold" style="font-weight:700">Ⅰ</span><span style="color:#8a7aa8"> / Ⅲ</span></div>
+  <div><span style="color:#ff9ec8">◆</span> 24 &nbsp; <span style="color:#9fd8ff">◆</span> 11 &nbsp; <span style="color:#d0a8ff">◆</span> 2</div>
+  <div style="color:#8a7aa8">포식 1단계까지 <span style="color:#fff">24/40</span></div></div>
+ <svg class="a" id="star" style="right:16px;top:78px" width="96" height="64"></svg>
+ <div class="a" style="right:18px;top:150px;display:flex;gap:10px">
+  <svg width="24" height="30"><path d="M12 2 Q20 15 12 28 Q4 15 12 2Z" fill="#2a0a18" stroke="#ff6a9a" stroke-width="1.5"/><circle cx="12" cy="15" r="3" fill="#ff6a9a"/></svg>
+  <svg width="24" height="30"><path d="M12 2 Q20 15 12 28 Q4 15 12 2Z" fill="#0a1828" stroke="#6aa8e0" stroke-width="1.5"/></svg>
+  <svg width="24" height="30"><path d="M12 2 Q20 15 12 28 Q4 15 12 2Z" fill="#180a28" stroke="#a87ae0" stroke-width="1.5"/></svg></div>
+ <!-- 버튼 = 세로 눈꼴 틈 -->
+ <div class="eye" style="left:712px;top:236px;width:62px;height:104px"></div>
+ <svg class="a" style="left:712px;top:236px" width="62" height="104"><path d="M31 12 Q44 52 31 92 Q18 52 31 12Z" fill="#ffe06622" stroke="#ffe066" stroke-width="1.2"/><circle cx="31" cy="52" r="5" fill="#fff8d0"/></svg>
+ <div class="a" style="left:640px;top:250px;width:66px;text-align:right;font-size:12.5px;font-weight:700;color:#ffe066">물기</div>
+ <div class="eye" style="left:650px;top:282px;width:38px;height:62px;box-shadow:0 0 0 1.5px #c8b8ff,0 0 10px #a65cff66,inset 0 0 12px #a65cff88"></div>
+ <div class="a" style="left:650px;top:304px;width:38px;text-align:center;font-size:10.5px;color:#e0d4ff">스킬</div>
+</div>
+<div class="cap"><span class="tag" style="background:#ffe066">U2</span><h2>틈과 금빛 문양</h2><ul>
+<li><b>상자를 모두 없앰.</b> 어둠 위에 금빛 선과 글자만 떠 있어 화면이 가장 넓어 보임</li>
+<li><b>에너지 = 빛나는 균열.</b> 줄어들수록 균열이 짧아지고, 꺼진 부분은 희미한 금만 남음</li>
+<li>버튼은 <b>세로로 찢어진 눈꼴 틈</b>. 누르면 틈이 벌어짐. 지도는 방을 별로 잇는 별자리</li>
+<li>금빛은 여왕·손끝마디(약점)와 같은 색 → '금빛 = 중요한 것' 규칙이 UI까지 이어짐</li>
+<li>가장 신비롭고 조용함. 엔딩 '빛 한 점'과도 어울림</li></ul></div></div>
+
+<!-- U3 -->
+<div class="row"><div class="scr u3" style="background-image:url(z1_clean.png)">
+ <div class="plate" style="left:14px;top:12px;width:250px;height:54px"></div>
+ <div class="a" style="left:24px;top:18px;font-size:12px;color:#c8d8ff">Lv.<span style="color:#fff;font-weight:700">13</span> &nbsp;에너지 <span style="color:#ff9ec0">112/145</span></div>
+ <div class="pbar" id="pb" style="left:24px;top:36px"></div>
+ <div class="pbar" style="left:24px;top:54px;gap:0"><i style="width:150px;height:4px;background:#7cc4ff;box-shadow:none"></i><i style="width:80px;height:4px;background:#2e2440;box-shadow:none"></i></div>
+ <div class="plate" style="left:282px;top:16px;width:30px;height:30px"></div>
+ <div class="a" style="left:291px;top:24px;width:4px;height:14px;background:#e8e0ff"></div><div class="a" style="left:299px;top:24px;width:4px;height:14px;background:#e8e0ff"></div>
+ <div class="plate" style="right:14px;top:12px;width:178px;height:62px"></div>
+ <div class="a" style="right:24px;top:17px;text-align:right;font-size:12px;line-height:1.6;color:#c8d8ff">구역 1/3<br><span style="color:#ff9ec0">유기 24</span> <span style="color:#9fd8ff">무기 11</span> <span style="color:#d0a8ff">정수 2</span><br>포식 1단계 24/40</div>
+ <svg class="a" id="pxmap" style="right:16px;top:84px" width="76" height="56" shape-rendering="crispEdges"></svg>
+ <div class="a" style="right:14px;top:150px;display:flex;gap:6px">
+  <div class="oct" style="position:relative;width:26px;height:26px;background:#5f2a48;color:#ff9ec0;font-size:11px">포</div>
+  <div class="oct" style="position:relative;width:26px;height:26px;background:#24406a;color:#9fd8ff;font-size:11px">갑</div>
+  <div class="oct" style="position:relative;width:26px;height:26px;background:#3e2a6a;color:#d0a8ff;font-size:11px">공</div></div>
+ <div class="oct" style="left:700px;top:256px;width:84px;height:84px;background:#5f78b8"><div class="oct" style="width:78px;height:78px;background:linear-gradient(#3a2a6a,#241a44);flex-direction:column;color:#fff;font-size:14px;font-weight:700">
+  <svg width="30" height="20" shape-rendering="crispEdges"><path d="M0 4h30v4h-4v4h-4V8h-4v4h-4V8h-4v4H6V8H0z" fill="#ffd0e4"/><path d="M0 16h6v-4h4v4h4v-4h4v4h4v-4h4v4h4v4H0z" fill="#ffd0e4"/></svg>물기</div></div>
+ <div class="oct" style="left:636px;top:294px;width:50px;height:50px;background:#4aa87a"><div class="oct" style="width:44px;height:44px;background:#1e3a30;color:#bff0d4;font-size:11px">스킬</div></div>
+</div>
+<div class="cap"><span class="tag" style="background:#8fb0ff">U3</span><h2>결정 껍질 (픽셀)</h2><ul>
+<li><b>글자까지 픽셀 글꼴(갈무리).</b> 게임 그림과 같은 도트 느낌으로 통일. 무료 글꼴(OFL)을 파일 안에 넣음(+약 0.5MB)</li>
+<li>패널은 <b>갑각 판</b>: 이중 픽셀 테두리 + 위쪽 밝은 모서리</li>
+<li>에너지는 <b>칸 막대</b>(1칸 = 에너지 일정량) — 남은 양을 세기 쉬움</li>
+<li>버튼은 각진 팔각 결정</li>
+<li>가장 '게임 같고' 읽기 쉬움. 대신 공허·호러 분위기는 셋 중 가장 약함</li></ul></div></div>
+
+<script>
+// U1 마디
+const sg=document.getElementById('segs');for(let i=0;i<10;i++){const d=document.createElement('div');d.className='seg'+(i>=8?' off':'');d.style.left=(i*20)+'px';d.style.width=(24-i*.8)+'px';d.style.height=(20-i*.7)+'px';d.style.top=(i*.35)+'px';d.style.zIndex=20-i;sg.appendChild(d)}
+// U1 세포 지도
+{const s=document.getElementById('cellmap');let h='';const on=[[0,0],[1,0],[1,1],[2,1],[2,2],[3,2]];for(let y=0;y<4;y++)for(let x=0;x<4;x++){const cx=12+x*22,cy=9+y*15,k=on.some(o=>o[0]==x&&o[1]==y);h+=`<ellipse cx="${cx}" cy="${cy}" rx="${k?9:7}" ry="${k?6.5:5}" fill="${k?'#4a2440':'#1e1024'}" stroke="${k?'#d94f8c':'#3a2238'}" stroke-width="1"/>`}h+=`<circle cx="${12+3*22}" cy="${9+2*15}" r="3" fill="#ffe066"/><circle cx="12" cy="9" r="2.5" fill="#ff9ec8"/>`;s.innerHTML=h}
+// U2 균열
+{const s=document.getElementById('crack');let p='M0 15',q='',x=0,y=15;const pts=[[0,15]];while(x<206){x+=6+Math.random()*9;y=15+(Math.random()-.5)*12;pts.push([Math.min(x,206),y])}
+ const cut=pts.findIndex(p=>p[0]>206*112/145);const A=pts.slice(0,cut+1).map(p=>p.join(' ')).join(' L'),B=pts.slice(cut).map(p=>p.join(' ')).join(' L');
+ let br='';for(let i=2;i<cut;i+=3){const[a,b]=pts[i];br+=`<path d="M${a} ${b} l${4+Math.random()*6} ${(Math.random()<.5?-1:1)*(5+Math.random()*5)}" stroke="#ffb0d0" stroke-width="1" opacity=".7"/>`}
+ s.innerHTML=`<path d="M${B}" stroke="#3a2a50" stroke-width="2" fill="none"/>${br}<path d="M${A}" stroke="#ff5ea0" stroke-width="5" fill="none" opacity=".35" style="filter:blur(2px)"/><path d="M${A}" stroke="#ffe0ef" stroke-width="2.2" fill="none"/>`}
+// U2 별자리 지도
+{const s=document.getElementById('star');let h='';const P=[];for(let y=0;y<4;y++)for(let x=0;x<4;x++)P.push([10+x*25,8+y*16]);const path=[0,1,5,6,10,11];for(let i=1;i<path.length;i++){const a=P[path[i-1]],b=P[path[i]];h+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#c8b8ff" stroke-width=".8" opacity=".6"/>`}
+ P.forEach((p,i)=>{const k=path.includes(i);h+=`<circle cx="${p[0]}" cy="${p[1]}" r="${k?2.2:1.2}" fill="${k?'#e8dcff':'#4a3a68'}"/>`});h+=`<circle cx="${P[11][0]}" cy="${P[11][1]}" r="4" fill="none" stroke="#ffe066"/><circle cx="${P[0][0]}" cy="${P[0][1]}" r="3.4" fill="#ffe066"/>`;s.innerHTML=h}
+// U3 픽셀 막대 / 지도
+{const s=document.getElementById('pb');for(let i=0;i<23;i++){const d=document.createElement('i');if(i>=18)d.className='off';s.appendChild(d)}}
+{const s=document.getElementById('pxmap');let h='';const on=[0,1,5,6,10,11];for(let y=0;y<4;y++)for(let x=0;x<4;x++){const i=y*4+x;h+=`<rect x="${x*19}" y="${y*14}" width="16" height="11" fill="${on.includes(i)?'#5f78b8':'#1c1830'}" stroke="#0a0814" stroke-width="2"/>`}h+=`<rect x="${3*19+5}" y="${2*14+3}" width="6" height="5" fill="#ffe066"/><rect x="5" y="3" width="6" height="5" fill="#ff9ec0"/>`;s.innerHTML=h}
+</script></body></html>
