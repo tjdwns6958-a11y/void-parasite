@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v71</title>
+<title>공허 기생충 v72</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v71';
+window.VP_VER='v72';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -63,7 +63,7 @@ const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98
   c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 충전','결정을 먹으면 수정 1개 충전(최대 3) — 맞을 때 피해 60%를 막고 주변에 파편 피해 6'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 3개)']],
   v:[['공허 감각','숨은 위협이 보인다(땅속 땅울음, 매복한 낫그늘, 이웃 방 몬스터 수) · 공허 정수를 얻을 때마다 체력 +8 · 공허가 가장 높으면 공격이 검은 구체 뱉기(원거리)'],['공허 침','검은 구체가 앞쪽 적을 따라가고 맞으면 둔화 (공허가 가장 높지 않으면 빗나간 물기 대신 공허 침, 피해 8) · 산호는 한 방에 녹인다'],['공허 권속','보이드링을 처치하면 아군으로 거둔다 (최대 2마리)']]};
 // 진화 계통별 몸 모양 (머리 24px · 마디 20px, 2배 확대)
-function skBlade(px,x,c,r,sg,K){K=K||1;const B=[[r-1.4,3.5],[r+.8,4],[r+3,3.6],[r+5.4,1.4],[r+4.3,2],[r+3.4,2.6],[r+2.4,2.9],[r+1.4,3],[r+.3,3],[r-1.2,2.8]].map(([X,Y])=>[c+(r-1)+(X-(r-1))*K*.86,c+sg*(3+(Y-3)*K)]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
+function skBlade(px,x,c,r,sg,K){K=K||1;const B=[[r-1.5,4],[r+.8,4.6],[r+3,4.1],[r+5.4,1.4],[r+4.5,2.3],[r+3.9,1.7],[r+3.4,2.6],[r+2.8,2],[r+2.2,2.9],[r+1.6,2.3],[r+1,3.1],[r+.4,2.5],[r-.3,3.2],[r-1.3,3.1]].map(([X,Y])=>[c+(r-1)+(X-(r-1))*K*.86,c+sg*(3+(Y-3)*K)]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
 function skCry(px,x,bx,by,ang,len,w){const ca=Math.cos(ang),sa=Math.sin(ang),C=['#24304a','#e8f6ff','#8fc4ee','#ffffff'];for(const pass of[0,1])for(let t=0;t<=len;t+=.4){const ww=w*(t<len*.35?t/(len*.35):(len-t)/(len*.65))+(pass?0:.7);for(let q=-ww;q<=ww;q+=.4)px(x,bx+ca*t-sa*q,by+sa*t+ca*q,pass?(q<0?C[1]:C[2]):C[0])}px(x,bx+ca*len,by+sa*len,C[3])}
 function skinTex(s,key,L){if(s.textures.exists('wh_'+key))return;
  const dom=L.p>0&&L.p>=L.c&&L.p>=L.v?'p':L.c>0&&L.c>=L.v?'c':L.v>0?'v':'n',t=dom=='n'?0:L[dom];
@@ -931,7 +931,7 @@ class G extends Phaser.Scene{
     g.lineStyle(2.2*s,0xdff4ff,.85).strokeCircle(X(30),Y(0),9*s);for(let i=0;i<6;i++){const an=Math.PI+(i-2.5)*.6,d=16+5*(i%2);dia(X(30)+Math.cos(an)*d*s,Y(0)+Math.sin(an)*d*s,(i%3?2.2:2.8)*s,i%2?0xbfeaff:0xffffff,1)}}
    else{this.artWorm(A,X(-30),Y(0),L,1.4*s,dep);mob(52,0,26);for(let i=1;i<=5;i++)g.fillStyle(0x3a1060,.9-i*.15).fillCircle(X(14-i*7),Y(Math.sin(i)*1.5),(2.6-i*.3)*s);g.fillStyle(0x0a0412,1).fillCircle(X(16),Y(0),5.5*s);g.lineStyle(1.8*s,0xc070ff,1).strokeCircle(X(16),Y(0),5.5*s)}}
   else{
-   if(k=='p'){this.artWorm(A,X(-36),Y(0),L,1.5*s,dep);mob(30,0,26).setTint(0x6a3a5a);for(const sg of[-1,1]){const an=sg*.55,ca=Math.cos(an),sa=Math.sin(an),P=this.pjBlade(sg,0).map(([x,y])=>({x:X(8)+(x*ca-y*sa)*4*s,y:Y(sg*4)+(x*sa+y*ca)*4*s}));g.lineStyle(1.8*s,0x3d1b6b,1).strokePoints(P,true);g.fillStyle(0xf0c8d8,1).fillPoints(P,true);g.lineStyle(.9*s,0xffffff,1).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}for(let i=0;i<4;i++)g.fillStyle(0x7be0a8,.9).fillCircle(X(-58+i*10),Y(-22-(i%2)*5),2*s)}
+   if(k=='p'){this.artWorm(A,X(-36),Y(0),L,1.5*s,dep);mob(30,0,26).setTint(0x6a3a5a);for(const sg of[-1,1]){const an=sg*.55,ca=Math.cos(an),sa=Math.sin(an),P=this.pjBlade(sg,0).map(([x,y])=>({x:X(8)+(x*ca-y*sa)*4*s,y:Y(sg*4)+(x*sa+y*ca)*4*s}));g.lineStyle(1.8*s,0x3d1b6b,1).strokePoints(P,true);g.fillStyle(0xf0c8d8,1).fillPoints(P,true);g.lineStyle(.9*s,0xffffff,1).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<P.length-1;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}for(let i=0;i<4;i++)g.fillStyle(0x7be0a8,.9).fillCircle(X(-58+i*10),Y(-22-(i%2)*5),2*s)}
    else if(k=='c'){for(let i=0;i<3;i++)g.lineStyle(1.6*s,0xbfeaff,.55).lineBetween(X(-62),Y(-8+i*8),X(-30),Y(-8+i*8));for(let i=0;i<4;i++)dia(X(-50+i*10),Y(10-i*5),1.6*s,0xbfeaff,.8);this.artWorm(A,X(10),Y(0),L,1.4*s,dep);mob(52,-2,24);g.lineStyle(2.4*s,0xdff4ff,.9).strokeCircle(X(32),Y(0),11*s);for(let i=0;i<7;i++){const an=Math.PI+(i-3)*.5;dia(X(32)+Math.cos(an)*18*s,Y(0)+Math.sin(an)*14*s,(i%2?2.2:2.8)*s,i%2?0xbfeaff:0xffffff,1)}for(let i=0;i<3;i++)g.lineStyle(1.4*s,0xffffff,.6).lineBetween(X(64),Y(-8+i*8),X(72),Y(-8+i*8))}
    else if(k=='c0'){this.artWorm(A,X(14),Y(0),L,1.4*s,dep);g.lineStyle(2*s,0x9fd8ff,.85).strokeEllipse(X(-4),Y(0),70*s,46*s);for(let i=0;i<6;i++){const a=i/6*6.283+.3;dia(X(-4)+Math.cos(a)*35*s,Y(0)+Math.sin(a)*23*s,3*s,0x8ad8ff,1)}
     g.fillStyle(0xff9a4a,1).fillCircle(X(54),Y(-14),3.2*s);g.lineStyle(1.6*s,0xffc890,.9).beginPath().arc(X(44),Y(-4),12*s,-2.4,-.4,false).strokePath();g.fillStyle(0xffc890,.9).fillTriangle(X(53),Y(-8),X(57),Y(-3),X(50),Y(-2))}
@@ -1303,7 +1303,7 @@ class G extends Phaser.Scene{
  emMirBite(fx,fy){const m=this.cur.en.find(e=>e.on&&e.k=='em');if(!m||m.ph!=2||m.st=='trans')return 0;const p=this.pl,rx=800-p.x,ry=p.y,fxr=-fx,dx=m.x-rx,dy=m.y+10-ry,d=Math.hypot(dx,dy);
   const sw=this.add.circle(rx+fxr*34,ry+fy*34,20,0xd8c8ff,.5).setDepth(12);this.tweens.add({targets:sw,alpha:0,scale:1.6,duration:160,onComplete:()=>sw.destroy()});
   if(d<C.BITE.range+46&&(dx*fxr+dy*fy)/(d||1)>.2){let dg=this.bdmg*(this.lin.c>=3?1.05:this.lin.v>=3?.9:.75);const L=this.lin;m.bc=(m.bc||0)+1;if(L.p>=1&&m.bc%2==0)dg+=9;m.hp-=dg;this.dtx(rx,ry-20,'-'+Math.round(dg),'#ffd0f8');if(L.p>=2)this.en=Math.min(this.emax,this.en+dg*.15);
-   m.spr.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.spr)m.spr.clearTint()});const o=this.add.image(m.x+(Math.random()-.5)*20,m.y+(Math.random()-.5)*40,'emM').setDepth(13);this.tweens.add({targets:o,y:o.y+60,angle:90,alpha:0,duration:700,onComplete:()=>o.destroy()});
+   m.spr.setTintFill(this.domK()=='c'?0xffffff:0xff6a8a);this.time.delayedCall(90,()=>{if(m.spr)m.spr.clearTint()});const o=this.add.image(m.x+(Math.random()-.5)*20,m.y+(Math.random()-.5)*40,'emM').setDepth(13);this.tweens.add({targets:o,y:o.y+60,angle:90,alpha:0,duration:700,onComplete:()=>o.destroy()});
    if(m.hp<=0)this.emDie(m);return 1}
   if(Math.hypot(m.x-p.x,m.y-p.y)<150&&!(this.emNt>this.time.now)){this.emNt=this.time.now+2500;this.dtx(p.x,p.y-30,'거울 너머라 직접은 닿지 않는다 — 거울 속의 나로 물 것','#c8b8ff')}return 0}
  emMirSpit(){const m=this.cur.en.find(e=>e.on&&e.k=='em');if(!m||m.ph!=2||this.spitCd>0)return;const p=this.pl,rx=800-p.x,ry=p.y;if(Math.hypot(m.x-rx,m.y-ry)>280)return;
@@ -2407,8 +2407,10 @@ class G extends Phaser.Scene{
      g.fillStyle(0x3a4a7a,al).fillTriangle(x,y-r-.8,x+r*.8,y,x,y+r+.8);g.fillTriangle(x,y-r-.8,x-r*.8,y,x,y+r+.8);g.fillStyle(i%2?0xbfeaff:0xffffff,al).fillTriangle(x,y-r,x+r*.6,y,x,y+r);g.fillTriangle(x,y-r,x-r*.6,y,x,y+r)}return true}
    if(k.kd=='v'||k.kd=='o'){if(T>.36)return false;const x=k.kd=='v'?bx:k.x,y=k.kd=='v'?by:k.y,al=1-T/.36;g.fillStyle(0x0a0412,al*.9).fillCircle(x,y,3+9*Math.min(1,T/.12)*(1-T/.36));g.lineStyle(1.6,0xc070ff,al).strokeCircle(x,y,4+16*T/.36);
     for(let i=0;i<5;i++){const an=k.sd+i*1.257,d=4+20*T/.36;g.fillStyle(0xc070ff,al).fillCircle(x+Math.cos(an)*d,y+Math.sin(an)*d,1.3)}return true}
-   if(T<.07)return true;const al=T<.15?1:1-(T-.15)/.35;
-   for(const sg of[-1,1])for(let j=0;j<3;j++){const ox=bx+c*j*4.5+px*sg*5.5,oy=by+s*j*4.5+py*sg*5.5,tx=ox-px*sg*3.2,ty=oy-py*sg*3.2;g.lineStyle(3,0x2a1040,al*.9).lineBetween(ox,oy,tx,ty);g.lineStyle(1.6,0xfff4fa,al).lineBetween(ox,oy,tx,ty)}
+   if(T>.4)return false;const al=T<.1?1:1-(T-.1)/.3,mx=k.x-c*2,my=k.y-s*2;
+   if(T<.14){g.lineStyle(2,0xff3a5a,(1-T/.14)*.8).strokeCircle(mx,my,6+T*80)}
+   for(const sg of[-1,1]){const P=[];for(let j=0;j<=6;j++){const t=j/6-.5,z=(j%2?1.4:-1.4);P.push({x:mx+px*t*18+c*(sg*3+z),y:my+py*t*18+s*(sg*3+z)})}g.lineStyle(3,0x5a0a24,al*.9).strokePoints(P,false);g.lineStyle(1.4,0xffe0ea,al).strokePoints(P,false)}
+   for(let j=0;j<6;j++){const sp=(j-2.5)*.35+Math.sin(k.sd+j)*.15,d=5+(26+6*Math.sin(k.sd*3+j))*Math.min(1,T/.3),x=mx+(c*Math.cos(sp)-s*Math.sin(sp))*d,y=my+(s*Math.cos(sp)+c*Math.sin(sp))*d+30*T*T;g.fillStyle(j%2?0xff4a6a:0xc0203a,al).fillCircle(x,y,j%3?1.4:2)}
    return true});
   this.chgDraw(g);const E=this.brFx;if(!E)return;E.t+=dt;const q=E.t/.24;if(q>=1){this.brFx=null;return}
   const hd=this.hd;if(!hd||!hd.visible)return;const S=this.bsc||1,a=this.ang,fx=Math.cos(a),fy=Math.sin(a);
@@ -2421,7 +2423,7 @@ class G extends Phaser.Scene{
  // 1단계 갈고리 한 쌍 · 2단계 갈고리 1.3배 · 3단계 갈고리 + 큰 입(검은 쐐기·흰 이빨)이 같이 벌어졌다 닫힘.
  // ===== v69: 포식 턱 = 낫 모양 칼날(톱니) + 평소에도 씹는 움직임 · 갑각 특수 스킬 = 수정 돌진 =====
  // 칼날 턱 한쪽(머리 기준 좌표, sg=±1 위/아래): 밑동이 두껍고 바깥으로 휘었다가 끝이 날카롭게 안쪽으로 — 안쪽 날에 톱니 둘
- pjBlade(sg,r){return [[r-1.4,3.5],[r+.8,4],[r+3,3.6],[r+5.4,1.4],[r+4.3,2],[r+3.4,2.6],[r+2.4,2.9],[r+1.4,3],[r+.3,3],[r-1.2,2.8]].map(([x,y])=>[x,sg*y])}
+ pjBlade(sg,r){return [[r-1.5,4],[r+.8,4.6],[r+3,4.1],[r+5.4,1.4],[r+4.5,2.3],[r+3.9,1.7],[r+3.4,2.6],[r+2.8,2],[r+2.2,2.9],[r+1.6,2.3],[r+1,3.1],[r+.4,2.5],[r-.3,3.2],[r-1.3,3.1]].map(([x,y])=>[x,sg*y])}
  pjU(){const g=this.pjG;if(!g||!g.scene)return;g.clear();const L=this.lin,hd=this.hd;if(!L||L.p<1||!hd||!hd.visible||!hd.scene)return;
   const E=this.brFx&&this.brFx.k=='p'?this.brFx:null,q=E?Math.min(1,E.t/.24):-1,T=this.time.now/1000,ph=T%3.2;
   // 평소: 천천히 씹음(±.1) + 3.2초마다 '딱딱' 두 번 / 물 때: 크게 벌렸다(0~.35) 딱 다묾(.35~.52)
@@ -2431,9 +2433,9 @@ class G extends Phaser.Scene{
   const big=q>=0&&L.p>=2?(q<.52?Math.max(0,op-idle)/Math.max(.1,1-idle):Math.max(0,1-(q-.52)/.3))*(L.p>=3?1:.55):0,S=(L.p>=3?1.15:L.p>=2?.92:.72)*(1+.35*big);
   for(const sg of[-1,1]){const bx=r-1,by=sg*3,an=sg*(op*(.6+.18*big)-.06),c=Math.cos(an),s=Math.sin(an);
    const P=this.pjBlade(sg,r).map(([x,y])=>{const dx=(x-bx)*S*.86,dy=(y-by)*S;return W(bx+dx*c-dy*s,by+dx*s+dy*c)});
-   g.lineStyle(1.3*u,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);
-   g.fillStyle(0xb85c84,al).fillTriangle(P[0].x,P[0].y,P[1].x,P[1].y,P[9].x,P[9].y);
-   g.lineStyle(.7*u,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
+   g.lineStyle(1.6*u,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);
+   g.fillStyle(0xb85c84,al).fillTriangle(P[0].x,P[0].y,P[1].x,P[1].y,P[P.length-1].x,P[P.length-1].y);
+   g.lineStyle(.7*u,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<P.length-1;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
   if(q>=.5&&q<.66){const t=W(r+5.5*S,0);g.fillStyle(0xffffff,(1-Math.abs(q-.58)/.08)*al).fillCircle(t.x,t.y,1.1*u)}}
  // ===== v70: 포식 특수 스킬 = 통째 삼키기 (포식 돌진 대체) =====
  // 앞 ±55°·80px 안 적 하나 → 큰 칼날 턱 둘이 위아래에서 감쌌다(0~0.14초) 콱 닫힘(0.14~0.24초).
@@ -2446,7 +2448,7 @@ class G extends Phaser.Scene{
   const T=D.t,op=T<.14?T/.14:T<.24?1-(T-.14)/.1:0,K=3.8*(m&&m.mb?1.5:1)*(1+.2*Math.min(1,T/.14)),al=T<.3?1:Math.max(0,1-(T-.3)/.15),c=Math.cos(D.an),s=Math.sin(D.an);
   if(al>0)for(const sg of[-1,1]){const rot=sg*(op*.75-.08),rc=Math.cos(rot),rs=Math.sin(rot),bx=D.x-c*K*2.2,by=D.y-s*K*2.2;
    const P=this.pjBlade(sg,0).map(([x,y])=>{const lx=(x+1)*K,ly=(y-sg*3)*K+sg*1.2*K,rx=lx*rc-ly*rs,ry=lx*rs+ly*rc;return{x:bx+rx*c-ry*s,y:by+rx*s+ry*c}});
-   g.lineStyle(1.6,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);g.lineStyle(1.2,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<=8;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
+   g.lineStyle(1.6,0x3d1b6b,al).strokePoints(P,true);g.fillStyle(0xf0c8d8,al).fillPoints(P,true);g.lineStyle(1.2,0xffffff,al).beginPath().moveTo(P[3].x,P[3].y);for(let i=4;i<P.length-1;i++)g.lineTo(P[i].x,P[i].y);g.strokePath()}
   if(T>=.22&&!D.done){D.done=1;g.fillStyle(0xffffff,.9).fillCircle(D.x,D.y,6);
    if(m&&m.on){const mh=m.mh||MON(m.k).hp,boss=m.mb||({sw:1,em:1,rw:1,qn:1,wd:1})[m.k];
     if(!boss&&m.hp<=mh*.3){this.gulp(m);this.en=Math.min(this.emax,this.en+this.emax*.25)}
