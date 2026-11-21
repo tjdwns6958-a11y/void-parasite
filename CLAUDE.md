@@ -18,5 +18,5 @@
 - 플러그인은 대화가 시작될 때 `.claude/settings.json`에서 `true`인 것만 불러와진다. 대화 도중에는 켜고 끌 수 없다.
 - 꺼져 있는(`false`) 플러그인을 고르면, 이번 대화에서는 쓸 수 없다고 알리고 `true`로 바꿔 커밋·머지해서 다음 대화부터 켜지게 할지 묻는다.
 - 켜져 있는 플러그인을 다음 대화부터 아예 끄려면 해당 항목을 `false`로 바꾼다. 사용자가 원하면 그렇게 고친다.
-- 2026-11-21 기준: playwright, frontend-design만 켜져 있고 나머지 3개(Design, feature-dev, claude-md-management)는 꺼져 있다.
+- 2026-11-21 기준: playwright만 켜져 있고 나머지 4개(Design, frontend-design, feature-dev, claude-md-management)는 꺼져 있다.
 - 설정 목록이 바뀌면 위 목록도 함께 고친다.
