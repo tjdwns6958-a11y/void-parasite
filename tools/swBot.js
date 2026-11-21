@@ -28,7 +28,7 @@ const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT
      let dx=0,dy=0;if(best&&best[3]){dx=Math.cos(best[2]);dy=Math.sin(best[2])}if(Math.hypot(gx-pl.x,gy-pl.y)<8&&!(smart&&s.swDanger(pl.x,pl.y))){dx=0;dy=0}
      if(hum){S.lag.push([dx,dy]);const q=S.lag.length>15?S.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002){S.oops=30}if(S.oops>0){S.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}}
      press(dx,dy);
-     const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.SPACE.isDown=!!nearF;
+     const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.F.isDown=!!nearF;
      if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<48&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&MODE=='tank'&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
