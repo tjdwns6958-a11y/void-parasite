@@ -11,10 +11,10 @@
 | 항목 | 상태 |
 |---|---|
 | 게임 | Phaser 3.80.1 HTML 파일 하나(`index.html`)로 된 로그라이크. 롤 '공허' 배경의 기생충 진화. 비상업 연습 프로젝트 |
-| 공개된 게임 | **v53** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG |
-| 아티팩트 | slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f` · 최신 버전 id `1795253441-7d07` · **공개(public)** 상태 |
+| 공개된 게임 | **v55** — https://claude.ai/artifact/RZmtXTGqQ3PD3PVqK8bLTG |
+| 아티팩트 | slug `c6eecabb-06ef-4ea9-86f0-7f1e2915759f` · 최신 버전 id `1795263780-1453` · **공개(public)** 상태 |
 | 지금 기다리는 것 | 개발자의 다음 수정사항. 결정된 것: 물기·섭취 모션 = M3 용수철 꿈틀(v45), 물기 = 둥근 부채꼴 ±45°·거리 63 + 조준 보정(v50) + 턱 = 작은 송곳니 한 쌍, 서로 교차 금지(v52~v53) + 맞았을 때만 앞으로 약 6px(v51), 땅울음 흔들림 축소 + 땅 갈라짐(v51), 시작 연출·진화 나무 = 지금 방식 유지(S·T 시안 보류, `docs/v43/`), 퀘스트 창 = Q2 알리미 + ▼모두/▲접기(v43), 경험치 막대 = 화면 맨 밑·연하게(v43), 먹는 방식 = 물기+섭취 그대로, UI = 지금 방식 유지(E·F·U·W 시안 모두 반려), 화면 = 전체 화면 버튼(v41), 경험치 = 화면 맨 밑(v42). 그 밖에 v40 글자·속도 폰 확인, v39 보스 피드백 |
-| 열려 있는 숙제 | DEVLOG 40절: 실제 폰 확인(멈춤·조이스틱·개구리), 전체 플레이 시간(목표 평균 10분), 효과음/배경음(도구가 필요하면 먼저 물어볼 것) |
+| 열려 있는 숙제 | DEVLOG 40절: 실제 폰 확인(멈춤·조이스틱·개구리), 효과음/배경음(도구가 필요하면 먼저 물어볼 것) |
 
 ### 버전 흐름 (자세한 건 DEVLOG)
 | 버전 | 커밋 | 내용 |
@@ -130,7 +130,7 @@
 
 ## 5. 공개 · 커밋
 
-- 공개: `mcp__claude-artifacts__publish_files` — `slug` 위 값, `base_version` 최신 버전 id, `shared_live:"public"`, `artifact_title`은 **현재 제목**(예 "공허 기생충 v53"), `title` "공허 기생충 vNN", files `[{as:"index.html", path:<index.html 절대 경로>}]`.
+- 공개: `mcp__claude-artifacts__publish_files` — `slug` 위 값, `base_version` 최신 버전 id, `shared_live:"public"`, `artifact_title`은 **현재 제목**(예 "공허 기생충 v55"), `title` "공허 기생충 vNN", files `[{as:"index.html", path:<index.html 절대 경로>}]`.
 - git: (v39까지) `v33-wip`에 커밋 → `v33-wip`과 `main`에 푸시. (v40부터) 세션이 정해 준 작업 브랜치에 커밋·푸시 → 초안 PR → 개발자가 `main`에 머지.
 - 커밋 메시지 끝 줄은 그 세션의 안내를 따를 것 (이번 세션 예: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` + `Claude-Session: …`).
 - 버전마다 `DEVLOG.md`에 절 하나 추가(지금 24절 v40, 25절 v41, 26절 v42, 27절 v43, 28절 v44, 29절 v45, 30절 v46, 31절 v47, 32절 v48, 33절 v49, 34절 v50, 35절 v51, 36절 v52, 37절 v53, 38절 v54(9판 점검), 39절 v55(배고픔 삭제), 40절 '다음 할 일'), `README.md` '현재 내용', 이 문서 0절 표를 갱신.
