@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v73</title>
+<title>공허 기생충 v74</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v73';
+window.VP_VER='v74';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -81,7 +81,7 @@ function skinTex(s,key,L){if(s.textures.exists('wh_'+key))return;
  [3.6,3.2,2.6,2].forEach((r0,i)=>tex(s,'ws'+(i+1)+'_'+key,20,20,2,x=>{const c=10,r=r0*(1+(L.p>=2?.12:0)+(L.c>=3?.06:0));
   if(L.v>=3)disc(x,c,c,r+2.4,'rgba(200,140,255,.3)');disc(x,c,c,r+.9,'#3d1b6b');disc(x,c,c,r,pal[i+1]);
   if(L.v>=3)for(let a=Math.PI*1.1;a<Math.PI*1.9;a+=.15)px(x,c+Math.cos(a)*(r-.4),c+Math.sin(a)*(r-.4),'#c8d0ec');if(L.c>=1){const t=L.c;if(t==1&&i==1)skCry(px,x,c-.5,c-r+.6,-1.75,2,.9);if(t==2&&i%2==0)skCry(px,x,c-.5,c-r+.6,-1.75,2.6,1);if(t>=3){skCry(px,x,c-.5,c-r+.6,-1.75,2.3-i*.3,.9);if(i<2)skCry(px,x,c,c+r-.6,1.75,1.5-i*.3,.7)}}
-  if(L.p>=2){const h=L.p>=3?4:3;for(let k=0;k<h;k++)px(x,c,c-r-k,k==h-1?'#ffe0ea':'#e8b0c4');px(x,c-1,c-r,'#c8889c')}
+  if(L.p>=2){const big=L.p>=3,h=big?2.6-i*.3:1.6-i*.2;for(let k=-1;k<=1;k++){const bx=c+k*1.7;for(let t=0;t<=h;t+=.5){const w=.9*(1-t/h);for(let q=-w;q<=w;q+=.5)px(x,bx-t*.35+q,c-r+.2-t,t+.5>h?'#ffffff':'#ffe0ea')}px(x,bx+1,c-r,'#3d1b6b')}if(big){for(let k=-1;k<=1;k+=2){const bx=c+k*1.4;for(let t=0;t<=1.4;t+=.5)px(x,bx-t*.3,c+r-.2+t,'#ffd0e0')}}}
   if(L.v>=2)disc(x,c,c,1.1,'#f0c8ff');if(L.v>=3){px(x,c-2,c,'#fff');px(x,c+2,c,'#fff');px(x,c,c-2,'#fff');px(x,c,c+2,'#fff')}}))}
 let gid=0;
 const MON=k=>({rek:C.R,gna:C.G,vdl:C.V,spn:C.SP,lsp:C.LS,qn:C.QN,wd:C.WD})[k]||C.E;
