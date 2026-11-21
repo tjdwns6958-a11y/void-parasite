@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v52</title>
+<title>공허 기생충 v53</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v52';
+window.VP_VER='v53';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -2312,12 +2312,16 @@ class G extends Phaser.Scene{
   const P=this.brPoly().map(p=>W(p.x,p.y));g.fillStyle(0xffffff,.11*al).fillPoints(P,true);g.lineStyle(1.5,0xffffff,.55*al).strokePoints(P,true);
   for(const d of[0,.18]){const r=10+46*Math.max(0,Math.min(1,(q-d)/.5));if(q>d&&q<d+.6){const w=W(0,0);g.lineStyle(2.5,0xffd0f0,(1-(q-d)/.6)*.9).beginPath().arc(w.x,w.y,r,E.an-h*.92,E.an+h*.92,false).strokePath()}}
   this.jawDraw(g,q,al)}
- // ===== v52: 머리 턱 = J1 송곳니 한 쌍 확정, 크기 줄임 (길이 12→8, 굵기 약 70%, 간격 5→3.5, 번쩍임 작게) =====
+ // ===== v53: 송곳니 한 쌍 — 서로 절대 교차하지 않게 다시 그림 =====
+ // 각 송곳니 = 머리 앞의 2차 곡선(밑동 → 바깥쪽으로 볼록 → 끝). 가운데 선에서 잰 옆 거리가 모든 점에서 ≥ 2.4px(다물었을 때 끝) → 중심선 사이 ≥ 4.8px.
+ // 테두리도 끝으로 갈수록 가늘게(3.2→1.0) → 테두리까지 포함해 눈에 보이는 틈 ≥ 약 3.8px.
+ fangPts(sg,op){const L=8,b=3.5,P=[],B={x:0,y:b},Cc={x:L*.6,y:b+1.5+op*5},T={x:L*.95,y:2.4+op*4.6};
+  for(let i=0;i<=8;i++){const t=i/8,u=1-t;P.push({x:u*u*B.x+2*u*t*Cc.x+t*t*T.x,y:sg*(u*u*B.y+2*u*t*Cc.y+t*t*T.y)})}return P}
  jawDraw(g,q,al){const hd=this.hd,S=this.bsc||1,a=this.ang,fx=Math.cos(a),fy=Math.sin(a),px=-fy,py=fx;if(!hd||!hd.visible)return;
-  const op=q<.35?q/.35:q<.52?1-(q-.35)/.17:0,snap=q>=.5&&q<.66?1-Math.abs(q-.58)/.08:0,hx=hd.x+fx*7*S,hy=hd.y+fy*7*S,LEN=8;
-  for(const sg of[-1,1]){const base={x:hx+px*3.5*sg*S,y:hy+py*3.5*sg*S},sw=.15+op*.95,P=[];for(let i=0;i<=6;i++){const t=i/6,ang=a+sg*sw-sg*t*(.9+sw*.6),r=t*LEN*S;P.push({x:base.x+Math.cos(ang)*r+Math.cos(a)*t*1.4*S,y:base.y+Math.sin(ang)*r+Math.sin(a)*t*1.4*S})}
-   g.lineStyle(3.2*S,0x3d1b6b,1).strokePoints(P,false);for(let i=1;i<P.length;i++){g.lineStyle((2.3-1.9*i/P.length)*S,0xfff0f8,1).lineBetween(P[i-1].x,P[i-1].y,P[i].x,P[i].y)}}
-  if(snap>0)g.fillStyle(0xffffff,snap).fillCircle(hd.x+fx*15*S,hd.y+fy*15*S,2.5*S)}
+  const op=q<.35?q/.35:q<.52?1-(q-.35)/.17:0,snap=q>=.5&&q<.66?1-Math.abs(q-.58)/.08:0,hx=hd.x+fx*7*S,hy=hd.y+fy*7*S;
+  for(const sg of[-1,1]){const P=this.fangPts(sg,op).map(p=>({x:hx+(fx*p.x+px*p.y)*S,y:hy+(fy*p.x+py*p.y)*S}));
+   for(let i=1;i<P.length;i++){g.lineStyle((3.2-2.2*i/P.length)*S,0x3d1b6b,1).lineBetween(P[i-1].x,P[i-1].y,P[i].x,P[i].y)}for(let i=1;i<P.length;i++){g.lineStyle((2.2-1.8*i/P.length)*S,0xfff0f8,1).lineBetween(P[i-1].x,P[i-1].y,P[i].x,P[i].y)}}
+  if(snap>0)g.fillStyle(0xffffff,snap).fillCircle(hd.x+fx*17*S,hd.y+fy*17*S,2.2*S)}
  // 땅울음 솟구치기 (v51): 화면 흔들림은 가까울 때만 약하게, 대신 솟은 자리에 땅 갈라짐 + 흙 튐
  rkBurst(m){const p=this.pl,d=Math.hypot(m.x-p.x,m.y-p.y);if(d<170)this.cameras.main.shake(90,.0022*(1-d/170)+.0006);
   const g=this.add.graphics().setDepth(1.6);let sd=(m.x*7+m.y*13)|0;const R=()=>{sd=(sd*16807+11)%2147483647;return (sd%1000)/1000};
