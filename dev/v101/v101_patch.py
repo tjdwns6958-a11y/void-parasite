@@ -33,8 +33,11 @@ rep("CC={hole:0xa07850,rift:0xc070ff,", "CC={hole:0xa07850,rift:0xc070ff,vort:0x
 rep("(a.ct[kk]!='hole'&&a.ct[kk]!='rift'))continue;", "(a.ct[kk]!='hole'&&a.ct[kk]!='rift'&&a.ct[kk]!='vort'))continue;")
 rep("(a.ct[kk]=='hole'?'땅울음 굴':'공허 균열')", "(a.ct[kk]=='hole'?'땅울음 굴':a.ct[kk]=='vort'?'소용돌이':'공허 균열')")
 rep("tunnel(dt){const T=this.tr,p=this.pl,rf=T.kind=='rift',", "tunnel(dt){const T=this.tr,p=this.pl,rf=T.kind=='rift'||T.kind=='vort',")
-rep("else if(!T.done){T.done=1;this.enter(T.b);const[hc,hr]=T.b.hp[T.o],x=(hc+.5)*C.T,y=(hr+.5)*C.T;",
-    "else if(!T.done){T.done=1;this.enter(T.b);const[hc,hr]=T.b.hp[T.o];let x=(hc+.5)*C.T,y=(hr+.5)*C.T;if(T.kind=='vort'){const dx=400-x,dy=180-y,l=Math.hypot(dx,dy)||1,o=T.b.vt&&T.b.vk==T.o?112:46;x+=dx/l*o;y+=dy/l*o}")
+# 도착 잠금(hlk)은 소용돌이 자리 자체에 건다 — 도착 지점에 걸면 46px 앞 출구로 바로 되돌아 들어갈 수 없었음
+rep("else if(!T.done){T.done=1;this.enter(T.b);const[hc,hr]=T.b.hp[T.o],x=(hc+.5)*C.T,y=(hr+.5)*C.T;p.setPosition(x,y);this.hlk=[x,y];",
+    "else if(!T.done){T.done=1;this.enter(T.b);const[hc,hr]=T.b.hp[T.o];let x=(hc+.5)*C.T,y=(hr+.5)*C.T;const h0=[x,y];if(T.kind=='vort'){const dx=400-x,dy=180-y,l=Math.hypot(dx,dy)||1,o=T.b.vt&&T.b.vk==T.o?112:46;x+=dx/l*o;y+=dy/l*o;this.vtG=this.time.now+2500}p.setPosition(x,y);this.hlk=h0;")
+# 소용돌이로 막 도착한 뒤 2.5초는 해류에 안 밀림 (가만히 있으면 바로 다시 빨려 들어가던 문제)
+rep("const fw=this.flowAt(p.x,p.y),", "const fw=this.vtG>this.time.now?[0,0]:this.flowAt(p.x,p.y),")
 rep("(this.cur.ct[k]=='hole'||this.cur.ct[k]=='rift')", "(this.cur.ct[k]=='hole'||this.cur.ct[k]=='rift'||this.cur.ct[k]=='vort')")
 # 칠성장어: 그림 · 처치 보상(공허 정수 +1) · 마디 정리 · 반투명일 때 체력바 숨김 · 소개 카드
 rep("else if(e.k=='vdl'){e.st='orbit';e.oa=null;e.spr=this.add.image(e.x,e.y,'vdl').setDepth(12)}",
