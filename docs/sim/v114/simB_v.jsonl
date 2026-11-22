@@ -1,0 +1,11 @@
+{"win":false,"st":{},"dead":true,"time":50,"hp":"obs:171/864","minE":19,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":13,"나선 구체":105,"껍데기 속 공허":50},"bites":35,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":true,"st":{},"dead":false,"time":51.3,"hp":"obs:0/864","minE":84,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":26,"앵무조개의 눈빛":36},"bites":49,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":true,"st":{},"dead":false,"time":67.9,"hp":"obs:0/864","minE":6,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":39,"공허 촉수":66,"나선 구체":42,"앵무조개의 눈빛":18},"bites":44,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":59.7,"hp":"obs:35/864","minE":6,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":26,"나선 구체":63,"공허 촉수":66,"껍데기 속 공허":25},"bites":43,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":true,"st":{},"dead":false,"time":66.3,"hp":"obs:0/864","minE":56,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":26,"관찰자의 광선":10,"나선 구체":21,"공허 촉수":33},"bites":67,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":58.3,"hp":"obs:11/864","minE":9,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":13,"관찰자의 광선":10,"튕겨 나온 구체":18,"나선 구체":99,"먹물 파동":46},"bites":38,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":54.7,"hp":"obs:93/864","minE":8,"emax":145,"bdmg":29.4,"dmg":{"관찰자의 광선":10,"가장자리 눈의 빛살":13,"나선 구체":84,"앵무조개의 눈빛":36,"공허 촉수":33},"bites":31,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":47.5,"hp":"obs:227/864","minE":17,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":26,"관찰자의 광선":10,"공허 촉수":66,"나선 구체":42,"앵무조개의 눈빛":18},"bites":28,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":true,"st":{},"dead":false,"time":57.8,"hp":"obs:0/864","minE":66,"emax":145,"bdmg":29.4,"dmg":{"관찰자의 광선":10,"앵무조개의 눈빛":36,"공허 촉수":33},"bites":62,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":56.9,"hp":"obs:285/864","minE":13,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":52,"관찰자의 광선":20,"앵무조개의 눈빛":54,"튕겨 나온 구체":18,"먹물 파동":23},"bites":37,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+v human 10 WIN 4/10 avgTime 57.0

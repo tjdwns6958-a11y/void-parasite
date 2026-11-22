@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v113</title>
+<title>공허 기생충 v114</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v113';
+window.VP_VER='v114';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -57,7 +57,7 @@ const rnd=n=>Math.random()*n|0,pick=a=>a[rnd(a.length)];
 const CRM=2,NPHY=new Set(['거품 분사','떨어지는 종유석','수정 새끼 게','달라붙은 새끼 게','정동 지뢰','수정 가시','정동 파편']);
 const CRP=0.03;
 const STLP=.2;
-const C3CD=1.1,C3P=.05,GDK_HPM=1.35,GDK_STUNM=1,GDK_DMGM=1.1;
+const C3CD=1.1,C3P=.05,GDK_HPM=1.2,GDK_STUNM=1,GDK_DMGM=1.05,HCR_HPM=1.1,HCR_DMGM=1.05,OBS_HPM=.9,OBS_DMGM=.85;
 const CRR=1;
 const MBQ={p:{q:'허기의 왕관',b:'허기의 왕관',s:'통째 삼키기',d:'턱들이 흩어져 사냥하거나 하늘에서 내리꽂는 동안 가운데 구멍을 물 수 있다 — 붉은 표식이 붙은 유충은 왕관에 닿기 전에 먼저 먹을 것.',sd:'앞의 적 하나를 큰 칼날 턱으로 물어 삼킨다 — 체력 30% 이하 일반 몬스터는 통째로 삼키고 체력 25% 회복, 그 밖엔 물기 ×3 피해 + 출혈 · 재사용 6초'},c:{q:'정동 집게왕의 수정 동굴',b:'정동 집게왕',s:'수정 돌진',d:'등의 정동이 갑주처럼 단단해 물어도 잘 들어가지 않는다 — 돌진은 수정 기둥을 부수며 달려오고, 부서진 기둥의 파편을 먹어 등에 수정을 채운 뒤 몸 공격을 수정으로 막으면 기절한다. 떨어진 종유석은 새 수정 기둥이 된다. 체력이 반으로 줄면 큰 집게를 넓게 휘두른다.',sd:'짧게 돌진해 처음 부딪힌 적에게 큰 피해를 주고 멀리 밀쳐 낸다 · 재사용 7초'},v:{q:'틈 너머의 관찰자',b:'틈 너머의 관찰자',s:'균열 도약',d:'시선 안에 오래 있으면 응시가 차오른다 — 떠 있는 갑주 조각 그림자에 숨을 것. 가장자리에서 뜬 눈을 모두 물어 감기면 큰 눈이 끌려 나온다.',sd:'바라보는 쪽으로 순간이동하고 도착한 자리에서 균열이 터진다 · 재사용 7초'}};
 const TR={mbp:['허기의 왕관',0xe8b0d0],mbc:['정동 집게왕의 수정 동굴',0x9fd8ff],mbv:['틈 너머의 관찰자',0xc0b0e0],coral:['공허 산호 숲',0xff8a70],watch:['심연의 감시탑',0x78c8d8],haven:['둥지',0xffe9a0],brood:['번식지',0xff9ec0],mine:['광맥 동굴',0xb4b4c8],dark:['암흑 구역',0xffffff],swamp:['독 늪',0x8fe070],flow:['공허의 소용돌이',0xa08cff],lair:['포식자 둥지',0xff7a6a],void:['무리의 둥지',0x8a78c8]};
@@ -1456,9 +1456,9 @@ class G extends Phaser.Scene{
   const room={r:0,c:0,d:{N:0,S:0,W:0,E:0},ct:{},hp:{},obs:[],zn:[],food:[],en:[],seen:1,tr:'mb'+k,dd:5};
   for(const[c,r]of[[2,2],[17,2],[2,6],[17,6]])room.food.push({t:'s',c,r,p:0,on:1});
   const plv=this.plv,lv=Math.min(18,plv+2),df=1+.06*(lv-1),E=(kk,x,y,mh,o)=>Object.assign({k:kk,x,y,on:1,mh,hp:mh,lv,df,mb:1,st:'intro',cd:1,tm:0,gone:0},o||{});
-  if(k=='p')room.en.push(E('hcr',400,160,Math.round(380+42*plv),{br:44,nm:'허기의 왕관',bi:0,gone:1}));
+  if(k=='p')room.en.push(E('hcr',400,160,Math.round((380+42*plv)*HCR_HPM),{br:44,nm:'허기의 왕관',bi:0,gone:1}));
   if(k=='c')room.en.push(E('gdk',400,150,Math.round((490+56*plv)*GDK_HPM),{br:46,nm:'정동 집게왕',bi:0,gone:0}));
-  if(k=='v')room.en.push(E('obs',400,116,Math.round(460+50*plv),{br:44,nm:'틈 너머의 관찰자',bi:0,gone:1}));
+  if(k=='v')room.en.push(E('obs',400,116,Math.round((460+50*plv)*OBS_HPM),{br:44,nm:'틈 너머의 관찰자',bi:0,gone:1}));
   this.lv={rooms:[room],start:room,exit:null,at:()=>null};this.mbOn=k;this.mbRO=0;this.mbT=0;
   p.setPosition(400,300);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.ang=-Math.PI/2;this.sp.forEach((q,i)=>{q.x=400;q.y=304+7*(i+1)});this.inv=2;this.en=Math.min(this.emax,Math.max(this.en+30,this.emax*.75));
   this.enter(room);if(this.rlb){this.rlb.destroy();this.rlb=null}
@@ -1670,7 +1670,7 @@ class G extends Phaser.Scene{
   tex(this,'obsr',22,24,2,x=>{const pts=[];for(let k=0;k<20;k++){const t=k/20*6.283,r=1+(R()-.5)*.3;pts.push([11+Math.cos(t)*8*r,12+Math.sin(t)*10*r])}poly(x,pts,'#000000');for(let k=0;k<20;k++){const a=pts[k],b=pts[(k+1)%20];line(x,a[0],a[1],b[0],b[1],'#9a60ff')}glow(x,11,12,12,'#8a3aff',.4)});
   tex(this,'obse',14,10,2,x=>{sell(x,7,5,6,4,['#2a1a3a','#8a7a9a','#d8d0e0','#f4f0fa']);sell(x,7,5,2.2,2.2,['#7a3a0a','#d07a1a','#ffa040','#ffd890']);P(x,7,5,'#000000');P(x,7,4,'#000000')})}
  // ===== 허기의 왕관 =====
- hcrAI(m,dt,p){const now=this.time.now,gr=m.gr||0,bs=1+.12*gr,D=v=>Math.round(v*m.df*(1+.15*gr)),en=m.hp<m.mh*.3?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
+ hcrAI(m,dt,p){const now=this.time.now,gr=m.gr||0,bs=1+.12*gr,D=v=>Math.round(v*m.df*(1+.15*gr)*HCR_DMGM),en=m.hp<m.mh*.3?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
   if(!m.jw){m.jw=[];for(let i=0;i<6;i++)m.jw.push({i,o:this.add.image(m.x,m.y,'hcrJ').setDepth(9.2),x:m.x,y:m.y,a:i/6*6.283,st:'ring',fa:0})}
   if(m.st=='intro'){for(const j of m.jw){j.x=m.x+Math.cos(j.a)*88;j.y=m.y+Math.sin(j.a)*58;j.fa=j.a;j.o.setPosition(j.x,j.y).setRotation(j.a)}return}
   m.cd-=dt;m.tm-=dt;m.rot=(m.rot||0)+dt*.45;
@@ -1846,7 +1846,7 @@ class G extends Phaser.Scene{
   m.rg.forEach((r,i)=>{const a=r.a;this.tweens.add({targets:r.o,x:r.o.x+Math.cos(a)*140,y:r.o.y+Math.sin(a)*90,alpha:0,duration:900,delay:200})});
   this.cameras.main.shake(2600,.007);this.dtx(400,70,'눈이 틈 속으로 끌려 들어간다…','#c8a8ff')}
  obsNOff(m){const f=m.fl;return{ex:m.x+41.8*f,ey:m.y-20.5,ax:m.x+31*f,ay:m.y+4.7}}
- obsN2(m,dt,p){const now=this.time.now,D=v=>Math.round(v*m.df),en=m.hp<m.mh*.3?.8:1,g=m.g,S=m.spr,N=m.N;
+ obsN2(m,dt,p){const now=this.time.now,D=v=>Math.round(v*m.df*OBS_DMGM),en=m.hp<m.mh*.3?.8:1,g=m.g,S=m.spr,N=m.N;
   if(m.st=='rev'){this.obsRevU(m,dt,p);return}
   if(m.st=='revOld'){const t=3-m.tm;
    if(t<.9){const k=t/.9;m.x=m.ex0+(m.hx-m.ex0)*k;m.y=m.ey0+(m.hy-m.ey0)*k;S.setPosition(m.x+Math.sin(now/30)*2,m.y).setScale(1-.3*k);m.pu.setPosition(m.x,m.y);m.rf.setScale(1+.25*k)}
@@ -2126,7 +2126,7 @@ class G extends Phaser.Scene{
  atCut(m,q){q.on=0;q.t=12;m.cg.push({a:q.a,w:.55,t:12});this.dtx(q.x,q.y-16,'줄기를 끊었다 — 고리가 무너진다','#9fd8ff');this.cameras.main.shake(200,.006);
   for(let i=0;i<10;i++){const a=Math.random()*6.283,b=this.add.rectangle(q.ax,q.ay,3,6,0xe080ff).setRotation(a).setDepth(12);this.tweens.add({targets:b,x:q.ax+Math.cos(a)*30,y:q.ay+Math.sin(a)*20,alpha:0,angle:180,duration:500,onComplete:()=>b.destroy()})}}
  // ===== 틈 너머의 관찰자 =====
- obsAI(m,dt,p){this.vShk();const now=this.time.now,D=v=>Math.round(v*m.df),en=m.hp<m.mh*.35?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(39);const g=m.g;g.clear();
+ obsAI(m,dt,p){this.vShk();const now=this.time.now,D=v=>Math.round(v*m.df*OBS_DMGM),en=m.hp<m.mh*.35?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(39);const g=m.g;g.clear();
   if(!m.rf){m.hx=m.x;m.hy=m.y;m.rf=this.add.image(m.x,m.y,'obsR').setDepth(2.9);m.pu=this.add.image(m.x,m.y,'obsP').setDepth(3.2);m.ga=Math.PI/2;m.gz=0;
    m.rg=[];for(let k=0;k<12;k++)m.rg.push({a:k/12*6.283,o:this.add.image(m.x,m.y,'obsS').setDepth(3.1)});
    m.pt=[];for(const[x,y]of[[200,150],[600,150],[250,265],[550,265]])m.pt.push({x,y,vx:(Math.random()-.5)*30,vy:(Math.random()-.5)*20,o:this.add.image(x,y,'obsS').setDepth(8.5).setScale(1.6)});

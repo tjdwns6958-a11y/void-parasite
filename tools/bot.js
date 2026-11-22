@@ -1,7 +1,7 @@
 // 페이지 안에서 도는 자동 플레이어 + 빨리감기 스텝퍼 + 지표 수집
 window.BOTSTAT={t:0,rooms:new Set(),kills:{},eaten:{},dmg:{},deaths:0,stuck:0,molts:0,lvl:1,ended:null,energyMin:999,starve:0,tunnels:0,log:[]};
 window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.hint&&s.hint.destroy();const S=BOTSTAT;S.opt=opt;const mem={};
- const K=s.k;const keys=['LEFT','RIGHT','UP','DOWN','SPACE','F'];
+ const K=s.k;const keys=['LEFT','RIGHT','UP','DOWN','SPACE','W'];
  // 피해 출처 기록
  const h0=s.hurt.bind(s);s.hurt=function(d,src0,mm){const src=src0||'기타';const e0=this.en,r=h0(d,src0,mm),lost=e0-this.en;if(lost>0)S.dmg[src]=(S.dmg[src]||0)+lost;return r};
  const k0=s.kill.bind(s);s.kill=function(m){const k=m.k||'kha';S.kills[k]=(S.kills[k]||0)+1;return k0(m)};
@@ -40,10 +40,10 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
        c=opts.slice().sort((u,v)=>(dist.get(u[1])??99)-(dist.get(v[1])??99)).slice(0,1);if(Math.random()<.25)c=opts}
      mem[key]={k:c[Math.floor(Math.random()*c.length)][0],t:now+15000}}
     const k=mem[key].k,ty0=a.ct[k];
-    if(ty0=='hole'||ty0=='rift'){const[hc,hr]=a.hp[k];tx=(hc+.5)*40;ty=(hr+.5)*40}else{tx={N:400,S:400,W:-40,E:840}[k];ty={N:-40,S:400,W:180,E:180}[k]}mode='go '+k}}
+    if(ty0=='hole'||ty0=='rift'||ty0=='vort'){const[hc,hr]=a.hp[k];tx=(hc+.5)*40;ty=(hr+.5)*40}else{tx={N:400,S:400,W:-40,E:840}[k];ty={N:-40,S:400,W:180,E:180}[k]}mode='go '+k}}
   S.mode=mode;
   if(tx!==null){let dx=tx-p.x,dy=ty-p.y;const d=Math.hypot(dx,dy);
-   if(mode=='eat'&&d<30){K.F.isDown=true;eatHold++;if(eatHold>200){nearF[0].p=0;mem.skip=now+2000;eatHold=0}if(d<12)return}else eatHold=0;
+   if(mode=='eat'&&d<30){K.W.isDown=true;eatHold++;if(eatHold>200){nearF[0].p=0;mem.skip=now+2000;eatHold=0}if(d<12)return}else eatHold=0;
    if(mode=='fight'&&s.lin&&s.lin.v>=2&&nearE&&nearE[0].k!='gna'){if(s.spitCd<=0&&d<200)s.req=1;if(d<95&&!(d<46&&s.spitCd>0)){dx=-dx;dy=-dy}}
    if(mode=='fight'&&d<46){if(now%600<20||!s.bcd||s.bcd<=0)s.req=1;}
    if(side>0){side-=1;const an=Math.atan2(dy,dx)+Math.PI/2*sdir;dx=Math.cos(an);dy=Math.sin(an)}

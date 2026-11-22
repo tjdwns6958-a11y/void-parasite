@@ -1,12 +1,12 @@
 // 최종 보스 '한 몸의 무리' 자동 전투 (빨리 감기, 그리기 생략)
 // node swBot.js <html> <판수> <레벨> <계통 p3c2v0> <모드 dodge|human|tank> [최대 초] [스크린샷 0|1]
 //  dodge: 위험(예고 포함)을 피하고, 흩어지면 여왕을 문다 · human: dodge인데 반응이 0.25초 늦고 가끔 실수 · tank: 피하지 않고 여왕만 쫓는다
-const {chromium}=require('/opt/npm-tools/node_modules/playwright');
+const {chromium}=require('playwright');
 const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT='0']=process.argv.slice(2);
 (async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const res=[];
  for(let r=0;r<+N;r++){const p=await b.newPage({viewport:{width:800,height:360}});const errs=[];p.on('pageerror',e=>errs.push(e.message.slice(0,140)));p.on('console',m=>{if(m.type()=='error')errs.push(m.text().slice(0,160))});
   await p.addInitScript(seed=>{window.__vpNoTree=1;window.__vpNoSave=1;let a=seed*7919;Math.random=function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}},r+5+(+process.env.SEED||0));
-  await p.goto('file:///home/claude/play/'+html);await p.waitForTimeout(1500);
+  await p.goto('file:///home/claude/play/'+html);await p.waitForFunction(()=>window.GAME&&GAME.scene.scenes[0]&&GAME.scene.scenes[0].pl,null,{timeout:30000});await p.waitForTimeout(800);
   await p.evaluate(([plv,LIN,MODE])=>{const G=GAME,s=G.scene.scenes[0];if(s.hint)s.hint.destroy();s.plv=+plv;s.lin={p:+LIN[1],c:+LIN[3],v:+LIN[5]};s.zi=2;s.molts=5;s.recalc();s.wormSkin&&s.wormSkin();s.en=s.emax;s.bossStart();
    window.__T=G.loop.time||performance.now();G.loop.sleep();G.__vpNoDog=1;s.tweens.getDelta=function(){return 16.667*this.timeScale};
    const S=window.__S={t:0,dmg:{},minE:1,hits:0,bites:0,lag:[],ph2:0,skills:{},mode:MODE};if(s.swHandBite){const ohb=s.swHandBite.bind(s);s.swHandBite=function(m,fx,fy){const r=ohb(m,fx,fy);if(r)S.pops=(S.pops||0)+1;return r}}const oh=s.hurt.bind(s);s.hurt=function(d,src,m){const e0=this.en;oh(d,src,m);if(this.en<e0){S.dmg[src]=(S.dmg[src]||0)+Math.round(e0-this.en);S.hits++}};
@@ -28,7 +28,7 @@ const [html='game.html',N='3',plv='10',LIN='p2c2v1',MODE='dodge',MAXS='420',SHOT
      let dx=0,dy=0;if(best&&best[3]){dx=Math.cos(best[2]);dy=Math.sin(best[2])}if(Math.hypot(gx-pl.x,gy-pl.y)<8&&!(smart&&s.swDanger(pl.x,pl.y))){dx=0;dy=0}
      if(hum){S.lag.push([dx,dy]);const q=S.lag.length>15?S.lag.shift():[0,0];dx=q[0];dy=q[1];if(Math.random()<.002){S.oops=30}if(S.oops>0){S.oops--;dx=Math.cos(S.t);dy=Math.sin(S.t)}}
      press(dx,dy);
-     const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.F.isDown=!!nearF;
+     const nearF=food&&Math.hypot(food.x-pl.x,food.y-pl.y)<30;KB.W.isDown=!!nearF;
      if(!nearF&&htc&&Math.hypot(htc.x-pl.x,htc.y-pl.y)<48&&s.bcd<=0){s.ang=Math.atan2(htc.y-pl.y,htc.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&m.ex&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
      else if(!nearF&&MODE=='tank'&&Math.hypot(m.x-pl.x,m.y-pl.y)<70&&s.bcd<=0){s.ang=Math.atan2(m.y-pl.y,m.x-pl.x);s.req=1;S.bites++}
