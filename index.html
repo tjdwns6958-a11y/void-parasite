@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v103</title>
+<title>공허 기생충 v104</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v103';
+window.VP_VER='v104';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -387,6 +387,7 @@ function gen(z=1){
 class G extends Phaser.Scene{
  constructor(){super('G')}
  create(){
+  for(const k in this){const v=this[k];if(v&&typeof v=='object'&&v instanceof Phaser.GameObjects.GameObject&&!v.scene)this[k]=null}
   this.cameras.main.setZoom(VZ).centerOn(C.W/2,C.H/2);
   if(!this.textures.exists('walk')){makeAll(this);
    for(let d=0;d<4;d++){
@@ -1742,7 +1743,7 @@ class G extends Phaser.Scene{
  // 2페이즈(체력 50%): 정동을 뜯어 굴린다 — 돌알이 벽·기둥에 튕기며 굴러다니고, 가끔 불러들여 던진다. 몸은 맨살(×1.05), 돌진 2연속
  gdkTex(){for(const k of['A0','A1','A2','A3','Ar','B0','B1','B2','B3','Br','G','P']){const key='gdk'+k;if(this.textures.exists(key))continue;const im=window.__gdkIm&&__gdkIm[k];if(im&&im.complete&&im.naturalWidth){const t=this.textures.addImage(key,im);t.setFilter(Phaser.Textures.FilterMode.NEAREST)}}}
  gdkKb(vx,vy,t){if(this.dshI>0)return;this.gkb={vx,vy,t}}
- gdkAI(m,dt,p){const now=this.time.now,D=v=>Math.round(v*m.df),P2=m.ph==2,en=m.hp<m.mh*.25?.85:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
+ gdkAI(m,dt,p){this.vShk();const now=this.time.now,D=v=>Math.round(v*m.df),P2=m.ph==2,en=m.hp<m.mh*.25?.85:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
   if(!m.pt){m.ph=1;m.br=54;m.gone=0;m.pt=[[185,140],[615,140],[255,248],[545,248]].map(([x,y])=>({x,y,hp:2,on:1,rt:0,o:this.add.image(x,y+14,'gdkP').setOrigin(.5,.86).setDepth(8.4)}))}
   // 수정 기둥: 다시 자람 · 금 · 플레이어 밀어내기
   for(const q of m.pt)if(q.tmp&&!q.dead&&q.on){q.life-=dt;if(q.life<=0){q.dead=1;q.on=0;const o=q.o;this.tweens.add({targets:o,alpha:0,scaleY:.15,duration:300,onComplete:()=>o.destroy()})}}if(m.pt.some(q=>q.dead))m.pt=m.pt.filter(q=>!q.dead);
@@ -1753,7 +1754,7 @@ class G extends Phaser.Scene{
   if(!m.eggs){m.eggs=[];m.kids=[];m.lt=[];m.latch=0;m.bub=[]}this.gdkKidsU(m,dt,p,D);if(!m.on)return;this.gdkBubU(m,dt,p,D);if(!m.on)return;
   m.cd-=dt;m.tm-=dt;const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,busy=m.st!='idle';let sx=0,sy=0;
   // 2페이즈로
-  if(!P2&&m.hp<=m.mh*.5&&m.st=='idle'){m.st='rip';m.tm=1.4;this.tel=this.tel.filter(q=>q.m!==m);this.dtx(m.x,m.y-70,'등의 정동을 뜯어낸다!','#ff9ac0');this.cameras.main.shake(1200,.006)}
+  if(!P2&&m.hp<=m.mh*.5&&m.st=='idle'){m.st='rip';m.tm=1.4;this.tel=this.tel.filter(q=>q.m!==m);this.dtx(m.x,m.y-70,'등의 정동이 깨진다!','#ff9ac0');this.cameras.main.shake(500,.004)}
   if(this.gdkClimbU(m,dt,p,D)){}else switch(m.st){
   case 'idle':{const sp=P2?70:46,far=P2?165:210,near=P2?105:125;if(d>far){m.x+=dx/d*sp*dt;m.y+=dy/d*sp*dt*.7}else if(d<near){m.x-=dx/d*34*dt;m.y-=dy/d*24*dt}m.x=Phaser.Math.Clamp(m.x,110,690);m.y=Phaser.Math.Clamp(m.y,96,250)
     if(m.cd<=0){const r=Math.random();
@@ -1786,8 +1787,8 @@ class G extends Phaser.Scene{
   case 'sl':if(m.tm<=0){m.st='idle';m.cd=.9*en}break;
   case 'rain':sy=Math.sin(now/50)*1.2;if(m.tm<=0){m.st='idle';m.cd=.8*en}break;
   case 'snap':if(m.tm<=0){m.st='idle';m.cd=.55*en}break;
-  case 'rip':sx=(Math.random()-.5)*4;if(m.tm<=0){m.ph=2;const a=Math.PI/2+(Math.random()-.5)*1.6;m.ball={x:m.x,y:m.y-40,vx:Math.cos(a),vy:Math.sin(a),spd:190,st:'roll',hc:0,o:this.add.image(m.x,m.y-34,'gdkG').setDepth(9.3)};
-    for(let i=0;i<2;i++)this.gdkShard(m.x+(i?50:-50),m.y+40);this.dtx(m.x,m.y-70,'정동이 굴러간다 — 점선 방향을 보고 피할 것!','#ffe066');m.st='idle';m.cd=1.2;m.thc=now+6000}break;
+  case 'rip':sx=(Math.random()-.5)*4;if(m.tm<=0){m.ph=2;this.gdkGeoBreak(m);
+    for(let i=0;i<2;i++)this.gdkShard(m.x+(i?50:-50),m.y+40);m.st='idle';m.cd=1.2;m.thc=now+6000}break;
   case 'call':if(m.ball&&m.ball.st=='held'){m.st='thW';m.tm=.7*en;const a=Math.atan2(p.y-m.y,p.x-m.x);m.tdx=Math.cos(a);m.tdy=Math.sin(a);this.telAdd({k:'l',x:m.x,y:m.y-24,x2:m.x+m.tdx*620,y2:m.y-24+m.tdy*620,w:56,t:m.tm,src:'',fx:0,m,ch:1})}else if(m.tm<=0){if(m.ball)m.ball.st='roll';m.st='idle';m.cd=.6}break;
   case 'thW':if(m.tm<=0&&m.ball){const b=m.ball;b.st='roll';b.vx=m.tdx;b.vy=m.tdy;b.spd=540;b.x=m.x+m.tdx*40;b.y=m.y-20+m.tdy*30;m.st='idle';m.cd=.9*en;this.cameras.main.shake(100,.0025)}break}
   // 굴러다니는 정동
@@ -1977,7 +1978,7 @@ class G extends Phaser.Scene{
  gdkClimbU(m,dt,p,D){const now=this.time.now;
   switch(m.st){
   case 'clW':{const ty=90,dy=ty-m.y;if(Math.abs(dy)>3)m.y+=Math.sign(dy)*Math.min(Math.abs(dy),130*dt);if(Math.abs(dy)<=3||m.tm<=0){m.st='cl';m.tm=.9;m.air=1;m.cyo=0}}return 1;
-  case 'cl':{const k=1-Math.max(0,m.tm)/.9;m.cyo=k*k*80;m.ca=1-k;m.wd=(m.wd||0)+dt*60;if(Math.random()<.4)this.gdkDust(m.x+(Math.random()-.5)*80,m.y-10-m.cyo,1);if(m.tm<=0){m.st='ceil';m.tm=3.4;m.dn=0;m.ca=0;this.cameras.main.shake(3400,.0012);this.dtx(400,70,'천장이 울린다 — 그림자를 피할 것','#ffd0a0')}}return 1;
+  case 'cl':{const k=1-Math.max(0,m.tm)/.9;m.cyo=k*k*80;m.ca=1-k;m.wd=(m.wd||0)+dt*60;if(Math.random()<.4)this.gdkDust(m.x+(Math.random()-.5)*80,m.y-10-m.cyo,1);if(m.tm<=0){m.st='ceil';m.tm=3.4;m.dn=0;m.ca=0;this.dtx(400,70,'천장이 울린다 — 그림자를 피할 것','#ffd0a0')}}return 1;
   case 'ceil':{m.ca=0;m.x+=Phaser.Math.Clamp(p.x-m.x,-1,1)*Math.min(Math.abs(p.x-m.x),40*dt);const e=3.4-m.tm;while(m.dn<12&&e>=.2+m.dn*.23){this.gdkDrop(m,D,m.dn);m.dn++}
     if(Math.random()<.3){const x=60+Math.random()*680,b=this.add.circle(x,40,1.5,0x8a80a8,.8).setDepth(12);this.tweens.add({targets:b,y:40+60+Math.random()*200,alpha:0,duration:600,onComplete:()=>b.destroy()})}
     if(m.tm<=0){m.st='dropW';m.tm=1.35;m.x=Phaser.Math.Clamp(p.x,110,690);m.y=Phaser.Math.Clamp(p.y-10,96,262);this.telAdd({k:'c',x:m.x,y:m.y+10,r:60,sy:.8,t:1.35,dmg:D(16),src:'떨어지는 집게왕',m});m.cyo=320;m.ca=0}}return 1;
@@ -3125,7 +3126,7 @@ class G extends Phaser.Scene{
    for(let i=1;i<=N;i++){const s=i/N,an=a0+Math.PI*.5*sd*(.3+.7*k)*s+sd*2.8*s*s*(.5+.5*k)+.25*Math.sin(now/200-s*4+q.i);x+=Math.cos(an)*(4+3*k);y+=Math.sin(an)*(4+3*k)-1.2*k;pts.push([x,y])}
    this.obsTent(g,pts,q.hp||2,now,sd)}}
  // 공허 보스전(틈 너머의 관찰자 · 공허 앵무조개): 화면 흔들림을 세기 35% · 길이 60%로
- vShk(){const c=this.cameras.main;if(c.__vs)return;const o=c.shake.bind(c);c.shake=(d,i,...r)=>this.mbOn=='v'?o((d||100)*.6,(i==null?.005:i)*.35,...r):o(d,i,...r);c.__vs=1}
+ vShk(){const c=this.cameras.main;if(c.__vs)return;const o=c.shake.bind(c);c.shake=(d,i,...r)=>(this.mbOn=='v'||this.mbOn=='c')?o((d||100)*.6,(i==null?.005:i)*.35,...r):o(d,i,...r);c.__vs=1}
  // ===== v103: 떨어지는 종유석 그림 — 천장 바위 뿌리 · 마디진 바위 원뿔 · 옆에 박힌 수정 · 끝은 날카로운 수정 =====
  gdkStlTex(){if(this.textures.exists('gdkStl'))return;tex(this,'gdkStl',20,50,2,x=>{const H=50;
   for(let y=0;y<H;y++){const t=y/(H-1),c=10+Math.sin(y*.21)*.6,w=Math.max(.6,9.4*Math.pow(1-t,.8)+Math.sin(y*.95)*.7*(1-t)),band=(y%7==3)&&t<.72;
@@ -3135,6 +3136,43 @@ class G extends Phaser.Scene{
     x.fillStyle=col;x.fillRect(X,y,1,1)}}
   const sh=(a,b,s,d)=>{for(let i=0;i<s;i++){x.fillStyle=i==0?'#e8f8ff':'#9fd8ff';x.fillRect(a+d*i,b-i,1,1);x.fillStyle='#4a8ad0';x.fillRect(a+d*i,b-i+1,1,1)}};sh(4,16,3,-1);sh(15,23,3,1);sh(6,31,2,-1);
   x.fillStyle='#ffffff';x.fillRect(9,47,1,2)})}
+ // ===== v104 =====
+ // 종유석 크기 셋: 작은(0.7) · 중간(1) · 큰(1.4) — 크기에 따라 낙하 범위(반지름 17/24/34) · 피해 · 예고 시간 · 그림 크기가 다름
+ gdkDrop(m,D,i){const p=this.pl,lead=i%3==0;let x,y,k=0;
+  do{x=lead?p.x+p.body.velocity.x*.5+(Math.random()-.5)*30:80+Math.random()*640;y=lead?p.y+p.body.velocity.y*.5+(Math.random()-.5)*20:90+Math.random()*210;k++}while(k<8&&m.pt.some(q=>q.on&&Math.hypot(q.x-x,q.y-y)<52));
+  x=Phaser.Math.Clamp(x,70,730);y=Phaser.Math.Clamp(y,80,300);const r=Math.random(),sz=lead?1:r<.4?.7:r<.75?1:1.4,t=.75+.18*sz,R=Math.round(24*sz);
+  this.telAdd({k:'c',x,y,r:R,sy:.8,t,dmg:D(Math.round(18*(.6+.4*sz))),src:'떨어지는 종유석',m,fx:0,on:()=>this.gdkStal(m,x,y,sz)});
+  const sh=this.add.ellipse(x,y,R*2.1,R*1.7,0x000000,1).setDepth(1.54).setAlpha(.18).setScale(.3),rim=this.add.ellipse(x,y,R*2.1,R*1.7).setStrokeStyle(1.5,0xe8e0ff,.6).setDepth(1.545).setScale(.3);
+  this.gdkStlTex();const H=100*.9*sz,o=this.add.image(x,y-260,'gdkStl').setOrigin(.5,1).setScale(.9*sz).setTint(0x3a3058).setDepth(13).setAlpha(0),tr=this.add.graphics().setDepth(12.9),st={k:0};
+  this.tweens.add({targets:o,alpha:1,duration:220});
+  this.tweens.add({targets:st,k:1,duration:t*1000,ease:'Quad.in',onUpdate:()=>{const q=st.k;o.setY(y-260+250*q);sh.setScale(.3+.7*q).setAlpha(.18+.6*q);rim.setScale(.3+.7*q).setAlpha(.6*(1-q*.5));
+    const c=Phaser.Display.Color.Interpolate.ColorWithColor({r:58,g:48,b:88},{r:255,g:255,b:255},1,q);o.setTint(Phaser.Display.Color.GetColor(c.r,c.g,c.b));
+    tr.clear();if(q>.15){tr.lineStyle(2,0xe8e0ff,.25+.35*q);for(const dx of[-6,0,6])tr.lineBetween(x+dx*sz,o.y-H-8-60*q,x+dx*sz,o.y-H-8)}},
+   onComplete:()=>{o.destroy();tr.destroy();this.tweens.add({targets:[sh,rim],alpha:0,duration:180,onComplete:()=>{sh.destroy();rim.destroy()}})}})}
+ // 떨어짐: 흔들림은 큰 종유석만 아주 약하게 · 작은 것은 부서져 흩어지고(기둥 없음) · 중간·큰 것은 크기만큼 임시 기둥
+ gdkStal(m,x,y,sz){if(!m.on)return;sz=sz||1;this.gdkDust(x,y,Math.round(6*sz));if(sz>=1.3)this.cameras.main.shake(70,.0016);const p=this.pl;
+  for(let i=0;i<Math.round(6*sz);i++){const a=Math.random()*6.283,b=this.add.rectangle(x,y,3,6,i%3?0xd8d0f0:0x9fd8ff).setRotation(a).setDepth(12);this.tweens.add({targets:b,x:x+Math.cos(a)*26*sz,y:y+Math.sin(a)*16*sz,alpha:0,angle:160,duration:380,onComplete:()=>b.destroy()})}
+  if(sz>=1&&m.pt.filter(q=>q.tmp&&q.on).length<4&&Math.hypot(p.x-x,p.y-y)>34*sz&&!m.pt.some(q=>q.on&&Math.hypot(q.x-x,q.y-y)<52)){const s0=.8*Math.min(1.2,sz),o=this.add.image(x,y+14,'gdkP').setOrigin(.5,.86).setDepth(8.4).setTint(0xd8d0f0).setScale(s0,.2);this.tweens.add({targets:o,scaleY:s0,duration:160,ease:'Back.out'});m.pt.push({x,y,hp:1,on:1,rt:0,tmp:1,life:9,o})}
+  else if(Math.random()<.35)this.gdkShardFly(x,y,1)}
+ // 2페이즈: 등의 정동이 뜯겨 나가며 산산조각 (굴리기·불러들여 던지기 없음)
+ gdkGeoBreak(m){const x=m.x,y=m.y-40,o=this.add.image(x,y+6,'gdkG').setDepth(9.4);
+  this.tweens.add({targets:o,y:y-26,scale:1.15,duration:220,ease:'Quad.out',onComplete:()=>{o.destroy();const f=this.add.circle(x,y-26,26,0xffffff,.8).setDepth(13);this.tweens.add({targets:f,scale:2,alpha:0,duration:240,onComplete:()=>f.destroy()});
+    for(let i=0;i<16;i++){const a=i/16*6.283+Math.random()*.3,d=50+Math.random()*80,b=this.add.rectangle(x,y-26,4+Math.random()*4,3+Math.random()*3,[0xffd080,0xc8a0ff,0x9fd8ff,0x8a6a4a][i%4]).setRotation(a).setDepth(13);
+     this.tweens.add({targets:b,x:x+Math.cos(a)*d,y:y-26+Math.sin(a)*d*.7+30,angle:300,alpha:0,duration:520+Math.random()*200,ease:'Quad.out',onComplete:()=>b.destroy()})}}})}
+ // 통째 삼키기 모션: 위아래 이빨 턱(반달 두 개)이 대상 둘레에서 벌어졌다가 콱 맞물림 + 흰 번쩍 고리 · 크기는 대상 크기에 맞춤
+ dvU(dt){const D=this.dvr,g=this.dvG||(this.dvG=this.add.graphics().setDepth(12.5));g.clear();if(!D)return;if(this.over||D.rm!==this.cur){this.dvr=null;return}D.t+=dt;const m=D.m;if(m&&m.on&&m.spr){D.x=m.x;D.y=m.y}
+  const T=D.t,R=Math.max(24,Math.min(62,(m&&m.br?m.br*.9:0)||(m?26:22))),op=T<.12?1:T<.22?1-(T-.12)/.1:0,al=T<.06?T/.06:T<.3?1:Math.max(0,1-(T-.3)/.15),c=Math.cos(D.an),s=Math.sin(D.an),W=(lx,ly)=>[D.x+lx*c-ly*s,D.y+lx*s+ly*c];
+  if(al>0)for(const sg of[-1,1]){const gap=sg*R*.85*op,a0=sg<0?Math.PI+.3:.3,a1=sg<0?2*Math.PI-.3:Math.PI-.3,N=14,out=[],inn=[];
+   for(let i=0;i<=N;i++){const a=a0+(a1-a0)*i/N;out.push(W(Math.cos(a)*R,Math.sin(a)*R*.8+gap));inn.push(W(Math.cos(a)*R*.62,Math.sin(a)*R*.5+gap))}
+   const poly=out.concat(inn.reverse()).map(([x,y])=>({x,y}));g.fillStyle(0x2a0a1a,al).fillPoints(poly.map(q=>({x:q.x+(q.x-D.x)*.08,y:q.y+(q.y-D.y)*.08})),true);g.fillStyle(0xff7a9a,al).fillPoints(poly,true);
+   g.lineStyle(1.5,0xffd0e0,al*.8).beginPath();g.moveTo(out[0][0],out[0][1]);for(const q of out)g.lineTo(q[0],q[1]);g.strokePath();
+   for(let i=1;i<6;i++){const a=a0+(a1-a0)*i/6,b=W(Math.cos(a)*R*.6,Math.sin(a)*R*.48+gap),l=W(Math.cos(a-.12)*R*.66,Math.sin(a-.12)*R*.53+gap),r=W(Math.cos(a+.12)*R*.66,Math.sin(a+.12)*R*.53+gap),tp=W(Math.cos(a)*R*.3,Math.sin(a)*R*.24+gap*.6);g.fillStyle(0xffffff,al).fillTriangle(l[0],l[1],r[0],r[1],tp[0],tp[1])}}
+  if(T>=.22&&!D.done){D.done=1;const f=this.add.ellipse(D.x,D.y,R*1.6,R*1.3).setStrokeStyle(3,0xffffff,.95).setDepth(12.6);this.tweens.add({targets:f,scale:1.6,alpha:0,duration:240,onComplete:()=>f.destroy()});
+   for(let i=0;i<7;i++){const a=Math.random()*6.283,b=this.add.rectangle(D.x,D.y,3,3,i%2?0xffffff:0xff9ac0).setDepth(12.6);this.tweens.add({targets:b,x:D.x+Math.cos(a)*R,y:D.y+Math.sin(a)*R*.8,alpha:0,duration:260,onComplete:()=>b.destroy()})}
+   if(m&&m.on){const mh=m.mh||MON(m.k).hp,boss=m.mb||({sw:1,em:1,rw:1,qn:1,wd:1})[m.k];
+    if(!boss&&m.hp<=mh*.3){this.gulp(m);this.en=Math.min(this.emax,this.en+this.emax*.25)}
+    else{this.dmgM(m,this.bdmg*3);if(m.on){m.bl=3;if(m.spr){m.spr.setTintFill(0xffffff);this.time.delayedCall(90,()=>{if(m.spr)m.spr.clearTint()})}this.bmAdd(m,D.an)}this.en=Math.min(this.emax,this.en+6);this.dtx(D.x,D.y-24,'물어뜯기!','#ff9ad0')}}}
+  if(T>.45)this.dvr=null}
  hud(){
   const g=this.gfx;g.clear();const GL=this.gL,GR=this.gR;GL.clear();GR.clear();
   GL.fillStyle(0x3a2f57).fillRoundedRect(44,13,96,6,3);{const gr=this.enG=this.enG==null||this.enG<this.en?this.en:this.enG-Math.max(.15,(this.enG-this.en)*.05);if(gr>this.en)GL.fillStyle(0xffffff,.5).fillRect(44,13,96*Math.min(1,gr/this.emax),6)}
