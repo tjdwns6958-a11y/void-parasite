@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v95</title>
+<title>공허 기생충 v96</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v95';
+window.VP_VER='v96';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -1771,7 +1771,7 @@ class G extends Phaser.Scene{
     if(!(m.chH>now)&&Math.hypot(p.x-m.x,p.y-m.y)<62){m.chH=now+800;this.hurt(D(P2?27:24),'정동 집게왕의 돌진',m);if(!m.on)return;const sd=Math.sign(m.cdx*dy-m.cdy*dx)||1;this.gdkKb((m.cdx-m.cdy*sd*.8)*320,(m.cdy+m.cdx*sd*.8)*320,.22)}
     const pq=m.pt.find(q=>q.on&&Math.hypot(q.x-m.x,q.y-m.y)<70);
     if(pq){this.gdkStun(m,pq,P2);break}
-    if(m.x<100||m.x>700||m.y<92||m.y>262){m.x=Phaser.Math.Clamp(m.x,100,700);m.y=Phaser.Math.Clamp(m.y,92,262);m.st='stag';m.tm=.55;this.cameras.main.shake(160,.006);this.gdkDust(m.x,m.y+30,6);break}
+    if(m.x<100||m.x>700||m.y<92||m.y>262){m.x=Phaser.Math.Clamp(m.x,100,700);m.y=Phaser.Math.Clamp(m.y,92,262);m.st='stag';m.tm=.55;this.cameras.main.shake(120,.0025);this.gdkDust(m.x,m.y+30,6);break}
     if(m.cl<=0){if(m.rep>0){m.rep--;this.gdkCharge(m,en,0,.45)}else{m.st='idle';m.cd=.8*en}}}break;
   case 'stag':sx=(Math.random()-.5)*2;if(m.tm<=0){if(m.rep>0){m.rep--;this.gdkCharge(m,en,0,.45)}else{m.st='idle';m.cd=.7*en}}break;
   case 'stun':{sx=Math.sin(now/40)*1.5;const k=m.tm;for(let i=0;i<4;i++){const a=now/260+i*1.571;g.fillStyle(0xffe066,.9).fillCircle(m.x+Math.cos(a)*34,m.y-56+Math.sin(a)*8,2.6)}
@@ -1784,13 +1784,13 @@ class G extends Phaser.Scene{
   case 'rip':sx=(Math.random()-.5)*4;if(m.tm<=0){m.ph=2;const a=Math.PI/2+(Math.random()-.5)*1.6;m.ball={x:m.x,y:m.y-40,vx:Math.cos(a),vy:Math.sin(a),spd:190,st:'roll',hc:0,o:this.add.image(m.x,m.y-34,'gdkG').setDepth(9.3)};
     for(let i=0;i<2;i++)this.gdkShard(m.x+(i?50:-50),m.y+40);this.dtx(m.x,m.y-70,'정동이 굴러간다 — 점선 방향을 보고 피할 것!','#ffe066');m.st='idle';m.cd=1.2;m.thc=now+6000}break;
   case 'call':if(m.ball&&m.ball.st=='held'){m.st='thW';m.tm=.7*en;const a=Math.atan2(p.y-m.y,p.x-m.x);m.tdx=Math.cos(a);m.tdy=Math.sin(a);this.telAdd({k:'l',x:m.x,y:m.y-24,x2:m.x+m.tdx*620,y2:m.y-24+m.tdy*620,w:56,t:m.tm,src:'',fx:0,m,ch:1})}else if(m.tm<=0){if(m.ball)m.ball.st='roll';m.st='idle';m.cd=.6}break;
-  case 'thW':if(m.tm<=0&&m.ball){const b=m.ball;b.st='roll';b.vx=m.tdx;b.vy=m.tdy;b.spd=540;b.x=m.x+m.tdx*40;b.y=m.y-20+m.tdy*30;m.st='idle';m.cd=.9*en;this.cameras.main.shake(120,.006)}break}
+  case 'thW':if(m.tm<=0&&m.ball){const b=m.ball;b.st='roll';b.vx=m.tdx;b.vy=m.tdy;b.spd=540;b.x=m.x+m.tdx*40;b.y=m.y-20+m.tdy*30;m.st='idle';m.cd=.9*en;this.cameras.main.shake(100,.0025)}break}
   // 굴러다니는 정동
   const b=m.ball;if(b){const R=26;
    if(b.st=='roll'){const base=Math.min(330,240+(now-(b.t0||(b.t0=now)))/1000*4);b.spd+= (base-b.spd)*Math.min(1,dt*(b.spd>base?1.2:.5));b.x+=b.vx*b.spd*dt;b.y+=b.vy*b.spd*dt;let bn=0;
      if(b.x<70||b.x>730){b.vx*=-1;b.x=Phaser.Math.Clamp(b.x,70,730);bn=1}if(b.y<78||b.y>298){b.vy*=-1;b.y=Phaser.Math.Clamp(b.y,78,298);bn=1}
      for(const q of m.pt)if(q.on){const qx=b.x-q.x,qy=b.y-q.y,qd=Math.hypot(qx,qy);if(qd<R+18&&qd>0){const nx=qx/qd,ny=qy/qd,dp=b.vx*nx+b.vy*ny;if(dp<0){b.vx-=2*dp*nx;b.vy-=2*dp*ny;bn=1}b.x=q.x+nx*(R+18);b.y=q.y+ny*(R+18)}}
-     if(bn){this.cameras.main.shake(60,.003);this.gdkDust(b.x,b.y,4);if(Math.random()<.3)this.gdkShard(b.x,b.y)}
+     if(bn){this.cameras.main.shake(50,.0012);this.gdkDust(b.x,b.y,4);if(Math.random()<.3)this.gdkShard(b.x,b.y)}
      const L=70;for(let i=1;i<=6;i++){const t=i/6;g.fillStyle(0xffd080,.65-.08*i).fillCircle(b.x+b.vx*(R+L*t),b.y+b.vy*(R+L*t),2)}
      if(Math.hypot(p.x-b.x,p.y-b.y)<R+9&&!(b.hc>now)){b.hc=now+900;this.hurt(D(b.spd>380?26:20),'구르는 정동',m);if(!m.on)return;this.gdkKb(b.vx*260,b.vy*260,.2)}}
    else if(b.st=='ret'){const qx=m.x-b.x,qy=m.y-40-b.y,qd=Math.hypot(qx,qy)||1;if(qd<12){b.st='held'}else{const v=Math.min(qd,460*dt);b.x+=qx/qd*v;b.y+=qy/qd*v}}
@@ -1809,7 +1809,7 @@ class G extends Phaser.Scene{
  gdkWave(m,D,en){const p=this.pl,tx=p.x+p.body.velocity.x*.25,ty=p.y+p.body.velocity.y*.25,a=Math.atan2(ty-m.y,tx-m.x),cx=Math.cos(a),cy=Math.sin(a);m.st='sl';m.tm=1.1;this.cameras.main.shake(140,.006);this.gdkDust(m.x,m.y+30,8);
   for(let i=1;i<=11;i++){const x=m.x+cx*(38+i*34),y=m.y+cy*(30+i*28);if(x<60||x>740||y<60||y>305)break;this.telAdd({k:'c',x,y,r:22,sy:.8,t:(.5+i*.06)*en,dmg:D(19),src:'수정 가시',m})}}
  gdkSnap(m,D){const p=this.pl;m.st='snap';m.tm=.6;this.telAdd({k:'s',x:m.x,y:m.y,r:98,a:Math.atan2(p.y-m.y,p.x-m.x),h:.62,t:.45,dmg:D(11),src:'작은 집게',m})}
- gdkStun(m,q,P2){m.st='stun';m.tm=P2?1.6:2.2;m.rep=0;q.hp--;this.cameras.main.shake(320,.014);this.gdkDust(q.x,q.y,12);this.dtx(m.x,m.y-70,'기둥에 박혔다 — 기절! 지금 물 것','#ffe066');
+ gdkStun(m,q,P2){m.st='stun';m.tm=P2?1.6:2.2;m.rep=0;q.hp--;this.cameras.main.shake(220,.004);this.gdkDust(q.x,q.y,12);this.dtx(m.x,m.y-70,'기둥에 박혔다 — 기절! 지금 물 것','#ffe066');
   for(let i=0;i<10;i++){const a=Math.random()*6.283,o=this.add.rectangle(q.x,q.y-10,3,7,i%2?0x9fd8ff:0xb07aff).setRotation(a).setDepth(12);this.tweens.add({targets:o,x:q.x+Math.cos(a)*50,y:q.y-10+Math.sin(a)*34,angle:200,alpha:0,duration:600,onComplete:()=>o.destroy()})}
   if(q.hp<=0){q.on=0;q.rt=18;q.o.setVisible(false);if(q.tmp){q.dead=1;q.o.destroy()}this.gdkShardFly(q.x,q.y,3);this.dtx(q.x,q.y-40,'기둥이 부서졌다','#9fd8ff')}else{q.o.setTint(0xa0b8ff);this.gdkShardFly(q.x,q.y,1+(Math.random()<.5?1:0))}}
  gdkShard(x,y){const a=this.cur;if(a.food.filter(f=>f.on).length>=7)return;x=Phaser.Math.Clamp(x,60,740);y=Phaser.Math.Clamp(y,64,300);const f={t:'c',x,y,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(x,y,'f_c').setDepth(5);a.food.push(f)}
