@@ -1,0 +1,8 @@
+ // ===== v94: 수정 알을 부채꼴로 연달아 멀리 던짐(5개 · 2페이즈 6개) · 알과 새끼 게는 두 번 맞아야 없어짐 =====
+ gdkLay(m){const p=this.pl,n=m.ph==2?6:5,a0=Math.atan2(p.y-(m.y+30),p.x-m.x);
+  for(let i=0;i<n;i++)this.time.delayedCall(i*110,()=>{if(!m.on)return;const a=a0+(i-(n-1)/2)*.38+(Math.random()-.5)*.15,d=90+Math.random()*190,tx=Phaser.Math.Clamp(m.x+Math.cos(a)*d,70,730),ty=Phaser.Math.Clamp(m.y+30+Math.sin(a)*d*.8,80,300);
+   const o=this.add.image(m.x,m.y+24,'gdkEgg').setDepth(11).setScale(1.1),e={x:tx,y:ty,t:4,o,live:0,hp:2};m.eggs.push(e);const st={k:0},x0=m.x,y0=m.y+24,h=50+d*.25;
+   for(let j=0;j<3;j++){const b=this.add.circle(x0+(Math.random()-.5)*20,y0,2,0xbff0ff,.8).setDepth(12);this.tweens.add({targets:b,y:y0-12,alpha:0,duration:250,onComplete:()=>b.destroy()})}
+   this.tweens.add({targets:st,k:1,duration:520+d*.9,ease:'Sine.out',onUpdate:()=>{o.setPosition(x0+(tx-x0)*st.k,y0+(ty-y0)*st.k-Math.sin(st.k*Math.PI)*h).setRotation(st.k*9)},onComplete:()=>{o.setRotation(0);e.live=1;this.gdkDust(tx,ty,4)}})})}
+ gdkEggHit(m,e){e.hp=(e.hp||1)-1;if(e.hp<=0){this.gdkEggBreak(m,e);return}e.o.setTint(0x8aa8e0);this.dtx(e.x,e.y-14,'금이 갔다','#bff0ff');for(let i=0;i<4;i++){const a=Math.random()*6.283,b=this.add.rectangle(e.x,e.y,2,3,0xffffff).setRotation(a).setDepth(12);this.tweens.add({targets:b,x:e.x+Math.cos(a)*10,y:e.y+Math.sin(a)*8,alpha:0,duration:220,onComplete:()=>b.destroy()})}}
+ gdkKidHit(k){k.hp=(k.hp||1)-1;if(k.hp<=0){this.gdkKidKill(k);return}const p=this.pl,a=Math.atan2(k.y-p.y,k.x-p.x);k.x+=Math.cos(a)*26;k.y+=Math.sin(a)*20;k.o.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(k.o&&k.o.active)k.o.setTint(0x8ab0e0)})}

@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:800,height:360},deviceScaleFactor:2});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpZ=1});
+await p.goto('file:///home/claude/play/'+(process.env.GF||'game100.html'),{waitUntil:'domcontentloaded'});await p.waitForTimeout(1800);
+const r=await p.evaluate(()=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();const rm=s.lv.rooms.find(a=>a.tr=='flow');s.enter(rm);s.inv=1e9;s.hurt=()=>{};
+ let rift=null;for(const k in rm.hp||{})if(rm.d[k]&&rm.ct[k]=='rift')rift=rm.hp[k];const x=rift?(rift[0]+.5)*40:400,y=rift?(rift[1]+.5)*40:180;
+ const dx=400-x,dy=180-y,l=Math.hypot(dx,dy)||1;s.pl.body.reset(x+dx/l*90,y+dy/l*90);return {rift}});
+await p.waitForTimeout(1200);await p.screenshot({path:(process.env.OUT||'n100')+'_flow.png'});
+await p.waitForTimeout(3000);await p.screenshot({path:(process.env.OUT||'n100')+'_flow2.png'});
+console.log(r,errs);await b.close()})();

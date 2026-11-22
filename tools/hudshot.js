@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:800,height:360},deviceScaleFactor:2});
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpZ=1});
+await p.goto('file:///home/claude/play/game98.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1800);
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];if(s.hint)s.hint.destroy();const rm=s.lv.rooms.find(a=>a.en.filter(m=>m.on).length>=2&&a.tr!='haven');s.enter(rm);s.pl.body.reset(380,200);s.en=s.emax*.62;s.inv=1e9;s.hurt=()=>{}});
+await p.waitForTimeout(1500);await p.evaluate(()=>GAME.loop.sleep());
+await p.screenshot({path:'hud_on.png'});
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.hudVis(false);s.children.list.forEach(o=>{if(o.depth>=60&&o.depth<70&&o.type=='Text')o.setVisible(false)});GAME.loop.wake();});await p.waitForTimeout(40);await p.evaluate(()=>GAME.loop.sleep());
+await p.screenshot({path:'hud_off.png'});
+const info=await p.evaluate(()=>{const s=GAME.scene.scenes[0];return {lv:s.plv,en:Math.round(s.en),emax:s.emax,hx:Math.round(s.pl.x),hy:Math.round(s.pl.y)}});
+require('fs').writeFileSync('hud_info.json',JSON.stringify(info));console.log(info);await b.close()})();

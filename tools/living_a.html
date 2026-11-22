@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#120e1a;color:#e8dcff;font-family:sans-serif;width:1640px}
+h1{font-size:30px;margin:14px 20px 4px}h2{font-size:22px;margin:6px 0 2px;color:#ffe9a8}p{margin:4px 0 8px;font-size:16px;color:#c9c0de;line-height:1.45}
+.row{display:flex;gap:20px;padding:0 20px 10px}.c{width:520px}canvas{display:block;border-radius:6px}
+.sub{font-size:15px;color:#a99fc2;margin:0 20px 10px}
+</style></head><body>
+<h1>살아 있는 듯한 공허의 소용돌이 (안)</h1>
+<div class="sub">텅 빈 구멍인데, 가만히 보면 숨 쉬고 · 바라보고 · 삼킨다. 셋은 함께 쓸 수 있다.</div>
+<div class="row">
+ <div class="c"><h2>L1 맥박 — 바닥의 핏줄</h2><canvas id="a" width="520" height="250"></canvas><p>바닥에 보라 핏줄이 소용돌이로 모인다. 두근 — 고리가 부풀고, 핏줄 속 빛 알갱이가 안쪽으로 흘러 들어간다. 들숨·날숨과 박동이 맞물린다.</p></div>
+ <div class="c"><h2>L2 바라보는 구멍</h2><canvas id="b" width="520" height="250"></canvas><p>까만 구멍 깊은 곳에 동공이 있다. 플레이어 쪽으로 천천히 돌아가고, 가끔 고리들이 오므라들며 '깜빡'. 오래 머물면 동공이 커진다(들숨이 세짐).</p></div>
+ <div class="c"><h2>L3 섬모 입술 · 꿀꺽</h2><canvas id="c" width="520" height="250"></canvas><p>가장자리에 짧은 섬모가 물결치며 안쪽으로 쓸어 넣는다. 먹이·적·조각이 구멍에 닿으면 '꿀꺽' 수축하고, 한 박자 뒤 날숨이 더 세다.</p></div>
+</div>
+<script src="lib_v.js"></script>
+<script>
+function eyeAt(x,cx,cy,r,ang,open){x.save();x.beginPath();x.ellipse(cx,cy,r*1.9,r*1.05*open,0,0,7);x.clip();
+ const g=x.createRadialGradient(cx,cy,0,cx,cy,r*1.9);g.addColorStop(0,'#000');g.addColorStop(.25,'#2a0f50');g.addColorStop(.55,'#7a3ad0');g.addColorStop(.7,'#2a1048');g.addColorStop(1,'#05020a');x.fillStyle=g;x.fillRect(cx-r*2,cy-r*2,r*4,r*4);
+ const px_=cx+Math.cos(ang)*r*.55,py_=cy+Math.sin(ang)*r*.3;x.fillStyle='#000';x.beginPath();x.ellipse(px_,py_,r*.22,r*.62,0,0,7);x.fill();x.fillStyle='rgba(160,250,255,.9)';x.fillRect(px_+r*.1,py_-r*.35,2,3);
+ x.strokeStyle='rgba(127,240,255,.6)';x.lineWidth=1;for(let i=0;i<14;i++){const a=i/14*6.283;x.beginPath();x.moveTo(cx+Math.cos(a)*r*.6,cy+Math.sin(a)*r*.33);x.lineTo(cx+Math.cos(a)*r*1.3,cy+Math.sin(a)*r*.7);x.stroke()}x.restore()}
+// L1 핏줄
+{const x=a.getContext('2d');seed=4;floor(x,520,250,'#1c1830','#201b36',1);
+ const vein=(X,Y,dep,w)=>{let cx=X,cy=Y;const pts=[[cx,cy]];for(let s=0;s<14;s++){const dx=260-cx,dy=118-cy,l=Math.hypot(dx,dy);if(l<70)break;cx+=dx/l*14+R(-6,6);cy+=dy/l*9+R(-4,4);pts.push([cx,cy])}
+  x.strokeStyle='#3a1460';x.lineWidth=w+2;x.lineCap='round';x.beginPath();pts.forEach((p,i)=>i?x.lineTo(...p):x.moveTo(...p));x.stroke();x.strokeStyle='#7a2ab0';x.lineWidth=w;x.stroke();
+  pts.forEach((p,i)=>{if(i%3==1){x.fillStyle='rgba(255,170,255,.95)';x.beginPath();x.arc(p[0],p[1],w*.7,0,7);x.fill()}});
+  if(dep>0)for(let k=0;k<2;k++){const p=pts[Math.min(pts.length-1,2+k*2)];if(p)vein(p[0]+R(-30,30),p[1]+R(-20,20),dep-1,w*.6)}};
+ for(let i=0;i<9;i++){const an=i/9*6.283+.2;vein(260+Math.cos(an)*270,118+Math.sin(an)*150,1,3)}
+ funnel(x,260,105,110,1,'#ff9ef0',1);for(let k=0;k<3;k++){x.strokeStyle=`rgba(255,140,240,${.5-k*.15})`;x.lineWidth=3-k;x.beginPath();x.ellipse(260,105,112+k*9,(112+k*9)*.55,0,0,7);x.stroke()}
+ x.fillStyle='#ffd0f8';x.font='bold 14px sans-serif';x.fillText('두근',388,58);x.fillText('두근',96,200);worm(x,60,60,.5)}
+// L2 바라보는 구멍
+{const x=b.getContext('2d');seed=8;floor(x,520,250,'#191530','#1d1834',1);funnel(x,260,100,118,1,'#9ff0ff',.01);
+ eyeAt(x,260,138,26,Math.PI*.85,1);worm(x,90,170,-.3);
+ x.strokeStyle='rgba(255,233,168,.6)';x.setLineDash([4,4]);x.beginPath();x.moveTo(246,140);x.lineTo(104,166);x.stroke();x.setLineDash([]);
+ // 깜빡 작은 그림
+ x.fillStyle='rgba(10,6,20,.8)';x.fillRect(388,168,124,74);x.save();x.translate(450,206);x.scale(.5,.5);funnel(x,0,-30,100,1,'#9ff0ff',.01);x.restore();
+ x.fillStyle='#000';x.beginPath();x.ellipse(450,214,26,2.5,0,0,7);x.fill();x.fillStyle='#c8b8ff';x.font='bold 12px sans-serif';x.fillText('깜빡',396,184)}
+// L3 섬모 입술
+{const x=c.getContext('2d');seed=13;floor(x,520,250,'#1c1830','#201b36',1);funnel(x,260,100,110,1,'#9ff0ff',1);
+ for(let i=0;i<64;i++){const a=i/64*6.283,X=260+Math.cos(a)*110,Y=100+Math.sin(a)*110*.55,ph=Math.sin(i*.8)*.5,L=12+Math.sin(i*1.7)*3;
+  const ex=X-Math.cos(a+ph)*L,ey=Y-Math.sin(a+ph)*L*.55;x.strokeStyle='#b07aff';x.lineWidth=2.2;x.beginPath();x.moveTo(X+Math.cos(a)*4,Y+Math.sin(a)*2.2);x.quadraticCurveTo(X-Math.cos(a)*L*.3+Math.sin(a)*6*ph,Y,ex,ey);x.stroke();x.fillStyle='#e8c8ff';x.fillRect(ex-1,ey-1,2,2)}
+ // 빨려 드는 먹이와 적
+ x.fillStyle='#3fd08a';x.save();x.translate(300,112);x.rotate(.8);x.fillRect(-4,-2,8,4);x.restore();vdl(x,222,96);
+ x.strokeStyle='rgba(255,255,255,.4)';x.lineWidth=1;[[300,112],[222,96]].forEach(([X,Y])=>{x.beginPath();x.moveTo(X,Y);x.lineTo(X+(X>260?18:-18),Y-8);x.stroke()});
+ x.fillStyle='#fff0a0';x.font='bold 16px sans-serif';x.fillText('꿀꺽!',236,74);worm(x,450,210,-2.4)}
+</script></body></html>

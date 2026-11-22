@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const errs=[];
+const p=await b.newPage({viewport:{width:800,height:360},deviceScaleFactor:2});p.on('pageerror',e=>errs.push(e.message+' '+(e.stack||'').split('\n')[1]));await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpZ=1});
+await p.goto('file:///home/claude/play/game106.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1500);
+const W=ms=>p.waitForTimeout(ms);const go=async c=>{await p.evaluate(c=>{const s=GAME.scene.scenes[0];s.cdL={p:3,c:1,v:1,lv:10};s.codeGo(c)},c);await W(8000);await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.inv=1e9;s.hurtN=[];s.hurt=(d,src)=>{s.hurtN.push(src)}})};
+await go('p');
+const r=await p.evaluate(async()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];s.pl.body.reset(300,260);m.st='crown';m.cd=0;m.ns=2;const L=[];let strikes=0;const ta=s.telAdd.bind(s);s.telAdd=o=>{if(o.src=='허기의 턱 — 내리꽂기')strikes++;return ta(o)};
+ for(let i=0;i<40;i++){await new Promise(r=>setTimeout(r,200));L.push(m.st[0]+':'+[0,1,2,3,4,5].map(k=>m.jw[k].st.slice(0,4)).join(','))}return {strikes,L:L.filter((_,i)=>i%4==0)}});
+console.log('strikes',r.strikes);r.L.forEach(x=>console.log(x));
+await p.evaluate(()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];m.st='crown';m.cd=0;m.ns=2;s.pl.body.reset(300,260)});await W(2500);await p.screenshot({path:'t106_scatter.png'});
+const mk=await p.evaluate(async()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];await new Promise(r=>setTimeout(r,5000));m.st='crown';m.cd=99;for(let i=0;i<4;i++){const f={t:'s',x:100+i*150,y:300,p:0,on:1,c:-1,r:-1};f.spr=s.add.image(f.x,f.y,'f_s').setDepth(5);s.cur.food.push(f)}m.st='markW';m.tm=.6;await new Promise(r=>setTimeout(r,900));return s.cur.food.filter(f=>f.hm&&f.on).length});console.log('marked',mk);
+await go('c');
+console.log('bubbles/volley',await p.evaluate(()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];m.bub=m.bub||[];const n0=m.bub.length;s.gdkBubTex();s.gdkBubFire(m);const a=m.bub.length-n0;m.ph=2;s.gdkBubFire(m);return [a,m.bub.length-n0-a]}));
+console.log('errs',errs);await b.close()})();
