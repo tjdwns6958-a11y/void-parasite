@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v108</title>
+<title>공허 기생충 v109</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v108';
+window.VP_VER='v109';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -54,6 +54,7 @@ const SCS=['#7be0a8','#c0a0ff','#ffd060','#ff7a9a'],SCN=[0x7be0a8,0xc0a0ff,0xffd
 const FF='system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
 const ST=o=>Object.assign({fontFamily:FF,resolution:Math.max(2,VZ),color:'#ece6f7'},o);
 const rnd=n=>Math.random()*n|0,pick=a=>a[rnd(a.length)];
+const CRM=2,NPHY=new Set(['거품 분사','떨어지는 종유석','수정 새끼 게','달라붙은 새끼 게','정동 지뢰','수정 가시','정동 파편']);
 const CRR=1;
 const MBQ={p:{q:'허기의 왕관',b:'허기의 왕관',s:'통째 삼키기',d:'턱들이 흩어져 사냥하거나 하늘에서 내리꽂는 동안 가운데 구멍을 물 수 있다 — 붉은 표식이 붙은 유충은 왕관에 닿기 전에 먼저 먹을 것.',sd:'앞의 적 하나를 큰 칼날 턱으로 물어 삼킨다 — 체력 30% 이하 일반 몬스터는 통째로 삼키고 체력 25% 회복, 그 밖엔 물기 ×3 피해 + 출혈 · 재사용 6초'},c:{q:'정동 집게왕의 수정 동굴',b:'정동 집게왕',s:'수정 돌진',d:'등의 정동이 갑주처럼 단단해 물어도 잘 들어가지 않는다 — 돌진을 수정 기둥에 부딪히게 하면 기절한다. 체력이 반으로 줄면 정동이 깨지고 바닥에 수정 봉오리를 심는다 — 봉오리 뒤에 서면 돌진하다 밟고 스스로 맞는다.',sd:'짧게 돌진해 처음 부딪힌 적에게 큰 피해를 주고 멀리 밀쳐 낸다 · 재사용 7초'},v:{q:'틈 너머의 관찰자',b:'틈 너머의 관찰자',s:'균열 도약',d:'시선 안에 오래 있으면 응시가 차오른다 — 떠 있는 갑주 조각 그림자에 숨을 것. 가장자리에서 뜬 눈을 모두 물어 감기면 큰 눈이 끌려 나온다.',sd:'바라보는 쪽으로 순간이동하고 도착한 자리에서 균열이 터진다 · 재사용 7초'}};
 const TR={mbp:['허기의 왕관',0xe8b0d0],mbc:['정동 집게왕의 수정 동굴',0x9fd8ff],mbv:['틈 너머의 관찰자',0xc0b0e0],coral:['공허 산호 숲',0xff8a70],watch:['심연의 감시탑',0x78c8d8],haven:['둥지',0xffe9a0],brood:['번식지',0xff9ec0],mine:['광맥 동굴',0xb4b4c8],dark:['암흑 구역',0xffffff],swamp:['독 늪',0x8fe070],flow:['공허의 소용돌이',0xa08cff],lair:['포식자 둥지',0xff7a6a],void:['무리의 둥지',0x8a78c8]};
@@ -63,7 +64,7 @@ const OBSI={N:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAACQCAYAAACyJwH
 const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98bff'},LCN={p:0xff7a9a,c:0x9fd8ff,v:0xc98bff},LRS={p:'유기물',c:'무기물',v:'공허 정수'},LK=['p','c','v'],
  LCOST={p:[20,40,60],c:[16,32,48],v:[2,4,6]},LMAX=5,
  ND={p:[['갈고리 턱','물기 피해 +25% · 같은 적을 2번 물 때마다 찢기(3초간 출혈 9 — 땅속으로 숨어도 계속)'],['포식 성장','물 때마다 피해의 15%를 체력으로 흡수 · 물어서 처치하면 몸이 커지고 최대 체력 +6(5번까지), 체력 +8'],['통째 삼키기','체력 25% 이하인 적(정예는 12%)을 물면 즉시 삼켜 처치 · 3초간 이동 +30%']],
-  c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 방패','결정을 먹으면 등에 수정 1개(최대 3) — 맞을 때 수정 1개가 깨지며 그 공격을 막고, 막은 피해의 '+Math.round(CRR*100)+'%를 공격자에게 반사'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 3개)']],
+  c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 방패','결정을 먹으면 등에 수정 1개(최대 2) — 몸으로 하는 공격(돌진·집게 등)을 맞을 때 수정 1개가 깨지며 그 공격을 막고, 막은 피해의 '+Math.round(CRR*100)+'%를 공격자에게 반사 (거품·종유석 같은 공격은 막기만)'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 2개)']],
   v:[['공허 감각','숨은 위협이 보인다(땅속 땅울음, 매복한 낫그늘, 이웃 방 몬스터 수) · 공허 정수를 얻을 때마다 체력 +8 · 공허가 가장 높으면 공격이 검은 구체 뱉기(원거리)'],['공허 침','검은 구체가 앞쪽 적을 따라가고 맞으면 둔화 (공허가 가장 높지 않으면 빗나간 물기 대신 공허 침, 피해 8) · 산호는 한 방에 녹인다'],['공허 권속','보이드링을 처치하면 아군으로 거둔다 (최대 2마리)']]};
 // 진화 계통별 몸 모양 (머리 24px · 마디 20px, 2배 확대)
 function skBlade(px,x,c,r,sg,K){K=K||1;const B=[[r-1.5,4],[r+.8,4.6],[r+3,4.1],[r+5.4,1.4],[r+4.5,2.3],[r+3.9,1.7],[r+3.4,2.6],[r+2.8,2],[r+2.2,2.9],[r+1.6,2.3],[r+1,3.1],[r+.4,2.5],[r-.3,3.2],[r-1.3,3.1]].map(([X,Y])=>[c+(r-1)+(X-(r-1))*K*.86,c+sg*(3+(Y-3)*K)]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
@@ -457,7 +458,7 @@ class G extends Phaser.Scene{
  }
  consume(f){
   const d=f.hv||C.F[f.t],x=f.spr.x,y=f.spr.y;f.on=0;f.spr.destroy();f.spr=null;
-  if(this.rec)this.rec.food++;this.en=Math.min(this.emax,this.en+d.e);this.org+=d.o;this.mn+=d.m;if(f.t=='h'){this.ve++;if(this.lin.v>=1)this.en=Math.min(this.emax,this.en+8)}if(f.t=='c'&&this.lin.c>=2&&this.cry<3)this.cry++;
+  if(this.rec)this.rec.food++;this.en=Math.min(this.emax,this.en+d.e);this.org+=d.o;this.mn+=d.m;if(f.t=='h'){this.ve++;if(this.lin.v>=1)this.en=Math.min(this.emax,this.en+8)}if(f.t=='c'&&this.lin.c>=2&&this.cry<CRM)this.cry++;
   const s=[d.e&&'체력 +'+d.e,d.o&&'유기 +'+d.o,d.m&&'무기 +'+d.m,f.t=='h'&&'공허 정수 +1'].filter(Boolean).join(' ');
   const tx=this.add.text(x,y-10,s,ST({fontSize:'12px',color:'#7be0a8'})).setOrigin(.5).setDepth(70);
   this.tweens.add({targets:tx,y:y-40,alpha:0,duration:900,onComplete:()=>tx.destroy()});
@@ -509,7 +510,7 @@ class G extends Phaser.Scene{
  hurt(d,src,m){if(this.dshI>0){this.dshDodge(src);return}if(this.wallT>0){if(m&&m.on&&!this.wallR){this.wallR=1;this.time.delayedCall(250,()=>{this.wallR=0});if(m.k=='em'&&m.ph==2)this.dmgM(m,d*.8,1);else this.dmgM(m,d);this.dtx(m.x,m.y-18,'방벽 반사 '+Math.round(d),'#9fd8ff')}return}if(this.inv>0)return;if(this.lin.c>=2&&this.cry>0&&d>0){this.cryBlock(d,src,m);return}this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
   let cb=1;
   const dd=d*this.dmt*cb;this.en-=dd;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(70,.0015);
-  if(L.c>=1&&m&&m.on&&dd>0){const rd=dd/cb*(L.c>=3?.75:.4),kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);this.dtx(m.x,m.y-18,'반사 '+Math.round(rd),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
+  if(L.c>=1&&m&&m.on&&dd>0){const rd=dd/cb*(L.c>=3?.75:.4),kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);this.dtx(m.x,m.y-18,'반사 '+Math.round(rd),'#9fd8ff');if(kd&&L.c>=3&&this.cry<CRM)this.cry++}}
  kill(m){if(m.mb)return this.mbDie(m);if(m.sg){const S=m.sg;m.sg=null;S.forEach((o,i)=>this.tweens.add({targets:o,alpha:0,scale:.2,delay:i*45,duration:320,onComplete:()=>o.destroy()}))}if(m.k=='em')return this.emDie(m);if(m.k=='sw')return this.swDie(m);if(m.k=='rw')return this.rwDie(m);m.on=0;this.kc=(this.kc||0)+1;const x=m.x,y=m.y;const hs=this.deathFx(m);if(m.mk){m.mk.destroy();m.mk=null}if(m.lsh){m.lsh.destroy();m.lsh=null}if(m.ring){m.ring.destroy();m.ring=null}if(m.aim){m.aim.forEach(r=>r.destroy());m.aim=null}const R=MON(m.k),z=(m.sz||1)*(1+.1*((m.lv||1)-1)),e=Math.round(R.e*z),o=Math.round((R.o||0)*z),mi=Math.round((R.m||0)*z);if(m.lvT){m.lvT.destroy();m.lvT=null}
   const L=m.lv||1,xp=Math.round(({rek:18,gna:6,vdl:4,lmp:8,spn:10,lsp:6,qn:70,wd:70}[m.k]||12)*(1+.15*(L-1))*Phaser.Math.Clamp(1+.2*(L-this.plv),.4,1.6));this.gainXp(xp);if(m.k=='qn'||m.k=='wd'){this.ess(2);this.en=Math.min(this.emax,this.en+20);this.dtx(x,y-40,'정예 처치! 정수 +2 · 체력 +20','#ffe066');if(m.k=='qn')for(const c of this.cur.cor||[])if(c.on&&c.tmp)c.tmp=1}
   const vd=m.k=='vdl'||m.k=='lsp'||m.k=='lmp',vv=m.k=='vdl'||m.k=='lmp';if(vd){this.en=Math.min(this.emax,this.en+e);this.org+=o;this.mn+=mi;if(vv){this.ve++;if(this.lin.v>=1)this.en=Math.min(this.emax,this.en+8);if(this.lin.v>=3&&this.fam.length<2)this.famAdd(x,y)}}
@@ -1027,7 +1028,7 @@ class G extends Phaser.Scene{
  gdkShardFly(x0,y0,n){for(let i=0;i<n;i++){const a=Math.random()*6.283,d=34+Math.random()*30,tx=Phaser.Math.Clamp(x0+Math.cos(a)*d,64,736),ty=Phaser.Math.Clamp(y0+20+Math.sin(a)*d*.6,70,298);
    const o=this.add.image(x0,y0-30,'f_c').setDepth(9.5).setScale(1.2);const st={t:0};
    this.tweens.add({targets:st,t:1,duration:520+i*60,ease:'Sine.out',onUpdate:()=>{const k=st.t;o.setPosition(x0+(tx-x0)*k,(y0-30)+(ty-(y0-30))*k-Math.sin(k*Math.PI)*34).setRotation(k*7)},
-    onComplete:()=>{o.destroy();const a2=this.cur;if(!this.mbOn||a2.food.filter(f=>f.on).length>=8)return;const f={t:'c',x:tx,y:ty,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(tx,ty,'f_c').setDepth(5);a2.food.push(f);this.gdkDust(tx,ty,4);
+    onComplete:()=>{o.destroy();const a2=this.cur;if(!this.mbOn||a2.food.filter(f=>f.on).length>=12)return;const f={t:'c',x:tx,y:ty,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(tx,ty,'f_c').setDepth(5);a2.food.push(f);this.gdkDust(tx,ty,4);
      this.tweens.add({targets:f.spr,y:ty-6,duration:110,yoyo:true})}})}}
  slamF(f){const b0=this.bdmg;this.bdmg=b0*(1.3+1.5*f);this.slamS=f;this.bite();this.bdmg=b0;this.slamS=0;this.bcd=C.BITE.cd;if(this.mo&&this.mo.k=='bite')this.mo.sf=f;if(this.brFx)this.brFx.sf=f}
  // 차지 그림: 머리 둘레 수정 고리가 커지고 수정 셋이 빨라짐, 다 차면 하얗게 깜빡
@@ -1828,7 +1829,7 @@ class G extends Phaser.Scene{
  gdkSnap(m,D){const p=this.pl;m.st='snap';m.tm=.6;this.telAdd({k:'s',x:m.x,y:m.y,r:98,a:Math.atan2(p.y-m.y,p.x-m.x),h:.62,t:.45,dmg:D(11),src:'작은 집게',m})}
  gdkStun(m,q,P2){m.st='stun';m.tm=P2?1.6:2.2;m.rep=0;q.hp--;this.cameras.main.shake(220,.004);this.gdkDust(q.x,q.y,12);this.dtx(m.x,m.y-70,'기둥에 박혔다 — 기절! 지금 물 것','#ffe066');
   for(let i=0;i<10;i++){const a=Math.random()*6.283,o=this.add.rectangle(q.x,q.y-10,3,7,i%2?0x9fd8ff:0xb07aff).setRotation(a).setDepth(12);this.tweens.add({targets:o,x:q.x+Math.cos(a)*50,y:q.y-10+Math.sin(a)*34,angle:200,alpha:0,duration:600,onComplete:()=>o.destroy()})}
-  if(q.hp<=0){q.on=0;q.rt=18;q.o.setVisible(false);if(q.tmp){q.dead=1;q.o.destroy()}this.gdkShardFly(q.x,q.y,3);this.dtx(q.x,q.y-40,'기둥이 부서졌다','#9fd8ff')}else{q.o.setTint(0xa0b8ff);this.gdkShardFly(q.x,q.y,1+(Math.random()<.5?1:0))}}
+  if(q.hp<=0){q.on=0;q.rt=18;q.o.setVisible(false);if(q.tmp){q.dead=1;q.o.destroy()}this.gdkShardFly(q.x,q.y,3);this.dtx(q.x,q.y-40,'기둥이 부서졌다','#9fd8ff')}else{q.o.setTint(0xa0b8ff);this.gdkShardFly(q.x,q.y,2)}}
  gdkShard(x,y){const a=this.cur;if(a.food.filter(f=>f.on).length>=7)return;x=Phaser.Math.Clamp(x,60,740);y=Phaser.Math.Clamp(y,64,300);const f={t:'c',x,y,c:-1,r:-1,p:0,on:1};f.spr=this.add.image(x,y,'f_c').setDepth(5);a.food.push(f)}
  gdkDust(x,y,n){for(let i=0;i<n;i++){const a=Math.random()*6.283,o=this.add.circle(x,y,2+Math.random()*2,0x8a80a8,.7).setDepth(8.6);this.tweens.add({targets:o,x:x+Math.cos(a)*(20+Math.random()*24),y:y+Math.sin(a)*(10+Math.random()*12),alpha:0,duration:420,onComplete:()=>o.destroy()})}}
  // ===== v82: 공허 중간 보스 2페이즈 — 「공허 앵무조개」 (관찰자의 눈은 처음부터 앵무조개의 것이었다) =====
@@ -2025,7 +2026,7 @@ class G extends Phaser.Scene{
    m.lt.forEach((l,i)=>{l.a+=dt*2;l.o.setPosition(p.x+Math.cos(l.a+i*2.1)*9,p.y+Math.sin(l.a+i*2.1)*6-2).setFlipX(Math.cos(l.a+i*2.1)>0)});
    if(this.dshT>0){this.gdkShake(m,m.latch);this.dtx(p.x,p.y-26,'털어냈다','#bfe8ff')}}}
  gdkShake(m,n){const p=this.pl;for(let i=0;i<n&&m.lt.length;i++){const l=m.lt.pop(),o=l.o,a=Math.random()*6.283;this.tweens.add({targets:o,x:p.x+Math.cos(a)*40,y:p.y+Math.sin(a)*28,alpha:0,angle:360,duration:380,onComplete:()=>o.destroy()})}m.latch=m.lt.length}
- gdkEggBreak(m,e){e.dead=1;e.o.destroy();const L=this.lin;if(L.c>=2&&this.cry<3)this.cry++;this.en=Math.min(this.emax,this.en+4);this.dtx(e.x,e.y-14,'알을 깼다 — 무기물','#9fd8ff');for(let i=0;i<8;i++){const a=Math.random()*6.283,b=this.add.triangle(e.x,e.y,0,-3,2,0,0,3,0x9fd8ff).setRotation(a).setDepth(12);this.tweens.add({targets:b,x:e.x+Math.cos(a)*18,y:e.y+Math.sin(a)*12,alpha:0,duration:320,onComplete:()=>b.destroy()})}}
+ gdkEggBreak(m,e){e.dead=1;e.o.destroy();const L=this.lin;if(L.c>=2&&this.cry<CRM)this.cry++;this.en=Math.min(this.emax,this.en+4);this.dtx(e.x,e.y-14,'알을 깼다 — 무기물','#9fd8ff');for(let i=0;i<8;i++){const a=Math.random()*6.283,b=this.add.triangle(e.x,e.y,0,-3,2,0,0,3,0x9fd8ff).setRotation(a).setDepth(12);this.tweens.add({targets:b,x:e.x+Math.cos(a)*18,y:e.y+Math.sin(a)*12,alpha:0,duration:320,onComplete:()=>b.destroy()})}}
  gdkKidKill(k){k.dead=1;const o=k.o;o.setTintFill(0xffffff);this.tweens.add({targets:o,alpha:0,scale:.3,duration:200,onComplete:()=>o.destroy()})}
  gdkBite(m,fx,fy){const p=this.pl,R=C.BITE.range+12;if(m.latch>0){this.gdkShake(m,1);this.dtx(p.x,p.y-24,'떼어냈다','#bfe8ff');return 1}let hit=0;
   for(const e of m.eggs){if(!e.live||e.dead)continue;const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.1){this.gdkEggHit(m,e);hit=1}}
@@ -2168,7 +2169,7 @@ class G extends Phaser.Scene{
    if(m.k=='obs'&&m.ph==2&&this.obsNBite(m,fx,fy))hit=1;
    if(m.k=='obs'&&m.ey)for(const q of m.ey)if(q.open){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<R+10&&(dx*fx+dy*fy)/(d||1)>.1){hit=1;this.obsClose(m,q)}}}
   return hit}
- revive(){this.rvU=1;const p=this.pl,R=120,x=p.x,y=p.y;this.en=this.emax*.35;this.inv=2;this.cry=3;this.slow=0;this.emPull=null;
+ revive(){this.rvU=1;const p=this.pl,R=120,x=p.x,y=p.y;this.en=this.emax*.35;this.inv=2;this.cry=CRM;this.slow=0;this.emPull=null;
   // 벗은 껍질: 몸 모양 그대로 하얗게 남았다가 사라진다
   for(const o of[this.hd,...this.sg]){const h=this.add.image(o.x,o.y,o.texture.key).setRotation(o.rotation).setScale(o.scaleX*1.15,o.scaleY*1.15).setDepth(8.8).setTintFill(0xe8e0f8).setAlpha(.8);this.tweens.add({targets:h,alpha:0,duration:1600,delay:300,onComplete:()=>h.destroy()})}
   // 충격파 + 껍질 조각
@@ -3224,9 +3225,9 @@ class G extends Phaser.Scene{
    this.tweens.add({targets:s,x:x+Math.cos(an)*dd,y:y+Math.sin(an)*dd*.8,angle:Math.random()*360,alpha:0,duration:380+Math.random()*160,ease:'Quad.out',onComplete:()=>s.destroy()})}
   this.bd.forEach(o=>o.setTintFill(0xdff4ff));this.time.delayedCall(90,()=>this.bd.forEach(o=>o.clearTint()));
   this.blkN=(this.blkN||0)+1;
-  if(m&&m.on&&d>0&&R>0){const rd=d*this.dmt*R,h0=m.hp;const kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);const real=Math.max(0,h0-Math.max(0,m.hp));this.rflD=(this.rflD||0)+real;
+  const phy=m&&!NPHY.has(src)&&Math.hypot(p.x-m.x,p.y-m.y)<=(m.br||40)+100;if(m&&m.on&&d>0&&R>0&&phy){const rd=d*this.dmt*R,h0=m.hp;const kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);const real=Math.max(0,h0-Math.max(0,m.hp));this.rflD=(this.rflD||0)+real;
    const ln=this.add.graphics().setDepth(12);ln.lineStyle(2,0xbfeaff,.9).lineBetween(x,y,m.x,m.y);this.tweens.add({targets:ln,alpha:0,duration:220,onComplete:()=>ln.destroy()});
-   if(real>=.5)this.dtx(m.x,m.y-18,'반사 '+Math.round(real),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
+   if(real>=.5)this.dtx(m.x,m.y-18,'반사 '+Math.round(real),'#9fd8ff');if(kd&&L.c>=3&&this.cry<CRM)this.cry++}}
  // 등의 수정: 더 크고 진한 테두리(옅은 갑각 몸 위에서도 보이게) · 살짝 반짝임
  cryBTex(){if(this.textures.exists('cryB'))return;tex(this,'cryB',9,12,2,x=>{const P=[[4,0],[7,4],[6,10],[4,11],[2,10],[1,4]];x.fillStyle='#14203a';x.beginPath();x.moveTo(P[0][0]+.5,P[0][1]);P.forEach(q=>x.lineTo(q[0]+.5,q[1]+.5));x.closePath();x.fill();
   x.fillStyle='#2f86d0';x.fillRect(2,4,5,6);x.fillRect(3,2,3,9);x.fillStyle='#6fc8ff';x.fillRect(3,3,2,7);x.fillStyle='#dff6ff';x.fillRect(3,3,1,4);x.fillStyle='#ffffff';x.fillRect(4,1,1,2)})}
