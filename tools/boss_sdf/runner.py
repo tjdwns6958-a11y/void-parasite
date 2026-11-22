@@ -9,12 +9,12 @@ def MATS():
  DARK:dict(ramp=ramp(0x1a0c18,0x3a1a30,0x6a3050,0xa05070),amb=.3),
  BONE:dict(ramp=ramp(0x3a3048,0x6a5c80,0xa096b8,0xd8d0ea,0xffffff),amb=.3,spec=16),
  AGATE:dict(ramp=ramp(0x3a2408,0x7a4a10,0xc07a20,0xf0b030,0xffe080),amb=.5,spec=20,gk=.3)}
-def go(scene,out,W=240,H=150,scale=1.3,center=(0,34,22),pitch=40,emit=(),shadow=(22,86,218,138),cave=None,mats=None,cm_over=None):
-    mats=mats or MATS();img,M,hit,D=render(scene,W,H,scale=scale,center=center,pitch=pitch,mats=mats,emit_pts=emit)
+def go(scene,out,W=240,H=150,scale=1.3,center=(0,34,22),pitch=40,emit=(),shadow=(22,86,218,138),cave=None,mats=None,cm_over=None,yaw=0):
+    mats=mats or MATS();img,M,hit,D=render(scene,W,H,scale=scale,center=center,pitch=pitch,mats=mats,emit_pts=emit,yaw=yaw)
     img=outline(img,hit,D,M,skip=(CRY,CRY2))
     cm=dict(mats);cm[ROCK]=dict(ramp=ramp(0x0c0814,0x140e20,0x1e1630,0x2a2042,0x3a2e56,0x4c3e6c),tex=lambda P:noise3(P,.15,3),texk=.5,rim=.05,gk=.9,amb=.1,dif=.5,dith=.06,fill=0)
     if cm_over:cm.update(cm_over)
-    bg,bM,bhit,bD=render(cave or cave_scene(),W,H,scale=scale,center=center,pitch=pitch,mats=cm,emit_pts=list(emit)+[((0,0,10),(140,80,220),90,.25)],steps=90)
+    bg,bM,bhit,bD=render(cave or cave_scene(),W,H,scale=scale,center=center,pitch=pitch,yaw=yaw,mats=cm,emit_pts=list(emit)+[((0,0,10),(140,80,220),90,.25)],steps=90)
     bg=outline(bg,bhit,bD,bM,col=(8,4,14),inner=(16,10,26),skip=(ROCK,))
     B=Image.fromarray(bg).convert('RGBA');A=Image.fromarray(img).convert('RGBA')
     sh=Image.new('RGBA',(W,H),(0,0,0,0));ImageDraw.Draw(sh).ellipse(shadow,fill=(0,0,0,140));B=Image.alpha_composite(B,sh.filter(ImageFilter.GaussianBlur(4)))
