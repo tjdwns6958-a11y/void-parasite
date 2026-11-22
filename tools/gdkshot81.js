@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:800,height:360},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpZ=1});
+await p.goto('file:///home/claude/play/game81.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1500);
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.cdL={p:1,c:3,v:0,lv:10};s.codeGo('c')});await p.waitForTimeout(7800);
+const E=f=>p.evaluate(f);const hide=()=>E(()=>{const s=GAME.scene.scenes[0];s.children.list.forEach(o=>{if(o.type=='Text'&&o.depth>=60&&o.depth<70&&o.y>40&&o.y<80&&o.x<300)o.setVisible(false)});if(s.qT)s.qT.setVisible(false)});
+await E(()=>{const s=GAME.scene.scenes[0];s.inv=1e9;s.hurt=()=>{};const m=s.cur.en[0];s.pl.body.reset(300,300);m.x=470;m.y=140;m.st='idle';m.cd=99;s.gdkCharge(m,1,0,9)});await p.waitForTimeout(500);await p.screenshot({path:'gs1.png'});
+await E(()=>{const s=GAME.scene.scenes[0];const m=s.cur.en[0];s.tel=[];m.st='idle';m.cd=99;m.x=330;m.y=200;s.gdkStun(m,m.pt[2],false);s.pl.body.reset(330,262)});await p.waitForTimeout(700);await p.screenshot({path:'gs2.png'});
+await E(()=>{const s=GAME.scene.scenes[0];const m=s.cur.en[0];s.tel=[];m.st='idle';m.cd=99;m.x=400;m.y=130;s.pl.body.reset(560,320);const D=v=>Math.round(v*m.df);s.gdkWave(m,D,1);m.cd=99});await p.waitForTimeout(650);await p.screenshot({path:'gs3.png'});
+await E(()=>{const s=GAME.scene.scenes[0];const m=s.cur.en[0];s.tel=[];m.hp=m.mh*.45;m.st='idle';m.cd=0});await p.waitForTimeout(3600);
+await E(()=>{const s=GAME.scene.scenes[0];const m=s.cur.en[0];m.cd=99;m.st='idle';s.tel=[];m.ball.x=620;m.ball.y=230;m.ball.vx=-.8;m.ball.vy=-.6;s.pl.body.reset(400,300)});await p.waitForTimeout(400);await p.screenshot({path:'gs4.png'});
+console.log(errs);await b.close()})();

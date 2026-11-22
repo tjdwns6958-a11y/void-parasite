@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-webgl']});const p=await b.newPage({viewport:{width:800,height:360},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.addInitScript(()=>{window.__vpNoTree=1;window.__vpZ=1});
+await p.goto('file:///home/claude/play/game82.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1500);
+await p.evaluate(()=>{const s=GAME.scene.scenes[0];s.cdL={p:1,c:0,v:3,lv:10};s.codeGo('v')});await p.waitForTimeout(7800);
+const E=f=>p.evaluate(f);
+await E(()=>{const s=GAME.scene.scenes[0];s.inv=1e9;s.hurt=()=>{};s.pl.body.reset(400,300);const m=s.cur.en[0];m.hp=m.mh*.59});
+await p.waitForTimeout(450);await p.screenshot({path:'os1.png'});await p.waitForTimeout(1500);await p.screenshot({path:'os2.png'});await p.waitForTimeout(1200);await p.screenshot({path:'os3.png'});
+const go=async(st,fn,w,name)=>{await E(fn);await p.waitForTimeout(w);await p.screenshot({path:name})};
+await p.waitForTimeout(800);
+await go(0,()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];s.tel=[];m.st='spiral';m.tm=2.8;m.sa=0;m.st2=0;s.pl.body.reset(300,300)},1300,'os4.png');
+await go(0,()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];(s.mbb||[]).forEach(q=>q.o.destroy());s.mbb=[];m.st='idle';m.cd=0;Math.random=(()=>{let i=0;return()=>[.5,.3,.3,.3,.3,.3][i++%6]})();s.pl.body.reset(330,290)},1050,'os5.png');
+await go(0,()=>{const s=GAME.scene.scenes[0],m=s.cur.en[0];s.tel=[];m.tn=null;m.st='hideW';m.tm=.01;s.pl.body.reset(560,300)},900,'os6.png');
+console.log(errs);await b.close()})();
