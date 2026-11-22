@@ -12,6 +12,7 @@ def vnoise(P):
 def noise3(P,f=.25,s=0):
     Q=P*f+s*13.7;return vnoise(Q)*.6+vnoise(Q*2.1+5)*.3+vnoise(Q*4.3+9)*.15
 SHELL,ROCK,AGATE,CRY,CRY2,EYE,DARK,BONE=1,2,3,4,5,6,7,8
+PH=None;RAISE=0
 def chela(S,side,base,dirv,size,mat,cry):
     # 집게: 손바닥(타원) + 고정 손가락 + 움직이는 손가락
     d=np.array(dirv,float);d/=np.linalg.norm(d);b=np.array(base,float);up=np.array([0,1,0.]);sx=np.cross(up,d);sx/=np.linalg.norm(sx)
@@ -46,12 +47,16 @@ def crab_scene():
         for k in range(4):
             ang=(-.62+k*.42);dv=np.array([side*math.cos(ang),0,-math.sin(ang)]);a=np.array([side*44*math.cos(ang),22,-30*math.sin(ang)])
             b=a+dv*26+up*(24-k*2);c=b+dv*26-up*6;e=c+dv*14;e[1]=0
+            if PH is not None:
+                ph=PH*6.283+k*1.571+(math.pi if side>0 else 0);lf=max(0,math.sin(ph));sw=math.cos(ph)
+                fw=np.array([0,0,1.])*sw*7;b=b+up*lf*8+fw*.4;c=c+up*lf*9+fw*.8;e=e+fw;e[1]=lf*9
             S.add(cap(tuple(a),tuple(b),6.5,5.5),SHELL,2,'legs');S.add(cap(tuple(b),tuple(c),5.5,4.2),SHELL,2,'legs');S.add(cap(tuple(c),tuple(e),4.2,1.2),SHELL,2,'legs')
             S.add(sphere(tuple(b),6),SHELL,1.5,'legs');S.add(sphere(tuple(c),5),SHELL,1.5,'legs')
             S.add(crystal(tuple(b),(side*.2,1,0),9,2.2),BONE,0);S.add(crystal(tuple((b+c)/2),(0,1,.2),6,1.6),BONE,0)
     # 두 집게 (앞으로 쳐든) — 왼쪽은 결정에 잠식된 거대 집게
-    S.add(cap((-36,24,30),(-66,48,50),10,9),SHELL,3,'arm');S.add(sphere((-66,48,50),10),SHELL,3,'arm')
-    chela(S,-1,(-66,48,50),(.32,.3,1),62,SHELL,True)
+    EB=(-62,86,36) if RAISE else (-66,48,50)
+    S.add(cap((-36,24,30),EB,10,9),SHELL,3,'arm');S.add(sphere(EB,10),SHELL,3,'arm')
+    chela(S,-1,EB,(.25,.85,.45) if RAISE else (.32,.3,1),62,SHELL,True)
     S.add(cap((36,24,30),(60,40,48),8,7),SHELL,3,'arm2');S.add(sphere((60,40,48),8),SHELL,3,'arm2')
     chela(S,1,(60,40,48),(-.25,.25,1),40,SHELL,False)
     # 눈자루
