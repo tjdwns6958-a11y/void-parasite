@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v106</title>
+<title>공허 기생충 v107</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v106';
+window.VP_VER='v107';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -1670,7 +1670,7 @@ class G extends Phaser.Scene{
   if(!m.jw){m.jw=[];for(let i=0;i<6;i++)m.jw.push({i,o:this.add.image(m.x,m.y,'hcrJ').setDepth(9.2),x:m.x,y:m.y,a:i/6*6.283,st:'ring',fa:0})}
   if(m.st=='intro'){for(const j of m.jw){j.x=m.x+Math.cos(j.a)*88;j.y=m.y+Math.sin(j.a)*58;j.fa=j.a;j.o.setPosition(j.x,j.y).setRotation(j.a)}return}
   m.cd-=dt;m.tm-=dt;m.rot=(m.rot||0)+dt*.45;
-  if(m.st!='inhale'&&m.st!='inhaleW'){const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1;if(d>(m.st=='spin'?4:130)){m.x+=dx/d*(m.st=='spin'?78:26)*dt;m.y+=dy/d*(m.st=='spin'?60:18)*dt}m.x=Phaser.Math.Clamp(m.x,190,610);m.y=Phaser.Math.Clamp(m.y,120,230)}
+  if(m.st!='inhale'&&m.st!='inhaleW'){const mf=m.st=='spin'?this.cur.food.find(f=>f.hm&&f.on&&f.spr):null,dx=(mf?mf.spr.x:p.x)-m.x,dy=(mf?mf.spr.y:p.y)-m.y,d=Math.hypot(dx,dy)||1;if(d>(m.st=='spin'?4:130)){m.x+=dx/d*(m.st=='spin'?(mf?52:78):26)*dt;m.y+=dy/d*(m.st=='spin'?(mf?40:60):18)*dt}m.x=Phaser.Math.Clamp(m.x,190,610);m.y=Phaser.Math.Clamp(m.y,120,230)}
   m.hk=Math.max(0,(m.hk||0)-dt);if(m.hp0!=null&&m.hp<m.hp0-.5)this.hcHit(m,m.hp0-m.hp);m.hp0=m.hp;m.gone=(m.st=='scatter'||m.st=='jrain')?0:1;m.spr.setPosition(m.x+(m.hk>0?(Math.random()-.5)*2:0),m.y).setScale((1+.04*Math.sin(now/280))*bs*(1+.4*m.hk),(1+.04*Math.sin(now/280))*bs*(1-.4*m.hk));m.br=44*bs;m.spr.setAlpha(m.gone?.9:1);
   if(!m.gone){const pu=.5+.5*Math.sin(now/90);g.lineStyle(2,0xffe066,.4+.4*pu).strokeEllipse(m.x,m.y,150*bs,104*bs)}
   const sc=1+.18*gr;
@@ -1684,27 +1684,26 @@ class G extends Phaser.Scene{
    else if(j.st=='up'){j.y-=520*dt;j.fa=-Math.PI/2;if(j.y<-60){j.y=-60;j.st='sky'}}
    else if(j.st=='sky'){j.y=-60}
    else if(j.st=='fallW'){j.t-=dt;j.x=j.tx;j.fa=Math.PI/2;j.y=j.t>.22?-60:j.ty-(j.ty+60)*(j.t/.22)**2;if(j.t<=0){j.st='land';j.y=j.ty;j.t=.5}}
-   else if(j.st=='land'){j.t-=dt;if(j.t<=0&&m.st!='jrain'){if(j.rl&&m.st=='scatter'){j.st='rUp'}else{j.rl=0;j.st='ring'}}}
+   else if(j.st=='land'){j.t-=dt;if(j.t<=0&&m.st!='jrain'){if(j.rl&&m.st=='scatter'){j.st='rUp'}else{j.rl=0;j.st='ring';j.safe=now+800}}}
    else if(j.st=='rUp'){j.y-=520*dt;j.fa=-Math.PI/2;if(j.y<-60){j.y=-60;j.st='rSky';j.t=j.wt??.35;j.wt=.35}}
-   else if(j.st=='rSky'){j.y=-60;j.t-=dt;if(j.t<=0){if(m.st=='scatter'&&m.tm>.7)this.hcRainStrike(m,j,en);else{j.rl=0;j.st='ring'}}}
+   else if(j.st=='rSky'){j.y=-60;j.t-=dt;if(j.t<=0){if(m.st=='scatter'&&m.tm>.7)this.hcRainStrike(m,j,en);else{j.rl=0;j.st='ring';j.safe=this.time.now+800}}}
    else if(j.st=='hold'&&m.st!='scatter'&&m.st!='clamp')j.st='ring';
    j.o.setPosition(j.x,j.y).setRotation(j.fa).setScale(sc);
-   if(j.st!='spin'&&j.st!='up'&&j.st!='sky'&&j.st!='fallW'&&j.st!='land'&&j.st!='rUp'&&j.st!='rSky'&&Math.hypot(p.x-j.x,p.y-j.y)<22*sc&&!(j.hc>now)){j.hc=now+1000;this.hurt(D(j.st=='lunge'?8:5),'허기의 턱',m);if(!m.on)return}}
+   if(j.st!='spin'&&j.st!='up'&&j.st!='sky'&&j.st!='fallW'&&j.st!='land'&&j.st!='rUp'&&j.st!='rSky'&&!(j.safe>now)&&Math.hypot(p.x-j.x,p.y-j.y)<22*sc&&!(j.hc>now)){j.hc=now+1000;this.hurt(D(j.st=='lunge'?8:5),'허기의 턱',m);if(!m.on)return}}
   this.hcMarkU(m,dt,g);this.hcTeeth(m,now);
   switch(m.st){
   case 'crown':if(m.cd<=0){const r=Math.random();m.ns=m.ns||0;
     if(m.ns>=2||(m.ns>=1&&r<.5)){m.st='scatter';m.tm=6.5;m.ns=0;this.dtx(m.x,m.y-50,'왕관이 풀렸다 — 지금 구멍을 물 것!','#ffe066');m.pt=[.3,.9,1.5];m.pn=[0,0,0];m.cxN=0;m.jw.forEach(j=>{j.st='rest';j.t=0;j.rep=0})}
-    else if(!(m.spc>now)&&r<.35){m.ns++;m.st='spinW';m.tm=.8;m.spc=now+8000;this.dtx(m.x,m.y-50,'회전 베기 — 원 밖으로!','#ff5a7a');m.jw.forEach(j=>{j.st='spin'})}
+    else if(!(m.spc>now)&&r<.35){m.ns++;m.st='spinW';m.tm=.8;m.spc=now+8000;const mk=this.hcMarkable()&&(this.hcMarkGo(m,1),1);this.dtx(m.x,m.y-50,mk?'회전 베기 — 표식 유충을 먼저 먹을 것!':'회전 베기 — 원 밖으로!','#ff5a7a');m.jw.forEach(j=>{j.st='spin'})}
     else if(!(m.jrc>now)&&r<.62){m.ns++;this.hcRain(m,en)}
-    else if(!(m.hmc>now)&&r<.8&&this.hcMarkable()){m.ns++;m.st='markW';m.tm=.6;m.hmc=now+13000}
     else{m.ns++;this.hcClamp(m,D,en)}}break;
   case 'jrain':this.hcRainU(m,dt,D,en);break;
   case 'spinW':{const k=1-m.tm/.8;m.spR=54*sc;const R=m.spR+12;g.lineStyle(2,0xff3a5a,.35+.5*k).strokeEllipse(m.x,m.y,R*2,R*1.5);m.srot=(m.srot||0)+dt*(2+3.5*k);if(m.tm<=0){m.st='spin';m.tm=4}}break;
   case 'spin':{m.srot=(m.srot||0)+dt*6;const ph=(4-m.tm)%1,base=54*sc;m.spR+=((ph>=.7?base+30:base)-m.spR)*Math.min(1,dt*18);if(ph>=.45&&ph<.7)g.lineStyle(2,0xffffff,.35+.5*Math.sin((ph-.45)/.25*Math.PI)).strokeEllipse(m.x,m.y,(base+42)*2,(base+42)*1.5);const R=m.spR+12,inr=((p.x-m.x)/R)**2+((p.y-m.y)/(R*.75))**2<1;g.lineStyle(2,0xff3a5a,.4).strokeEllipse(m.x,m.y,R*2,R*1.5);
    if(inr&&!(this.dshI>0)){const n=D(18);this.en-=n*dt*(this.dmt||1);this.lastHit={src:'허기의 회전 베기',t:now};m.spT=(m.spT||0)-dt;if(m.spT<=0){m.spT=.5;this.dtx(p.x,p.y-22,'-'+Math.round(n/2),'#ff5a7a');(this.bd||[]).forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(120,()=>(this.bd||[]).forEach(o=>o.clearTint()))}}
-   for(const f of this.cur.food)if(f.on&&f.spr&&(f.t=='s'||f.t=='l')&&((f.spr.x-m.x)/R)**2+((f.spr.y-m.y)/(R*.75))**2<1){f.on=0;const fs=f.spr;f.spr=null;this.tweens.add({targets:fs,x:m.x,y:m.y,scale:.2,alpha:0,duration:220,ease:'Quad.in',onComplete:()=>fs.destroy()});
+   for(const f of this.cur.food)if(f.on&&f.spr&&(f.t=='s'||f.t=='l')&&((f.spr.x-m.x)/R)**2+((f.spr.y-m.y)/(R*.75))**2<1){if(f.hm)m.hp=Math.min(m.mh,m.hp+m.mh*.06);f.on=0;const fs=f.spr;f.spr=null;this.tweens.add({targets:fs,x:m.x,y:m.y,scale:.2,alpha:0,duration:220,ease:'Quad.in',onComplete:()=>fs.destroy()});
     if((m.gr||0)<3){m.gr=(m.gr||0)+1;const rg=this.add.ellipse(m.x,m.y,150*bs,104*bs).setStrokeStyle(3,0xff9ac0,.9).setDepth(12);this.tweens.add({targets:rg,scale:1.35,alpha:0,duration:420,onComplete:()=>rg.destroy()});m.hk=.35}}
-   if(m.tm<=0){m.st='crown';m.cd=1;m.spR=0;m.jw.forEach(j=>{j.st='ring'})}}break;
+   if(m.tm<=0){m.st='crown';m.cd=1;m.spR=0;m.jw.forEach(j=>{j.st='ring'});for(const f of this.cur.food)f.hm=0}}break;
   case 'scatter':if(m.pt&&m.tm>.9)for(let k=0;k<3;k++){m.pt[k]-=dt;const A=m.jw[k],B=m.jw[k+3];if(m.pt[k]<=0&&[A,B].every(j=>j.st=='rest'&&j.t<=0&&!(j.rep>0))){const lvl=(m.df>=2.1?2:m.df>=1.5?1:0)+(m.hp<m.mh*.5?1:0);m.pt[k]=[2.6,3.2,2.8][k]*en-(k==2?.2*lvl:0);this.hcPair(m,k,en)}}
    if(m.tm<=0){m.st='crown';m.cd=1.2;m.jw.forEach(j=>{j.rl=0;if(j.st!='fallW'&&j.st!='land')j.st='ring'})}break;
   case 'clamp':if(m.tm<=0){m.st='crown';m.cd=.9*en}break;
@@ -2989,7 +2988,7 @@ class G extends Phaser.Scene{
   for(const f of this.cur.food)if(f.on){const d=Math.hypot(f.spr.x-p.x,f.spr.y-p.y);if(d<bd){bd=d;tg=f}}
   for(const f of this.cur.food)if(f.on){
    if(f.t=='h'&&f.die<t){f.on=0;const hs=f.spr;f.spr=null;this.tweens.add({targets:hs,alpha:0,duration:600,onComplete:()=>hs.destroy()});continue}
-   if(f.t!='c'&&f.t!='h'&&!(hold&&f===tg)){this.flee(f,dt,p);
+   if(f.hm&&f.spr){f.spr.setScale(1+.08*Math.sin(t/70),1-.06*Math.sin(t/70))}else if(f.t!='c'&&f.t!='h'&&!(hold&&f===tg)){this.flee(f,dt,p);
     }
    if(hold&&f===tg&&!(f.ready>t)&&!(this.sil>0)){f.p+=dt/C.F[f.t].t;this.moEat=f}else f.p=Math.max(0,f.p-dt*2);
    if(f.p>=1)this.consume(f)}
@@ -3197,24 +3196,24 @@ class G extends Phaser.Scene{
  // 턱 비: 턱 6개가 화면 위로 날아올랐다가, 나를 따라 찍히는 붉은 원(0.55초 예고) 위로 0.38초 간격으로 하나씩 내리꽂힘. 그동안 가운데 구멍이 열려 물 수 있음.
  hcRain(m,en){m.st='jrain';m.rn=0;m.rt=.7;m.jrc=this.time.now+11000;m.jw.forEach(j=>{j.st='up'});this.dtx(m.x,m.y-50,'턱 비 — 멈추지 말 것!','#ff5a7a')}
  hcRainU(m,dt,D,en){const p=this.pl;m.rt-=dt;
-  if(m.rn<6&&m.rt<=0){const j=m.jw[m.rn],vx=p.body.velocity.x,vy=p.body.velocity.y,x=Phaser.Math.Clamp(p.x+vx*.22,60,740),y=Phaser.Math.Clamp(p.y+vy*.22,70,300),t=.55*en;
+  if(m.rn<6&&m.rt<=0){const j=m.jw[m.rn],x=Phaser.Math.Clamp(p.x,60,740),y=Phaser.Math.Clamp(p.y,70,300),t=.55*en;
    j.st='fallW';j.tx=x;j.ty=y;j.t=t;j.x=x;this.telAdd({k:'c',x,y,r:30,sy:.8,t,dmg:D(14),src:'허기의 턱 — 내리꽂기',m,fx:0,on:()=>{this.gdkDust?this.gdkDust(x,y,6):0;const r=this.add.ellipse(x,y,60,48).setStrokeStyle(2,0xffd0e0,.9).setDepth(12);this.tweens.add({targets:r,scale:1.5,alpha:0,duration:220,onComplete:()=>r.destroy()})}});m.rn++;m.rt=.38*en}
-  if(m.rn>=6&&m.rt<=-.9){m.st='crown';m.cd=1;m.jw.forEach(j=>{if(j.st!='land')j.st='ring'})}}
- // 허기 표식: 유충 2~3마리에 붉은 표식 → 왕관 쪽으로 기어감(60px/초) → 닿으면 왕관이 삼키고 커짐(최대 3) + 체력 6% 회복. 내가 먼저 먹으면 끝.
+  if(m.rn>=6&&m.rt<=-.9){m.st='crown';m.cd=1;const nw=this.time.now;m.jw.forEach(j=>{if(j.st!='land'){j.st='ring';j.safe=nw+800}})}}
+ // 허기 표식(v107~): 회전 베기를 시작할 때 유충 1마리에 표식 → 회전하는 동안 왕관이 그 유충 쪽으로 다가가 회전 원에 닿으면 삼키고 커짐(최대 3) + 체력 6% 회복. 내가 먼저 먹으면 끝.
  hcMarkable(){return this.cur.food.some(f=>f.on&&f.spr&&(f.t=='s'||f.t=='l')&&!f.hm)}
- hcMarkGo(m){const F=this.cur.food.filter(f=>f.on&&f.spr&&(f.t=='s'||f.t=='l')&&!f.hm).sort((a,b)=>Math.hypot(b.spr.x-m.x,b.spr.y-m.y)-Math.hypot(a.spr.x-m.x,a.spr.y-m.y)).slice(0,1);
+ hcMarkGo(m){const F=this.cur.food.filter(f=>f.on&&f.spr&&(f.t=='s'||f.t=='l')&&!f.hm).filter(f=>!arguments[1]||Math.hypot(f.spr.x-m.x,f.spr.y-m.y)>100).sort((a,b)=>(arguments[1]?-1:1)*(Math.hypot(b.spr.x-m.x,b.spr.y-m.y)-Math.hypot(a.spr.x-m.x,a.spr.y-m.y))).slice(0,1);
   for(const f of F){f.hm=1;if(f.x==null){f.x=f.spr.x;f.y=f.spr.y}const r=this.add.circle(f.spr.x,f.spr.y,16,0xff3a5a,0).setStrokeStyle(2,0xff5a7a,1).setDepth(12);this.tweens.add({targets:r,scale:{from:2.2,to:1},duration:300,onComplete:()=>r.destroy()})}
-  if(F.length)this.dtx(m.x,m.y-50,'허기 표식 — 표식 유충을 먼저 먹을 것!','#ff9ac0')}
+  if(F.length&&!arguments[1])this.dtx(m.x,m.y-50,'허기 표식 — 표식 유충을 먼저 먹을 것!','#ff9ac0')}
  hcMarkU(m,dt,g){const now=this.time.now,gr=m.gr||0,bs=1+.12*gr;
   if(m.st=='markW'){const k=1-Math.max(0,m.tm)/.6;g.lineStyle(3,0xff3a5a,.3+.6*k).strokeEllipse(m.x,m.y,150*bs*(1+.15*k),104*bs*(1+.15*k));if(m.tm<=0){this.hcMarkGo(m);m.st='crown';m.cd=.5}}
-  for(const f of this.cur.food){if(!f.hm||!f.on||!f.spr)continue;const dx=m.x-f.x,dy=m.y-f.y,d=Math.hypot(dx,dy)||1;f.x+=dx/d*60*dt;f.y+=dy/d*60*dt;f.spr.setPosition(f.x,f.y);
+  for(const f of this.cur.food){if(!f.hm||!f.on||!f.spr)continue;f.x=f.spr.x;f.y=f.spr.y;
    const pu=.5+.5*Math.sin(now/120);g.lineStyle(2,0xff5a7a,.6+.4*pu).strokeCircle(f.x,f.y,13);g.lineStyle(1,0xff5a7a,.25).lineBetween(f.x,f.y,m.x,m.y);
-   if(((f.x-m.x)/(75*bs))**2+((f.y-m.y)/(52*bs))**2<1){f.on=0;const s=f.spr;f.spr=null;this.tweens.add({targets:s,x:m.x,y:m.y,scale:.2,alpha:0,duration:220,onComplete:()=>s.destroy()});
+   const RR=m.st=='spin'?(m.spR||54)+12:75*bs;if(((f.x-m.x)/RR)**2+((f.y-m.y)/(m.st=='spin'?RR*.75:52*bs))**2<1){f.on=0;const s=f.spr;f.spr=null;this.tweens.add({targets:s,x:m.x,y:m.y,scale:.2,alpha:0,duration:220,onComplete:()=>s.destroy()});
     if((m.gr||0)<3)m.gr=(m.gr||0)+1;m.hp=Math.min(m.mh,m.hp+m.mh*.06);const rg=this.add.ellipse(m.x,m.y,150*bs,104*bs).setStrokeStyle(3,0xff9ac0,.9).setDepth(12);this.tweens.add({targets:rg,scale:1.35,alpha:0,duration:420,onComplete:()=>rg.destroy()});m.hk=.35;this.dtx(m.x,m.y-56,'표식 유충을 삼켰다','#ff7a9a')}}}
  // ===== v106 허기의 왕관 흩어짐: 3번째 쌍(턱 2·5)은 돌진 대신 '턱 비' 반복 =====
  // 날아올라(rUp) → 위에서 잠깐 대기(rSky) → 나를 따라 찍히는 붉은 원(0.55초) 위로 내리꽂힘(fallW) → 0.5초 박혀 있다(land) → 다시 날아오름 … 흩어짐이 끝날 때까지. 두 턱은 엇갈려서.
  hcPairRain(m,A,B,en){A.rl=1;B.rl=1;A.st='rUp';B.st='rUp';A.t=0;B.t=0;A.wt=.15;B.wt=.75}
- hcRainStrike(m,j,en){const p=this.pl,vx=p.body.velocity.x,vy=p.body.velocity.y,x=Phaser.Math.Clamp(p.x+vx*.22,60,740),y=Phaser.Math.Clamp(p.y+vy*.22,70,300),t=.55*en,D=v=>Math.round(v*m.df*(1+.15*(m.gr||0)));
+ hcRainStrike(m,j,en){const p=this.pl,x=Phaser.Math.Clamp(p.x,60,740),y=Phaser.Math.Clamp(p.y,70,300),t=.55*en,D=v=>Math.round(v*m.df*(1+.15*(m.gr||0)));
   j.st='fallW';j.tx=x;j.ty=y;j.t=t;j.x=x;this.telAdd({k:'c',x,y,r:30,sy:.8,t,dmg:D(12),src:'허기의 턱 — 내리꽂기',m,fx:0,on:()=>{const r=this.add.ellipse(x,y,60,48).setStrokeStyle(2,0xffd0e0,.9).setDepth(12);this.tweens.add({targets:r,scale:1.5,alpha:0,duration:220,onComplete:()=>r.destroy()})}})}
  hud(){
   const g=this.gfx;g.clear();const GL=this.gL,GR=this.gR;GL.clear();GR.clear();
