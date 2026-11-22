@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#120e1a;color:#e8dcff;font-family:sans-serif;width:1640px}
+h1{font-size:30px;margin:14px 20px 4px}h2{font-size:20px;margin:6px 0 2px;color:#ffe9a8}p{margin:3px 0 4px;font-size:15px;color:#c9c0de;line-height:1.42}
+.row{display:flex;gap:16px;padding:0 20px 12px}.c{width:388px}canvas{display:block;border-radius:6px}.cp{color:#7be0a8;font-size:14px}
+.sub{font-size:15px;color:#a99fc2;margin:0 20px 10px}
+</style></head><body>
+<h1>공허 가오리 — 스킬 (안)</h1>
+<div class="sub">해류(핏줄)와 맥박을 이용하는 사냥꾼. 칠성장어가 '물고 도망'이라면, 가오리는 '흐름으로 몰아붙이기'.</div>
+<div class="row">
+ <div class="c"><h2>R1 맥박 타기 돌진</h2><canvas id="a" width="388" height="220"></canvas><p>해류 위에 엎드려 기다리다, 맥박이 지나가는 순간 그 빛을 타고 핏줄을 따라 쭉 미끄러져 들이받는다. 해류 밖으로는 못 나간다.</p><p class="cp">대처: 핏줄에서 비켜서기 · 빛이 오는 게 먼저 보인다</p></div>
+ <div class="c"><h2>R2 덮치기 (삼키는 막)</h2><canvas id="b" width="388" height="220"></canvas><p>위로 떠올라 그림자를 드리운 뒤 내려앉아 몸으로 덮는다. 덮이면 화면이 별빛 막으로 어두워지고, 가오리와 함께 소용돌이 쪽으로 끌려간다.</p><p class="cp">대처: 그림자에서 벗어나기 · 덮이면 연타로 물어 찢고 나옴(추가 피해)</p></div>
+ <div class="c"><h2>R3 꼬리 표식</h2><canvas id="c" width="388" height="220"></canvas><p>스치듯 지나가며 꼬리로 찌른다. 찔리면 몸에 별빛 표식(4초): 해류·소용돌이에 두 배로 끌리고, 칠성장어가 멀리서도 알아챈다.</p><p class="cp">대처: 표식 동안 해류에서 멀리 · 생태계가 함께 사냥하는 느낌</p></div>
+ <div class="c"><h2>R4 역류 날갯짓</h2><canvas id="d" width="388" height="220"></canvas><p>날개를 크게 쳐서 그 해류만 잠깐 거꾸로 흐르게 한다. 플레이어를 칠성장어 쪽이나 벽으로 밀어붙인다.</p><p class="cp">대처: 날갯짓 예고(날개를 들어 올림) 때 해류 밖으로</p></div>
+</div>
+<script src="lib_v.js"></script><script src="lib_d.js"></script>
+<script>
+function spr(x,g,X,Y,sc,rot,al){const tmp=document.createElement('canvas');tmp.width=G;tmp.height=G;const t=tmp.getContext('2d');for(let j=0;j<G;j++)for(let i=0;i<G;i++)if(g[j][i]){t.fillStyle=g[j][i];t.fillRect(i,j,1,1)}x.save();x.globalAlpha=al??1;x.imageSmoothingEnabled=false;x.translate(X,Y);x.rotate(rot||0);x.drawImage(tmp,-G*sc/2,-G*sc/2,G*sc,G*sc);x.restore()}
+function lane(x,P,glow){x.lineCap='round';x.lineJoin='round';for(const[w,c]of[[10,'rgba(18,6,31,.6)'],[5,'#4a1a78'],[2,'#6a2aa0']]){x.strokeStyle=c;x.lineWidth=w;x.beginPath();x.moveTo(...P[0]);P.forEach(p=>x.lineTo(...p));x.stroke()}
+ if(glow){x.strokeStyle='rgba(232,144,255,.95)';x.lineWidth=3;x.beginPath();const a=glow[0],b=glow[1];x.moveTo(...P[a]);for(let i=a;i<=b;i++)x.lineTo(...P[i]);x.stroke()}}
+function lab(x,X,Y,t,c){x.font='bold 12px sans-serif';const w=x.measureText(t).width+10;x.fillStyle='rgba(10,6,20,.82)';x.fillRect(X-w/2,Y-10,w,18);x.fillStyle=c||'#ece6f7';x.fillText(t,X-w/2+5,Y+3)}
+const P1=[];for(let i=0;i<=16;i++)P1.push([20+i*22,170-Math.sin(i*.45)*40-i*3]);
+{const x=a.getContext('2d');seed=3;floor(x,388,220,'#1c1830','#201b36',1);funnel(x,350,70,40,1,'#9ff0ff',.5);lane(x,P1,[5,10]);
+ for(let k=0;k<4;k++){spr(x,g1,90+k*26,P1[3+k][1]-2,1.3,Math.PI/2+.3,.15+k*.18)}spr(x,g1,200,P1[8][1]-4,1.5,Math.PI/2+.25);
+ worm(x,290,P1[12][1]-4,Math.PI);lab(x,150,40,'맥박이 오는 순간 → 쭉','#ffd0f8');x.strokeStyle='rgba(255,233,168,.7)';x.setLineDash([4,4]);x.beginPath();x.moveTo(230,P1[9][1]-6);x.lineTo(278,P1[12][1]-6);x.stroke();x.setLineDash([])}
+{const x=b.getContext('2d');seed=5;floor(x,388,220,'#1c1830','#201b36',1);funnel(x,330,70,46,1,'#9ff0ff',.6);
+ // 왼쪽: 그림자 예고
+ x.fillStyle='rgba(0,0,0,.45)';x.beginPath();x.ellipse(90,150,46,24,0,0,7);x.fill();x.strokeStyle='rgba(255,120,150,.8)';x.lineWidth=2;x.setLineDash([5,4]);x.beginPath();x.ellipse(90,150,46,24,0,0,7);x.stroke();x.setLineDash([]);
+ spr(x,g1,90,80,2.2,0,.9);worm(x,96,152,-.3);lab(x,90,196,'① 그림자 예고','#ffb0c0');
+ // 오른쪽: 덮임 (화면 어둡게)
+ x.fillStyle='rgba(5,2,14,.86)';x.fillRect(196,0,192,220);for(let i=0;i<40;i++){x.fillStyle='rgba(255,255,255,'+(.3+Math.random()*.6)+')';x.fillRect(196+Math.random()*192,Math.random()*220,1.5,1.5)}
+ x.fillStyle='rgba(122,74,192,.35)';x.beginPath();x.ellipse(292,120,80,60,0,0,7);x.fill();worm(x,292,124,-.8);x.strokeStyle='rgba(159,240,255,.8)';x.lineWidth=2;x.beginPath();x.moveTo(300,110);x.lineTo(340,80);x.stroke();
+ lab(x,292,40,'② 덮임 → 소용돌이로 끌려감','#c8b8ff');lab(x,292,196,'연타로 물어 찢기!','#7be0a8');x.fillStyle='#120e1a';x.fillRect(194,0,3,220)}
+{const x=c.getContext('2d');seed=9;floor(x,388,220,'#1c1830','#201b36',1);funnel(x,300,74,56,1,'#9ff0ff',.7);const P=[[20,200],[80,180],[150,160],[220,130],[280,100]];lane(x,P,[0,4]);
+ spr(x,g1,120,70,1.4,1.9);x.strokeStyle='#c070ff';x.lineWidth=2;x.beginPath();x.moveTo(110,92);x.quadraticCurveTo(100,120,92,146);x.stroke();
+ worm(x,96,160,-.4);for(let i=0;i<8;i++){const an=i/8*6.283;x.fillStyle='#fff';x.fillRect(96+Math.cos(an)*14,160+Math.sin(an)*10,2,2)}x.strokeStyle='rgba(255,255,255,.7)';x.lineWidth=1.5;x.beginPath();x.ellipse(96,160,16,11,0,0,7);x.stroke();
+ lab(x,100,190,'표식 4초: 해류·소용돌이 ×2','#ffe9a8');
+ const lmp=g3;spr(x,lmp,330,180,1.1,-1.9);lab(x,320,148,'칠성장어: 멀리서도 감지','#ffb0c0');x.strokeStyle='rgba(255,120,150,.6)';x.setLineDash([3,4]);x.beginPath();x.moveTo(316,176);x.lineTo(118,162);x.stroke();x.setLineDash([])}
+{const x=d.getContext('2d');seed=13;floor(x,388,220,'#1c1830','#201b36',1);const P=[];for(let i=0;i<=14;i++)P.push([20+i*26,110+Math.sin(i*.5)*24]);lane(x,P);
+ x.strokeStyle='rgba(120,230,255,.9)';x.lineWidth=2;for(let i=3;i<12;i+=2){x.beginPath();x.moveTo(P[i+1][0],P[i+1][1]-10);x.lineTo(P[i][0],P[i][1]-10);x.lineTo(P[i][0]+6,P[i][1]-15);x.stroke()}
+ spr(x,g1,320,70,1.8,-Math.PI/2);for(let k=0;k<3;k++){x.strokeStyle=`rgba(200,240,255,${.6-k*.18})`;x.lineWidth=2;x.beginPath();x.arc(300,80,24+k*14,Math.PI*.7,Math.PI*1.3);x.stroke()}
+ worm(x,140,104,Math.PI);spr(x,g3,40,150,1.1,.6);lab(x,250,170,'해류가 거꾸로 → 칠성장어 쪽으로','#9ff0ff')}
+</script></body></html>
