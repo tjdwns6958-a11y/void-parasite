@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v86</title>
+<title>공허 기생충 v88</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v86';
+window.VP_VER='v88';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -1666,7 +1666,7 @@ class G extends Phaser.Scene{
   if(m.st=='intro'){for(const j of m.jw){j.x=m.x+Math.cos(j.a)*88;j.y=m.y+Math.sin(j.a)*58;j.fa=j.a;j.o.setPosition(j.x,j.y).setRotation(j.a)}return}
   m.cd-=dt;m.tm-=dt;m.rot=(m.rot||0)+dt*.45;
   if(m.st!='inhale'&&m.st!='inhaleW'){const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1;if(d>(m.st=='spin'?4:130)){m.x+=dx/d*(m.st=='spin'?104:26)*dt;m.y+=dy/d*(m.st=='spin'?80:18)*dt}m.x=Phaser.Math.Clamp(m.x,190,610);m.y=Phaser.Math.Clamp(m.y,120,230)}
-  m.gone=m.st=='scatter'?0:1;m.spr.setPosition(m.x,m.y).setScale((1+.04*Math.sin(now/280))*bs);m.br=44*bs;m.spr.setAlpha(m.gone?.9:1);
+  m.hk=Math.max(0,(m.hk||0)-dt);if(m.hp0!=null&&m.hp<m.hp0-.5)this.hcHit(m,m.hp0-m.hp);m.hp0=m.hp;m.gone=m.st=='scatter'?0:1;m.spr.setPosition(m.x+(m.hk>0?(Math.random()-.5)*2:0),m.y).setScale((1+.04*Math.sin(now/280))*bs*(1+.4*m.hk),(1+.04*Math.sin(now/280))*bs*(1-.4*m.hk));m.br=44*bs;m.spr.setAlpha(m.gone?.9:1);
   if(!m.gone){const pu=.5+.5*Math.sin(now/90);g.lineStyle(2,0xffe066,.4+.4*pu).strokeEllipse(m.x,m.y,150*bs,104*bs)}
   const sc=1+.18*gr;
   for(const j of m.jw){
@@ -1808,7 +1808,7 @@ class G extends Phaser.Scene{
  // ===== v82: 공허 중간 보스 2페이즈 — 「공허 앵무조개」 (관찰자의 눈은 처음부터 앵무조개의 것이었다) =====
  // 체력 50%: 눈이 틈으로 되돌아가고, 틈을 찢고 나선 껍데기가 빠져나온다 — 같은 눈이 껍데기 입구 위에 박혀 있다
  // 패턴: 나선 구체 · 촉수 잡기(이때 촉수를 물어 끊을 수 있음, 3개 다 끊으면 기절) · 껍데기 블랙홀(숨음, 끌어당김) · 눈빛 쓸기
- obsNTex(){for(const k of['N','Nc']){const key='obs'+k;if(this.textures.exists(key))continue;const im=window.__obsIm&&__obsIm[k];if(im&&im.complete&&im.naturalWidth){const t=this.textures.addImage(key,im);t.setFilter(Phaser.Textures.FilterMode.NEAREST)}}}
+ obsNTex(){this.vdOrbTex();this.obsEyeTex();for(const k of['N','Nc']){const key='obs'+k;if(this.textures.exists(key))continue;const im=window.__obsIm&&__obsIm[k];if(im&&im.complete&&im.naturalWidth){const t=this.textures.addImage(key,im);t.setFilter(Phaser.Textures.FilterMode.NEAREST)}}}
  obsRev(m){this.obsNTex();m.ph=2;m.st='rev';m.tm=3;m.gone=1;m.gz=0;this.tel=this.tel.filter(q=>q.m!==m);(this.mbb||[]).forEach(q=>q.o.destroy());this.mbb=[];this.emPull=null;
   for(const q of m.ey){q.open=0;q.oe.setVisible(false)}m.ex0=m.x;m.ey0=m.y;m.nx=400;m.ny=138;m.fl=1;
   m.N=this.add.image(m.hx,m.hy,'obsN').setDepth(3.05).setAlpha(0).setScale(.25);
@@ -1816,7 +1816,8 @@ class G extends Phaser.Scene{
   this.cameras.main.shake(2600,.007);this.dtx(400,70,'눈이 틈 속으로 끌려 들어간다…','#c8a8ff')}
  obsNOff(m){const f=m.fl;return{ex:m.x+41.8*f,ey:m.y-20.5,ax:m.x+31*f,ay:m.y+4.7}}
  obsN2(m,dt,p){const now=this.time.now,D=v=>Math.round(v*m.df),en=m.hp<m.mh*.3?.8:1,g=m.g,S=m.spr,N=m.N;
-  if(m.st=='rev'){const t=3-m.tm;
+  if(m.st=='rev'){this.obsRevU(m,dt,p);return}
+  if(m.st=='revOld'){const t=3-m.tm;
    if(t<.9){const k=t/.9;m.x=m.ex0+(m.hx-m.ex0)*k;m.y=m.ey0+(m.hy-m.ey0)*k;S.setPosition(m.x+Math.sin(now/30)*2,m.y).setScale(1-.3*k);m.pu.setPosition(m.x,m.y);m.rf.setScale(1+.25*k)}
    else{const k=Math.min(1,(t-.9)/1.4),e=1-(1-k)**3;m.x=m.hx+(m.nx-m.hx)*e;m.y=m.hy+(m.ny-m.hy)*e;N.setPosition(m.x,m.y).setAlpha(Math.min(1,k*1.6)).setScale(.25+.75*e);const o=this.obsNOff(m);
     S.setPosition(m.hx+(o.ex-m.hx)*e,m.hy+(o.ey-m.hy)*e).setScale(.7-.08*e);m.pu.setPosition(S.x,S.y).setScale(.7-.08*e);m.rf.setScale(1.25-.15*k).setAlpha(1-.5*k)
@@ -1830,44 +1831,114 @@ class G extends Phaser.Scene{
   S.setVisible(!hid).setPosition(o.ex,o.ey).setScale(.62);const ta=Math.atan2(p.y-o.ey,p.x-o.ex);m.pu.setVisible(!hid).setPosition(o.ex+Math.cos(ta)*7,o.ey+Math.sin(ta)*4).setScale(.62,.5);
   m.rf.setPosition(m.hx,m.hy).setAlpha(.5);m.gone=(hid||m.st=='hideW')?1:0;
   // 촉수 그리기 / 잘린 촉수
-  if(m.tn)for(const q of m.tn){if(!q.on)continue;const k=q.k=Math.min(1,(q.k||0)+dt*7);const tx=o.ax+(q.tx-o.ax)*k,ty=o.ay+(q.ty-o.ay)*k;q.x=tx;q.y=ty;
+  if(m.tn&&m.st=='grabW')this.obsWhipW(m,o,g,now);
+  if(m.tn)for(const q of m.tn){if(!q.on)continue;this.obsWhip(m,q,o,g,dt,now);continue;const k=q.k=Math.min(1,(q.k||0)+dt*7);const tx=o.ax+(q.tx-o.ax)*k,ty=o.ay+(q.ty-o.ay)*k;q.x=tx;q.y=ty;
    const nx=-(ty-o.ay),ny=tx-o.ax,nl=Math.hypot(nx,ny)||1;g.lineStyle(9,0x0a0612,1);g.beginPath();g.moveTo(o.ax,o.ay);for(let i=1;i<=10;i++){const s=i/10,w=Math.sin(s*Math.PI)*8*Math.sin(now/180+q.i);g.lineTo(o.ax+(tx-o.ax)*s+nx/nl*w,o.ay+(ty-o.ay)*s+ny/nl*w)}g.strokePath();
    g.lineStyle(5,q.hp<2?0x9a70d0:0x5a3a8a,1);g.beginPath();g.moveTo(o.ax,o.ay);for(let i=1;i<=10;i++){const s=i/10,w=Math.sin(s*Math.PI)*8*Math.sin(now/180+q.i);g.lineTo(o.ax+(tx-o.ax)*s+nx/nl*w,o.ay+(ty-o.ay)*s+ny/nl*w)}g.strokePath();
    for(let i=2;i<10;i+=2){const s=i/10;g.fillStyle(0xd8b8ff,.9).fillCircle(o.ax+(tx-o.ax)*s,o.ay+(ty-o.ay)*s,1.6)}g.fillStyle(0xe0457b,1).fillCircle(tx,ty,3.5)}
-  if((m.st=='hide'||m.st=='hideW')&&this.pprj)for(const q of this.pprj)if(q.t>0&&Math.hypot(q.x-m.x,q.y-m.y)<70){q.t=0;const a=Math.atan2(p.y-q.y,p.x-q.x),b=this.mbShot(q.x,q.y,a,230,D(14),'튕겨 나온 구체',m,'emo');b.o.setTint(0xc070ff);if(!(m.rfT>now)){m.rfT=now+1200;this.dtx(q.x,q.y-16,'껍데기가 구체를 튕겨냈다','#c8a8ff')}}
+  if((m.st=='hide'||m.st=='hideW')&&this.pprj)for(const q of this.pprj)if(q.t>0&&Math.hypot(q.x-m.x,q.y-m.y)<70){q.t=0;const a=Math.atan2(p.y-q.y,p.x-q.x),b=this.mbShot(q.x,q.y,a,230,D(14),'튕겨 나온 구체',m,'vdOrb');if(!(m.rfT>now)){m.rfT=now+1200;this.dtx(q.x,q.y-16,'껍데기가 구체를 튕겨냈다','#c8a8ff')}}
   if(this.gkb&&this.gkb.t>0){this.gkb.t-=dt;p.body.reset(Phaser.Math.Clamp(p.x+this.gkb.vx*dt,60,740),Phaser.Math.Clamp(p.y+this.gkb.vy*dt,62,300))}
   if(m.st!='hide'&&m.st!='hideW'&&this.pprj)for(const q of this.pprj){if(q.t<=0)continue;
    if(Math.hypot(q.x-o.ex,q.y-o.ey)<20){q.t=0;this.dmgM(m,(q.dmg!=null?q.dmg:this.sdmg())*1.5,1);this.dtx(o.ex,o.ey-22,'눈 명중!','#ffe066');S.setTintFill(0xffffff);this.time.delayedCall(70,()=>{if(m.spr)m.spr.clearTint()});continue}
-   if(m.st=='grab'&&m.tn)for(const t of m.tn){if(!t.on)continue;let hitT=0;for(let s2=.3;s2<=1.001;s2+=.1){if(Math.hypot(o.ax+(t.x-o.ax)*s2-q.x,o.ay+(t.y-o.ay)*s2-q.y)<14){hitT=1;break}}if(hitT){q.t=0;t.hp--;if(t.hp<=0){t.on=0;this.dtx(q.x,q.y-14,'촉수를 끊었다','#ffe066')}break}}}
+   if(m.st=='grab'&&m.tn)for(const t of m.tn){if(!t.on)continue;let hitT=0;for(let s2=.3;s2<=1.001;s2+=.1){const pp=t.pts?t.pts[Math.round(s2*12)]:[o.ax+(t.x-o.ax)*s2,o.ay+(t.y-o.ay)*s2];if(Math.hypot(pp[0]-q.x,pp[1]-q.y)<14){hitT=1;break}}if(hitT){q.t=0;t.hp--;if(t.hp<=0){t.on=0;this.dtx(q.x,q.y-14,'촉수를 끊었다','#ffe066')}break}}}
   if(!busy&&!(m.rpc>now)&&Math.hypot(p.x-m.x,p.y-m.y)<120){m.rpc=now+3200;this.telAdd({k:'c',x:m.x,y:m.y,r:122,sy:.8,t:.55,dmg:D(18),src:'먹물 파동',m,hit:()=>{const a=Math.atan2(p.y-m.y,p.x-m.x);this.gdkKb(Math.cos(a)*420,Math.sin(a)*300,.25)}});this.dtx(m.x,m.y-70,'다가오면 밀쳐낸다 — 멀리서 쏠 것','#c8a8ff')}
   if(m.root>0){m.root-=dt;p.body.reset(m.rx,m.ry);g.lineStyle(2,0xc8a8ff,.8).strokeCircle(p.x,p.y,12)}
   switch(m.st){
   case 'idle':if(m.cd<=0){const r=Math.random(),d=Math.hypot(p.x-o.ax,p.y-o.ay);
     if(!(m.hdc>now)&&r<.22){m.st='hideW';m.tm=.7;m.hdc=now+9500;this.dtx(m.x,m.y-70,'껍데기에 숨는다 — 입구에서 멀리!','#c8a8ff')}
     else if(d<300&&r<.55){m.st='grabW';m.tm=.7*en;m.tn=[];for(let i=0;i<3;i++){const a=Math.atan2(p.y-o.ay,p.x-o.ax)+(i-1)*.42,L=Math.min(330,d+40+i*10);const tx=Phaser.Math.Clamp(o.ax+Math.cos(a)*L,50,750),ty=Phaser.Math.Clamp(o.ay+Math.sin(a)*L,60,310);m.tn.push({i,tx,ty,hp:2,on:0,k:0});this.telAdd({k:'l',x:o.ax,y:o.ay,x2:tx,y2:ty,w:26,t:m.tm,src:'',fx:0,m})}}
-    else if(r<.8){m.st='spiral';m.tm=2.8;m.sa=Math.random()*6.283;m.st2=0}
+    else if(r<.8){m.st='spW';m.tm=.5;m.sa=Math.random()*6.283;m.st2=0}
     else{m.st='sweepW';m.tm=.9;m.ga=Math.atan2(p.y-o.ey,p.x-o.ex)-.9*(Math.random()<.5?1:-1);m.sd=Phaser.Math.Angle.Wrap(ta-m.ga)>0?1:-1}}break;
-  case 'spiral':m.st2-=dt;if(m.st2<=0){m.st2=.11;m.sa+=.38*(m.fl);for(const k of[0,2.094,4.189]){const q=this.mbShot(o.ax,o.ay,m.sa+k,190,D(16),'나선 구체',m,'emo');q.o.setTint(0x6a3ab0)}}if(m.tm<=0){m.st='idle';m.cd=.8*en}break;
-  case 'grabW':if(m.tm<=0){m.st='grab';m.tm=2;m.tn.forEach(q=>{q.on=1;q.k=0});this.cameras.main.shake(120,.005);
+  case 'spW':{const pu=.5+.5*Math.sin(now/45);for(const k of[0,2.094,4.189]){const a=m.sa+k;g.lineStyle(7,0xff3b4f,.18+.2*pu).lineBetween(o.ax,o.ay,o.ax+Math.cos(a)*110,o.ay+Math.sin(a)*110);g.lineStyle(2,0xff5a7a,.9).lineBetween(o.ax,o.ay,o.ax+Math.cos(a)*110,o.ay+Math.sin(a)*110)}g.lineStyle(2,0xff3b4f,.8).strokeCircle(o.ax,o.ay,14+6*pu);if(m.tm<=0){m.st='spiral';m.tm=2.8}}break;
+  case 'spiral':m.st2-=dt;if(m.st2<=0){m.st2=.11;m.sa+=.38*(m.fl);for(const k of[0,2.094,4.189]){this.mbShot(o.ax,o.ay,m.sa+k,190,D(16),'나선 구체',m,'vdOrb')}}if(m.tm<=0){m.st='idle';m.cd=.8*en}break;
+  case 'grabW':if(m.tm<=0){m.st='grab';m.tm=2;m.tn.forEach(q=>{q.on=1;q.k=0;q.wt=0});this.cameras.main.shake(120,.005);
     for(const q of m.tn){const ux=q.tx-o.ax,uy=q.ty-o.ay,L=Math.hypot(ux,uy)||1,t=((p.x-o.ax)*ux+(p.y-o.ay)*uy)/(L*L),n=Math.abs((p.x-o.ax)*uy-(p.y-o.ay)*ux)/L;if(t>0&&t<1.05&&n<19&&!(m.root>0)){this.hurt(D(26),'공허 촉수',m);if(!m.on)return;if(!(this.dshI>0)){m.root=1;m.rx=p.x;m.ry=p.y;this.dtx(p.x,p.y-24,'붙잡혔다!','#c8a8ff')}}}
     this.dtx(m.x,m.y-72,'촉수를 물어 끊을 것!','#ffe066')}break;
-  case 'grab':if(en<1){m.st2=(m.st2||0)-dt;if(m.st2<=0){m.st2=.35;m.sa=(m.sa||0)+.5;const q=this.mbShot(o.ax,o.ay,m.sa,150,D(12),'나선 구체',m,'emo');q.o.setTint(0x6a3ab0)}}if(m.tm<=0||!m.tn.some(q=>q.on)){if(!m.tn.some(q=>q.on)&&m.tm>0){m.st='stun';m.tm=1.6;this.dtx(m.x,m.y-70,'촉수가 모두 끊겼다 — 기절!','#ffe066');this.cameras.main.shake(250,.01)}else{m.st='idle';m.cd=.9*en}m.tn=null}break;
+  case 'grab':if(en<1){g.lineStyle(2,0xff3b4f,.5+.4*Math.sin(now/60)).strokeCircle(o.ax,o.ay,16);m.st2=(m.st2||0)-dt;if(m.st2<=0){m.st2=.35;m.sa=(m.sa||0)+.5;this.mbShot(o.ax,o.ay,m.sa,150,D(12),'나선 구체',m,'vdOrb')}}if(m.tm<=0||!m.tn.some(q=>q.on)){if(!m.tn.some(q=>q.on)&&m.tm>0){m.st='stun';m.tm=1.6;this.dtx(m.x,m.y-70,'촉수가 모두 끊겼다 — 기절!','#ffe066');this.cameras.main.shake(250,.01)}else{m.st='idle';m.cd=.9*en}m.tn=null}break;
   case 'stun':for(let i=0;i<4;i++){const a=now/260+i*1.571;g.fillStyle(0xffe066,.9).fillCircle(m.x+Math.cos(a)*40,m.y-66+Math.sin(a)*8,2.6)}if(m.tm<=0){m.st='idle';m.cd=.6}break;
-  case 'hideW':if(m.tm<=0){m.st='hide';m.tm=3;this.emPull={x:o.ax,y:o.ay,v:30};this.obsNRing(m,o,D,0)}break;
+  case 'hideW':{const k=1-m.tm/.7;g.fillStyle(0xff3b4f,.1+.12*k).fillCircle(o.ax,o.ay,48);g.lineStyle(2,0xff5a7a,.9).strokeCircle(o.ax,o.ay,48);for(let i=0;i<12;i++){const a=i/12*6.283;g.lineStyle(3,0xff3b4f,.4+.5*k).lineBetween(o.ax+Math.cos(a)*20,o.ay+Math.sin(a)*20,o.ax+Math.cos(a)*(20+26*k),o.ay+Math.sin(a)*(20+26*k))}}if(m.tm<=0){m.st='hide';m.tm=3;this.emPull={x:o.ax,y:o.ay,v:30};this.obsNRing(m,o,D,0)}break;
   case 'hide':{const k=1-m.tm/3;if(this.emPull){this.emPull.x=o.ax;this.emPull.y=o.ay;this.emPull.v=50+60*k}
     for(let i=0;i<3;i++){const R=18+i*14+Math.sin(now/120+i)*3;g.lineStyle(2,0x9a60ff,.6-.15*i).strokeEllipse(o.ax,o.ay,R*2,R*1.4)}
     for(let i=0;i<2;i++){const a=Math.random()*6.283,r=90+Math.random()*120,b=this.add.circle(o.ax+Math.cos(a)*r,o.ay+Math.sin(a)*r*.6,1.6,0xc8b8ff,.8).setDepth(12);this.tweens.add({targets:b,x:o.ax,y:o.ay,alpha:0,duration:500,onComplete:()=>b.destroy()})}
+    g.lineStyle(2,0xff5a7a,.7).strokeCircle(o.ax,o.ay,48);if(m.tm<.45){const k=1-m.tm/.45;for(let i=0;i<12;i++){const a=.15+i/12*6.283;g.lineStyle(3,0xff3b4f,.4+.5*k).lineBetween(o.ax+Math.cos(a)*20,o.ay+Math.sin(a)*20,o.ax+Math.cos(a)*(20+26*k),o.ay+Math.sin(a)*(20+26*k))}}
     if(Math.hypot(p.x-o.ax,p.y-o.ay)<48&&!(m.bhT>now)){m.bhT=now+700;this.hurt(D(20),'껍데기 속 공허',m);if(!m.on)return}
     if(m.tm<=0){this.emPull=null;m.st='idle';m.cd=.9*en;this.obsNRing(m,o,D,.15)}}break;
   case 'sweepW':{const L=this.obsNBeam(m,o,m.ga);g.lineStyle(1.5,0xff5a5a,.5+.4*Math.sin(now/50)).lineBetween(o.ex,o.ey,o.ex+Math.cos(m.ga)*L,o.ey+Math.sin(m.ga)*L);if(m.tm<=0){m.st='sweep';m.tm=2.2;m.bt=0}}break;
   case 'sweep':{m.ga+=m.sd*.75*dt;const L=this.obsNBeam(m,o,m.ga),bx=o.ex+Math.cos(m.ga)*L,by=o.ey+Math.sin(m.ga)*L;g.lineStyle(16,0xff8a40,.35).lineBetween(o.ex,o.ey,bx,by).lineStyle(5,0xfff0d0,.95).lineBetween(o.ex,o.ey,bx,by);g.fillStyle(0xffd0a0,.6).fillCircle(bx,by,7);
    m.bt-=dt;const px=p.x-o.ex,py=p.y-o.ey,t=px*Math.cos(m.ga)+py*Math.sin(m.ga),n=Math.abs(-px*Math.sin(m.ga)+py*Math.cos(m.ga));if(t>0&&t<L&&n<13&&m.bt<=0){m.bt=.3;this.inv=0;this.hurt(D(14),'앵무조개의 눈빛',m);if(!m.on)return}
    if(m.tm<=0){m.st='idle';m.cd=1.1*en}}break}}
- obsNRing(m,o,D,a0){for(let i=0;i<12;i++){const q=this.mbShot(o.ax,o.ay,a0+i/12*6.283,175,D(16),'나선 구체',m,'emo');q.o.setTint(0x6a3ab0)}}
+ obsNRing(m,o,D,a0){for(let i=0;i<12;i++){this.mbShot(o.ax,o.ay,a0+i/12*6.283,175,D(16),'나선 구체',m,'vdOrb')}}
  obsNBeam(m,o,a){let L=20;for(;L<720;L+=8){const x=o.ex+Math.cos(a)*L,y=o.ey+Math.sin(a)*L;if(x<24||x>776||y<24||y>336)break;if(m.pt.some(q=>Math.hypot(q.x-x,q.y-y)<20))break}return L}
  obsNBite(m,fx,fy){if(!m.tn||m.st!='grab')return 0;const p=this.pl,o=this.obsNOff(m),R=C.BITE.range+10;let hit=0;
-  for(const q of m.tn){if(!q.on)continue;for(let s=.3;s<=1.001;s+=.1){const x=o.ax+(q.x-o.ax)*s,y=o.ay+(q.y-o.ay)*s,dx=x-p.x,dy=y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.1){q.hp--;hit=1;if(q.hp<=0){q.on=0;this.dtx(x,y-14,'촉수를 끊었다','#ffe066');for(let i=0;i<8;i++){const a=Math.random()*6.283,b=this.add.circle(x,y,2,0x9a70d0).setDepth(12);this.tweens.add({targets:b,x:x+Math.cos(a)*24,y:y+Math.sin(a)*16,alpha:0,duration:400,onComplete:()=>b.destroy()})}}break}}}
+  for(const q of m.tn){if(!q.on)continue;for(let s=.3;s<=1.001;s+=.1){const pp=q.pts?q.pts[Math.round(s*12)]:null,x=pp?pp[0]:o.ax+(q.x-o.ax)*s,y=pp?pp[1]:o.ay+(q.y-o.ay)*s,dx=x-p.x,dy=y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.1){q.hp--;hit=1;if(q.hp<=0){q.on=0;this.dtx(x,y-14,'촉수를 끊었다','#ffe066');for(let i=0;i<8;i++){const a=Math.random()*6.283,b=this.add.circle(x,y,2,0x9a70d0).setDepth(12);this.tweens.add({targets:b,x:x+Math.cos(a)*24,y:y+Math.sin(a)*16,alpha:0,duration:400,onComplete:()=>b.destroy()})}}break}}}
   return hit}
+ // ===== v87: 회피는 회색 작은 'miss'만 (완벽 회피 대사·번쩍임·느려짐 없음, 재사용 절반 회복만 조용히 남김) =====
+ dshDodge(src){const now=this.time.now,p=this.pl;if(!(this.dshDt>now)){this.dshDt=now+250;const t=this.add.text(p.x,p.y-18,'miss',ST({fontSize:'9px',color:'#9a92a8'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:t,y:p.y-32,alpha:0,duration:600,onComplete:()=>t.destroy()})}
+  if(!this.dshP&&now-(this.dshT0||0)<=200){this.dshP=1;this.dshCd=Math.max(0,this.dshCd-1.25)}}
+ // ===== v87: 허기의 왕관 피격 — 살짝 움찔(눌림) · 분홍빛 번쩍 · 맞은 쪽에서 작은 불꽃 · 작은 피해 숫자 =====
+ hcHit(m,d){m.hk=.2;const p=this.pl,a=Math.atan2(p.y-m.y,p.x-m.x),bs=1+.12*(m.gr||0),x=m.x+Math.cos(a)*40*bs,y=m.y+Math.sin(a)*28*bs;
+  if(m.spr){m.spr.setTintFill(0xffd8e4);this.time.delayedCall(70,()=>{if(m.spr)m.spr.clearTint()})}
+  for(let i=0;i<6;i++){const an=a+(Math.random()-.5)*1.6,b=this.add.rectangle(x,y,4,1.6,i%2?0xffffff:0xff9ac0,.95).setRotation(an).setDepth(12);this.tweens.add({targets:b,x:x+Math.cos(an)*(14+Math.random()*12),y:y+Math.sin(an)*(10+Math.random()*10),alpha:0,duration:220,onComplete:()=>b.destroy()})}
+  if(!(m.hnT>this.time.now)){m.hnT=this.time.now+120;const t=this.add.text(x,y-8,'-'+Math.round(d),ST({fontSize:'10px',fontStyle:'bold',color:'#ffc8d6'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:t,y:y-24,alpha:0,duration:500,onComplete:()=>t.destroy()})}}
+ // ===== v87: 공허 구체 — 검은 핵 · 보랏빛 테 · 별 점 · 소용돌이 =====
+ vdOrbTex(){if(this.textures.exists('vdOrb'))return;tex(this,'vdOrb',12,12,2,x=>{const g=x.createRadialGradient(6,6,0,6,6,6);g.addColorStop(0,'#000000');g.addColorStop(.55,'#08030f');g.addColorStop(.78,'#5a2aa0');g.addColorStop(.9,'#c8a0ff');g.addColorStop(1,'rgba(120,60,220,0)');x.fillStyle=g;x.beginPath();x.arc(6,6,6,0,6.283);x.fill();
+  x.strokeStyle='rgba(200,160,255,.75)';x.lineWidth=.8;x.beginPath();x.arc(6,6,3.2,.4,2.4);x.stroke();x.beginPath();x.arc(6,6,3.2,3.5,5.4);x.stroke();x.fillStyle='#ffffff';x.fillRect(4,5,1,1);x.fillRect(7,7,1,1);x.fillStyle='#b8a0ff';x.fillRect(6,3,1,1)})}
+ // ===== v87: 공허 2페이즈 등장 — 눈이 떨다가 감기며 틈으로 빨려 들어감 → 틈이 터짐 → 검은 실루엣의 나선 껍데기가 돌며 빠져나옴 → 색이 돌아옴 → 껍데기 위에서 같은 눈이 뜸 =====
+ obsRev(m){this.obsNTex();this.vdOrbTex();m.ph=2;m.st='rev';m.tm=3.4;m.gone=1;m.gz=0;this.tel=this.tel.filter(q=>q.m!==m);(this.mbb||[]).forEach(q=>q.o.destroy());this.mbb=[];this.emPull=null;
+  for(const q of m.ey){q.open=0;q.oe.setVisible(false)}m.ex0=m.x;m.ey0=m.y;m.nx=400;m.ny=138;m.fl=1;m.rvB=0;m.rvC=0;m.rvT=0;
+  m.N=this.add.image(m.hx,m.hy,'obsN').setDepth(3.05).setAlpha(0).setScale(.2);
+  m.rg.forEach(r=>{const a=r.a;this.tweens.add({targets:r.o,x:r.o.x+Math.cos(a)*140,y:r.o.y+Math.sin(a)*90,alpha:0,duration:700,delay:1250})});
+  this.cameras.main.shake(700,.004);this.dtx(400,70,'눈이 떨린다…','#c8a8ff')}
+ obsRevU(m,dt,p){const now=this.time.now,t=3.4-m.tm,S=m.spr,N=m.N,g=m.g;
+  if(t<.7){const k=t/.7;S.setPosition(m.x+Math.sin(now/22)*2.5*k,m.y).setScale(1);m.pu.setPosition(m.x,m.y).setScale(1,1-.5*Math.abs(Math.sin(now/60))*k);S.setTint(Math.floor(now/80)%2?0xffb0b0:0xffffff);
+   for(let i=0;i<2;i++){const a=Math.random()*6.283,r=60+Math.random()*60,b=this.add.circle(m.x+Math.cos(a)*r,m.y+Math.sin(a)*r*.7,1.6,0x2a1040,.9).setDepth(12);this.tweens.add({targets:b,x:m.x,y:m.y,alpha:0,duration:350,onComplete:()=>b.destroy()})}}
+  else if(t<1.25){const k=(t-.7)/.55,e=k*k;S.clearTint();m.x=m.ex0+(m.hx-m.ex0)*e;m.y=m.ey0+(m.hy-m.ey0)*e;S.setPosition(m.x,m.y).setScale(1-.6*e,Math.max(.06,1-k*1.1));m.pu.setVisible(k<.6).setPosition(m.x,m.y);m.rf.setScale(1-.3*e)}
+  else{S.setVisible(false);m.pu.setVisible(false);
+   if(!m.rvB){m.rvB=1;this.cameras.main.flash(220,170,110,255);this.cameras.main.shake(500,.012);m.rf.setScale(1.5);this.tweens.add({targets:m.rf,scale:1.1,alpha:.6,duration:900});
+    for(let i=0;i<18;i++){const a=i/18*6.283,b=this.add.rectangle(m.hx,m.hy,3,8,i%3?0x9a60ff:0xffffff).setRotation(a+1.57).setDepth(12);this.tweens.add({targets:b,x:m.hx+Math.cos(a)*(90+Math.random()*50),y:m.hy+Math.sin(a)*(60+Math.random()*30),alpha:0,angle:200,duration:600,onComplete:()=>b.destroy()})}
+    const w=this.add.ellipse(m.hx,m.hy,40,28).setStrokeStyle(4,0x9a60ff,.9).setDepth(12);this.tweens.add({targets:w,scaleX:7,scaleY:7,alpha:0,duration:650,onComplete:()=>w.destroy()})}
+   const k=Math.min(1,(t-1.25)/1.15),e=1-(1-k)**3;m.x=m.hx+(m.nx-m.hx)*e;m.y=m.hy+(m.ny-m.hy)*e;N.setPosition(m.x,m.y).setAlpha(Math.min(1,k*2)).setScale(.2+.8*e).setRotation(-2.4*(1-e));
+   if(t<2.4)N.setTintFill(0x07030e);else if(!m.rvC){m.rvC=1;N.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.N)m.N.clearTint()})}
+   if(t<2.4){g.lineStyle(2,0x9a60ff,.5+.4*Math.sin(now/60)).strokeEllipse(m.x,m.y,170*(.2+.8*e),130*(.2+.8*e))}
+   if(t>=2.7){const o=this.obsNOff(m),q=Math.min(1,(t-2.7)/.35);S.setVisible(true).clearTint().setPosition(o.ex,o.ey).setScale(.62,.04+.58*q);m.pu.setVisible(q>.5).setPosition(o.ex,o.ey).setScale(.62,.5*q);
+    if(!m.rvT){m.rvT=1;this.dtx(400,64,'눈은 처음부터 껍데기 속 「공허 앵무조개」의 것이었다','#ffe066');m.nm='공허 앵무조개';if(m.nmT)m.nmT.setText(m.nm)}}}
+  if(m.tm<=0){m.st='idle';m.cd=1;m.gone=0;m.br=58;S.setVisible(true).clearTint();N.setRotation(0).clearTint()}}
+ // 촉수 채찍: 처음엔 뒤로 휘어 있다가 확 펴지며 끝이 휙 넘어감(감쇠 진동) — 끝에서 짧은 '딱' 연출
+ obsWhip(m,q,o,g,dt,now){q.wt=(q.wt||0)+dt;const L=Math.hypot(q.tx-o.ax,q.ty-o.ay),k=q.k=Math.min(1,(q.k||0)+dt*5),a0=Math.atan2(q.ty-o.ay,q.tx-o.ax),sd=q.i%2?1:-1,bend=sd*(1.7*Math.exp(-q.wt*4.5)*Math.cos(q.wt*17)+.1*Math.sin(now/170+q.i));
+  const pts=[[o.ax,o.ay]];let x=o.ax,y=o.ay;for(let i=1;i<=12;i++){const s=i/12,an=a0+bend*Math.pow(s,1.6);x+=Math.cos(an)*L*k/12;y+=Math.sin(an)*L*k/12;pts.push([x,y])}q.x=x;q.y=y;q.pts=pts;
+  for(const[w,c]of[[9,0x0a0612],[5,q.hp<2?0x9a70d0:0x5a3a8a]]){g.lineStyle(w,c,1);g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1]);g.strokePath()}
+  for(let i=2;i<12;i+=2)g.fillStyle(0xd8b8ff,.9).fillCircle(pts[i][0],pts[i][1],1.6);g.fillStyle(0xe0457b,1).fillCircle(x,y,3.5);
+  if(!q.crk&&q.wt>.17){q.crk=1;const c=this.add.arc(x,y,8,a0-1,a0+1,false).setStrokeStyle(2,0xffffff,.9).setDepth(12);this.tweens.add({targets:c,scale:2.2,alpha:0,duration:200,onComplete:()=>c.destroy()})}}
+ // 채찍을 쳐들기: 예고 동안 촉수가 입구 위로 말려 올라감
+ obsWhipW(m,o,g,now){const k=1-Math.max(0,m.tm)/(.7);for(const q of m.tn){const a0=Math.atan2(q.ty-o.ay,q.tx-o.ax),sd=q.i%2?1:-1;let x=o.ax,y=o.ay;g.lineStyle(6,0x5a3a8a,1);g.beginPath();g.moveTo(x,y);for(let i=1;i<=8;i++){const s=i/8,an=a0+Math.PI+sd*(1.2+1.6*s)*(.4+.6*k);x+=Math.cos(an)*5;y+=Math.sin(an)*5-1.5*k;g.lineTo(x,y)}g.strokePath();g.fillStyle(0xe0457b,1).fillCircle(x,y,2.6)}}
+ // ===== v88: 공허 1페이즈 — 맞을수록 눈이 빨개진다 (obsE → obsE1 핏발 → obsE2 새빨감, 체력 100%→60% 구간을 셋으로) =====
+ obsEyeTex(){if(this.textures.exists('obsE2')||!this.textures.exists('obsE'))return;const src=this.textures.get('obsE').getSourceImage();
+  for(const[key,lv]of[['obsE1',1],['obsE2',2]]){const c=document.createElement('canvas');c.width=src.width;c.height=src.height;const x=c.getContext('2d'),W=c.width,H=c.height;x.imageSmoothingEnabled=false;x.drawImage(src,0,0);
+   x.globalCompositeOperation='source-atop';const gr=x.createRadialGradient(W/2,H/2,H*.28,W/2,H/2,W*.55);gr.addColorStop(0,'rgba(255,40,60,0)');gr.addColorStop(1,lv==1?'rgba(225,40,70,.5)':'rgba(200,0,24,.92)');x.fillStyle=gr;x.fillRect(0,0,W,H);if(lv==2){x.fillStyle='rgba(230,20,40,.35)';x.fillRect(0,0,W,H)}
+   let sd=lv*977+13;const R=()=>{sd=sd*16807%2147483647;return sd/2147483647};
+   for(let k=0;k<(lv==1?14:30);k++){let X=R()*W,Y=R()*H;x.fillStyle=lv==1?'#c81c3c':(k%3?'#ff1c3c':'#8a0018');for(let j=0;j<12;j++){X+=(W/2-X)*.1+(R()-.5)*7;Y+=(H/2-Y)*.1+(R()-.5)*7;if(Math.hypot((X-W/2)/(W*.24),(Y-H/2)/(H*.34))<1)break;const z=lv==2&&k%2?4:2;x.fillRect(Math.round(X/2)*2,Math.round(Y/2)*2,z,z)}}
+   x.globalCompositeOperation='source-over';x.save();x.beginPath();x.arc(W/2,H/2,H*.31,0,6.283);x.clip();x.drawImage(src,0,0);if(lv==2){x.globalCompositeOperation='source-atop';x.fillStyle='rgba(255,0,30,.22)';x.fillRect(0,0,W,H)}x.restore();
+   const t=this.textures.addCanvas(key,c);t.setFilter(Phaser.Textures.FilterMode.NEAREST)}}
+ obsEyeSet(m){if(m.ph==2||!m.spr)return;const st=m.hp>m.mh*.867?0:m.hp>m.mh*.733?1:2,key=['obsE','obsE1','obsE2'][st];if(m.spr.texture.key!==key&&this.textures.exists(key)){m.spr.setTexture(key);if(st>0){this.cameras.main.shake(140,.004);const f=this.add.ellipse(m.x,m.y,120,86,0xff2040,.35).setDepth(3.2);this.tweens.add({targets:f,alpha:0,scale:1.2,duration:300,onComplete:()=>f.destroy()})}}}
+ // ===== v88: 2페이즈 등장 — 눈이 틈 앞으로 돌아가며 세 번 깜빡이고, 감긴 채 사라지면 틈이 크게 열리며 나선 껍데기가 빠져나온다 (대사 없음) =====
+ obsRev(m){this.obsNTex();this.vdOrbTex();this.obsEyeTex();m.ph=2;m.st='rev';m.tm=3.2;m.gone=1;m.gz=0;this.tel=this.tel.filter(q=>q.m!==m);(this.mbb||[]).forEach(q=>q.o.destroy());this.mbb=[];this.emPull=null;
+  for(const q of m.ey){q.open=0;q.oe.setVisible(false)}m.ex0=m.x;m.ey0=m.y;m.nx=400;m.ny=138;m.fl=1;m.rvB=0;m.rvC=0;m.rvT=0;
+  m.N=this.add.image(m.hx,m.hy,'obsN').setDepth(3.05).setAlpha(0).setScale(.2);
+  m.rg.forEach(r=>{const a=r.a;this.tweens.add({targets:r.o,x:r.o.x+Math.cos(a)*140,y:r.o.y+Math.sin(a)*90,alpha:0,duration:700,delay:1100})})}
+ obsRevU(m,dt,p){const now=this.time.now,t=3.2-m.tm,S=m.spr,N=m.N,g=m.g;
+  if(t<1.1){const k=t/1.1,e=k*k*(3-2*k);m.x=m.ex0+(m.hx-m.ex0)*e;m.y=m.ey0+(m.hy-m.ey0)*e;
+   // 세 번 깜빡임 (0.25·0.55·0.85초 언저리)
+   let op=1;for(const c of[.25,.55,.85]){const d=Math.abs(t-c);if(d<.09)op=Math.min(op,d/.09)}
+   S.setVisible(true).setPosition(m.x,m.y).setScale(1,Math.max(.06,op));m.pu.setVisible(op>.4).setPosition(m.x,m.y).setScale(1,Math.max(.1,op))}
+  else if(t<1.4){const k=(t-1.1)/.3;S.setPosition(m.hx,m.hy).setScale(1-.4*k,.06).setAlpha(1-k);m.pu.setVisible(false);m.rf.setScale(1+.5*k).setAlpha(1);
+   g.lineStyle(3,0x9a60ff,.5+.4*k).strokeEllipse(m.hx,m.hy,90+90*k,110+60*k)}
+  else{S.setVisible(false).setAlpha(1);m.pu.setVisible(false);
+   if(!m.rvB){m.rvB=1;this.cameras.main.shake(600,.009);const w=this.add.ellipse(m.hx,m.hy,60,40).setStrokeStyle(4,0x9a60ff,.9).setDepth(12);this.tweens.add({targets:w,scaleX:6,scaleY:6,alpha:0,duration:650,onComplete:()=>w.destroy()});this.tweens.add({targets:m.rf,scale:1.15,alpha:.6,duration:1100})}
+   const k=Math.min(1,(t-1.4)/1.2),e=1-(1-k)**3;m.x=m.hx+(m.nx-m.hx)*e;m.y=m.hy+(m.ny-m.hy)*e;N.setPosition(m.x,m.y).setAlpha(Math.min(1,k*2)).setScale(.2+.8*e).setRotation(-2.4*(1-e));
+   if(t<2.5){N.setTintFill(0x07030e);g.lineStyle(2,0x9a60ff,.5+.4*Math.sin(now/60)).strokeEllipse(m.x,m.y,170*(.2+.8*e),130*(.2+.8*e))}else if(!m.rvC){m.rvC=1;N.setTintFill(0xffffff);this.time.delayedCall(80,()=>{if(m.N)m.N.clearTint()})}
+   if(t>=2.7){const o=this.obsNOff(m),q=Math.min(1,(t-2.7)/.35);S.setVisible(true).clearTint().setPosition(o.ex,o.ey).setScale(.62,.04+.58*q);m.pu.setVisible(q>.5).setPosition(o.ex,o.ey).setScale(.62,.5*q);
+    if(!m.rvT){m.rvT=1;m.nm='공허 앵무조개';if(m.nmT)m.nmT.setText(m.nm)}}}
+  if(m.tm<=0){m.st='idle';m.cd=1;m.gone=0;m.br=58;S.setVisible(true).setAlpha(1).clearTint();N.setRotation(0).clearTint()}}
  // ===== 숨 쉬는 산호 환초 =====
  atlGap(m,a){for(const q of m.gp)if(Math.abs(Phaser.Math.Angle.Wrap(a-q.a))<q.w/2)return true;for(const q of m.cg)if(Math.abs(Phaser.Math.Angle.Wrap(a-q.a))<q.w/2)return true;return false}
  atlAI(m,dt,p){if(m.st=='intro'&&m.cs)return;const now=this.time.now,D=v=>Math.round(v*m.df),en=m.hp<m.mh*.35?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
@@ -1914,7 +1985,7 @@ class G extends Phaser.Scene{
   for(const q of m.pt){q.x+=q.vx*dt;q.y+=q.vy*dt;if(q.x<120||q.x>680)q.vx*=-1;if(q.y<140||q.y>285)q.vy*=-1;q.o.setPosition(q.x,q.y)}
   m.rf.setPosition(m.hx,m.hy).setScale(1+.03*Math.sin(now/400));
   if(m.st=='intro'){m.pu.setPosition(m.x,m.y);return}
-  m.cd-=dt;m.tm-=dt;if(m.ph!=2&&m.hp<=m.mh*.6)this.obsRev(m);if(m.ph==2)return this.obsN2(m,dt,p);
+  m.cd-=dt;m.tm-=dt;this.obsEyeSet(m);if(m.ph!=2&&m.hp<=m.mh*.6)this.obsRev(m);if(m.ph==2)return this.obsN2(m,dt,p);
   const blocked=(x0,y0,x1,y1)=>{for(const q of m.pt){const ux=x1-x0,uy=y1-y0,L2=ux*ux+uy*uy||1,t=Math.max(0,Math.min(1,((q.x-x0)*ux+(q.y-y0)*uy)/L2));if(Math.hypot(q.x-x0-ux*t,q.y-y0-uy*t)<20&&t>.05&&t<.97)return true}return false};
   const ta=Math.atan2(p.y-ey,p.x-ex);
   // 가장자리의 눈
