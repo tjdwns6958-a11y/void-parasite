@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v107</title>
+<title>공허 기생충 v108</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v107';
+window.VP_VER='v108';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -54,6 +54,7 @@ const SCS=['#7be0a8','#c0a0ff','#ffd060','#ff7a9a'],SCN=[0x7be0a8,0xc0a0ff,0xffd
 const FF='system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
 const ST=o=>Object.assign({fontFamily:FF,resolution:Math.max(2,VZ),color:'#ece6f7'},o);
 const rnd=n=>Math.random()*n|0,pick=a=>a[rnd(a.length)];
+const CRR=1;
 const MBQ={p:{q:'허기의 왕관',b:'허기의 왕관',s:'통째 삼키기',d:'턱들이 흩어져 사냥하거나 하늘에서 내리꽂는 동안 가운데 구멍을 물 수 있다 — 붉은 표식이 붙은 유충은 왕관에 닿기 전에 먼저 먹을 것.',sd:'앞의 적 하나를 큰 칼날 턱으로 물어 삼킨다 — 체력 30% 이하 일반 몬스터는 통째로 삼키고 체력 25% 회복, 그 밖엔 물기 ×3 피해 + 출혈 · 재사용 6초'},c:{q:'정동 집게왕의 수정 동굴',b:'정동 집게왕',s:'수정 돌진',d:'등의 정동이 갑주처럼 단단해 물어도 잘 들어가지 않는다 — 돌진을 수정 기둥에 부딪히게 하면 기절한다. 체력이 반으로 줄면 정동이 깨지고 바닥에 수정 봉오리를 심는다 — 봉오리 뒤에 서면 돌진하다 밟고 스스로 맞는다.',sd:'짧게 돌진해 처음 부딪힌 적에게 큰 피해를 주고 멀리 밀쳐 낸다 · 재사용 7초'},v:{q:'틈 너머의 관찰자',b:'틈 너머의 관찰자',s:'균열 도약',d:'시선 안에 오래 있으면 응시가 차오른다 — 떠 있는 갑주 조각 그림자에 숨을 것. 가장자리에서 뜬 눈을 모두 물어 감기면 큰 눈이 끌려 나온다.',sd:'바라보는 쪽으로 순간이동하고 도착한 자리에서 균열이 터진다 · 재사용 7초'}};
 const TR={mbp:['허기의 왕관',0xe8b0d0],mbc:['정동 집게왕의 수정 동굴',0x9fd8ff],mbv:['틈 너머의 관찰자',0xc0b0e0],coral:['공허 산호 숲',0xff8a70],watch:['심연의 감시탑',0x78c8d8],haven:['둥지',0xffe9a0],brood:['번식지',0xff9ec0],mine:['광맥 동굴',0xb4b4c8],dark:['암흑 구역',0xffffff],swamp:['독 늪',0x8fe070],flow:['공허의 소용돌이',0xa08cff],lair:['포식자 둥지',0xff7a6a],void:['무리의 둥지',0x8a78c8]};
 
@@ -62,7 +63,7 @@ const OBSI={N:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAACQCAYAAACyJwH
 const LN={p:'포식',c:'갑각',v:'공허'},LCS={p:'#ff7a9a',c:'#9fd8ff',v:'#c98bff'},LCN={p:0xff7a9a,c:0x9fd8ff,v:0xc98bff},LRS={p:'유기물',c:'무기물',v:'공허 정수'},LK=['p','c','v'],
  LCOST={p:[20,40,60],c:[16,32,48],v:[2,4,6]},LMAX=5,
  ND={p:[['갈고리 턱','물기 피해 +25% · 같은 적을 2번 물 때마다 찢기(3초간 출혈 9 — 땅속으로 숨어도 계속)'],['포식 성장','물 때마다 피해의 15%를 체력으로 흡수 · 물어서 처치하면 몸이 커지고 최대 체력 +6(5번까지), 체력 +8'],['통째 삼키기','체력 25% 이하인 적(정예는 12%)을 물면 즉시 삼켜 처치 · 3초간 이동 +30%']],
-  c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 충전','결정을 먹으면 수정 1개 충전(최대 3) — 수정을 실은 박치기: 피해 ×1.7(3단계 ×1.9) · 대신 재사용 +0.5초 · 맞히면 수정 1개 소모'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 3개)']],
+  c:[['결정 비늘','받는 피해 −10% · 맞으면 받은 피해의 40%를 공격자에게 반사 · 갑각 단계마다 이동 −4% · 갑각이 가장 높으면 공격이 몸통 박치기 — 느리지만 강함'],['수정 방패','결정을 먹으면 등에 수정 1개(최대 3) — 맞을 때 수정 1개가 깨지며 그 공격을 막고, 막은 피해의 '+Math.round(CRR*100)+'%를 공격자에게 반사'],['공명 갑각','반사 40% → 75% · 물기 피해 +10% · 반사로 적을 처치하면 수정 1개 회복 · 한 판에 1번, 쓰러지는 순간 껍질이 터지며 부활 (주변을 밀어내고 피해, 체력 35% · 수정 3개)']],
   v:[['공허 감각','숨은 위협이 보인다(땅속 땅울음, 매복한 낫그늘, 이웃 방 몬스터 수) · 공허 정수를 얻을 때마다 체력 +8 · 공허가 가장 높으면 공격이 검은 구체 뱉기(원거리)'],['공허 침','검은 구체가 앞쪽 적을 따라가고 맞으면 둔화 (공허가 가장 높지 않으면 빗나간 물기 대신 공허 침, 피해 8) · 산호는 한 방에 녹인다'],['공허 권속','보이드링을 처치하면 아군으로 거둔다 (최대 2마리)']]};
 // 진화 계통별 몸 모양 (머리 24px · 마디 20px, 2배 확대)
 function skBlade(px,x,c,r,sg,K){K=K||1;const B=[[r-1.5,4],[r+.8,4.6],[r+3,4.1],[r+5.4,1.4],[r+4.5,2.3],[r+3.9,1.7],[r+3.4,2.6],[r+2.8,2],[r+2.2,2.9],[r+1.6,2.3],[r+1,3.1],[r+.4,2.5],[r-.3,3.2],[r-1.3,3.1]].map(([X,Y])=>[c+(r-1)+(X-(r-1))*K*.86,c+sg*(3+(Y-3)*K)]);const ins=(X,Y)=>{let k=false;for(let i=0,j=B.length-1;i<B.length;j=i++){const[a1,b1]=B[i],[a2,b2]=B[j];if((b1>Y)!=(b2>Y)&&X<(a2-a1)*(Y-b1)/(b2-b1)+a1)k=!k}return k};const xs=B.map(p=>p[0]),ys=B.map(p=>p[1]),x0=Math.floor(Math.min(...xs))-1,x1=Math.ceil(Math.max(...xs))+1,y0=Math.floor(Math.min(...ys))-1,y1=Math.ceil(Math.max(...ys))+1;for(let X=x0;X<=x1;X++)for(let Y=y0;Y<=y1;Y++){const I=ins(X+.5,Y+.5);if(I)px(x,X,Y,(sg>0?Y-c<2.6:c-Y<2.6)&&X>c+r?'#ffffff':'#f0c8d8');else if(ins(X+1.5,Y+.5)||ins(X-.5,Y+.5)||ins(X+.5,Y+1.5)||ins(X+.5,Y-.5))px(x,X,Y,'#3d1b6b')}}
@@ -387,7 +388,7 @@ function gen(z=1){
 class G extends Phaser.Scene{
  constructor(){super('G')}
  create(){
-  for(const k in this){const v=this[k];if(v&&typeof v=='object'&&v instanceof Phaser.GameObjects.GameObject&&!v.scene)this[k]=null}
+  for(const k in this){const v=this[k];if(v&&typeof v=='object'&&((v instanceof Phaser.GameObjects.GameObject&&!v.scene)||(Array.isArray(v)&&v.length&&v[0] instanceof Phaser.GameObjects.GameObject&&!v[0].scene)))this[k]=null}
   this.cameras.main.setZoom(VZ).centerOn(C.W/2,C.H/2);
   if(!this.textures.exists('walk')){makeAll(this);
    for(let d=0;d<4;d++){
@@ -505,7 +506,7 @@ class G extends Phaser.Scene{
   // 이미 장애물과 겹쳐 있으면(산호가 다시 자란 경우 등) 빠져나올 수 있게 그대로 움직인다
   if(this.blk(o.x,o.y,m,nc)){o.x=x;o.y=y;return}
   if(!this.blk(x,y,m,nc)){o.x=x;o.y=y}else if(!this.blk(x,o.y,m,nc))o.x=x;else if(!this.blk(o.x,y,m,nc))o.y=y}
- hurt(d,src,m){if(this.dshI>0){this.dshDodge(src);return}if(this.wallT>0){if(m&&m.on&&!this.wallR){this.wallR=1;this.time.delayedCall(250,()=>{this.wallR=0});if(m.k=='em'&&m.ph==2)this.dmgM(m,d*.8,1);else this.dmgM(m,d);this.dtx(m.x,m.y-18,'방벽 반사 '+Math.round(d),'#9fd8ff')}return}if(this.inv>0)return;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
+ hurt(d,src,m){if(this.dshI>0){this.dshDodge(src);return}if(this.wallT>0){if(m&&m.on&&!this.wallR){this.wallR=1;this.time.delayedCall(250,()=>{this.wallR=0});if(m.k=='em'&&m.ph==2)this.dmgM(m,d*.8,1);else this.dmgM(m,d);this.dtx(m.x,m.y-18,'방벽 반사 '+Math.round(d),'#9fd8ff')}return}if(this.inv>0)return;if(this.lin.c>=2&&this.cry>0&&d>0){this.cryBlock(d,src,m);return}this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
   let cb=1;
   const dd=d*this.dmt*cb;this.en-=dd;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(70,.0015);
   if(L.c>=1&&m&&m.on&&dd>0){const rd=dd/cb*(L.c>=3?.75:.4),kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);this.dtx(m.x,m.y-18,'반사 '+Math.round(rd),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
@@ -1015,8 +1016,7 @@ class G extends Phaser.Scene{
   const t=this.sys.game.device.input.touch?'대시':'대시\nR';if(this.dshTx.text!==t)this.dshTx.setText(t);this.dshTx.setAlpha(rd?1:.55)}
  // ===== v86: 갑각 — 수정(무기물)은 막기가 아니라 공격에 싣는다 =====
  // 수정이 있으면 기본 공격(박치기/물기)이 '수정 박치기': 피해 ×1.7(갑각 3단계 ×1.9) · 재사용 +0.5초(느리지만 강함) · 맞히면 수정 1개 소모 + 수정 파편이 튀는 충돌 연출
- cryAtk(sl){const L=this.lin,cc=L.c>=2&&this.cry>0,b0=this.bdmg;if(cc)this.bdmg=b0*(L.c>=3?1.9:1.7);this.lgT=0;if(sl)this.slamF(0);else this.bite();this.bdmg=b0;
-  if(cc&&this.lgT>0){this.cry--;this.cryFx()}}
+ cryAtk(sl){this.lgT=0;if(sl)this.slamF(0);else this.bite()}
  cryFx(){const h=this.hd||this.pl,a=this.lgA??this.ang,x=h.x+Math.cos(a)*16,y=h.y+Math.sin(a)*16,now=this.time.now;
   this.cameras.main.shake(120,.005);const r=this.add.ellipse(x,y,16,12).setStrokeStyle(3,0xdff4ff,.95).setDepth(12);this.tweens.add({targets:r,scaleX:3.4,scaleY:3.4,alpha:0,duration:300,onComplete:()=>r.destroy()});
   const f=this.add.circle(x,y,9,0xffffff,.9).setDepth(12);this.tweens.add({targets:f,scale:.2,alpha:0,duration:180,onComplete:()=>f.destroy()});
@@ -3034,7 +3034,7 @@ class G extends Phaser.Scene{
   }
   for(const k in T)if(!T[k].__u)T[k].setVisible(false)}
  // 몸 위 작은 체력: 최근 2.5초 안에 맞았거나 체력 35% 미만일 때만
- bodyHp(g){if(this.over||this.cine||this.molt||!this.pl)return;const now=this.time.now,r=Math.max(0,this.en/this.emax),lh=this.lastHit?now-this.lastHit.t:1e9,low=r<.35;
+ bodyHp(g){if(this.over||this.cine||this.molt||!this.pl)return;const now=this.time.now,r=Math.max(0,this.en/this.emax),lh=this.lastHit&&!this.lastHit.blk?now-this.lastHit.t:1e9,low=r<.35;
   let a=low?.9:lh<2000?1:lh<2500?(2500-lh)/500:0;if(a<=.01)return;const p=this.pl,w=38,x=Math.round(p.x-w/2),y=Math.round(p.y-30),gr=Math.min(1,(this.enG??this.en)/this.emax);
   g.fillStyle(0x07040e,.75*a).fillRoundedRect(x-2,y-2,w+4,8,3);if(gr>r)g.fillStyle(0xffffff,.55*a).fillRect(x,y,w*gr,4);
   const pu=.5+.5*Math.sin(now/150);g.fillStyle(r<.25?(pu>.5?0xff3a5a:0xd94f8c):0xd94f8c,a).fillRect(x,y,w*r,4)}
@@ -3215,6 +3215,23 @@ class G extends Phaser.Scene{
  hcPairRain(m,A,B,en){A.rl=1;B.rl=1;A.st='rUp';B.st='rUp';A.t=0;B.t=0;A.wt=.15;B.wt=.75}
  hcRainStrike(m,j,en){const p=this.pl,x=Phaser.Math.Clamp(p.x,60,740),y=Phaser.Math.Clamp(p.y,70,300),t=.55*en,D=v=>Math.round(v*m.df*(1+.15*(m.gr||0)));
   j.st='fallW';j.tx=x;j.ty=y;j.t=t;j.x=x;this.telAdd({k:'c',x,y,r:30,sy:.8,t,dmg:D(12),src:'허기의 턱 — 내리꽂기',m,fx:0,on:()=>{const r=this.add.ellipse(x,y,60,48).setStrokeStyle(2,0xffd0e0,.9).setDepth(12);this.tweens.add({targets:r,scale:1.5,alpha:0,duration:220,onComplete:()=>r.destroy()})}})}
+ // ===== v108 갑각 수정 = 1회 방어 =====
+ // 갑각 2단계부터 결정을 먹으면 등에 수정 1개(최대 3). 맞으면 수정 1개가 깨지며 그 공격을 통째로 막고(피해 0 · 0.5초 무적), 막은 피해의 일부를 공격자에게 반사.
+ // 반사 비율 CRR(테스트로 정함). window.__vpCR로 바꿔 볼 수 있음.
+ cryBlock(d,src,m){const L=this.lin,R=window.__vpCR??CRR,p=this.pl,h=this.hd||p,x=h.x,y=h.y;this.cry--;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now,blk:1};
+  const g=this.add.circle(x,y,20,0x9fd8ff,.35).setStrokeStyle(3,0xdff4ff,.95).setDepth(12);this.tweens.add({targets:g,scale:1.8,alpha:0,duration:280,onComplete:()=>g.destroy()});
+  for(let i=0;i<10;i++){const an=Math.random()*6.283,dd=22+Math.random()*26,s=this.add.triangle(x,y,0,-5,3,0,0,5,[0x9fd8ff,0xdff4ff,0xb07aff][i%3]).setDepth(12).setRotation(an);
+   this.tweens.add({targets:s,x:x+Math.cos(an)*dd,y:y+Math.sin(an)*dd*.8,angle:Math.random()*360,alpha:0,duration:380+Math.random()*160,ease:'Quad.out',onComplete:()=>s.destroy()})}
+  this.bd.forEach(o=>o.setTintFill(0xdff4ff));this.time.delayedCall(90,()=>this.bd.forEach(o=>o.clearTint()));
+  this.blkN=(this.blkN||0)+1;
+  if(m&&m.on&&d>0&&R>0){const rd=d*this.dmt*R,h0=m.hp;const kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);const real=Math.max(0,h0-Math.max(0,m.hp));this.rflD=(this.rflD||0)+real;
+   const ln=this.add.graphics().setDepth(12);ln.lineStyle(2,0xbfeaff,.9).lineBetween(x,y,m.x,m.y);this.tweens.add({targets:ln,alpha:0,duration:220,onComplete:()=>ln.destroy()});
+   if(real>=.5)this.dtx(m.x,m.y-18,'반사 '+Math.round(real),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
+ // 등의 수정: 더 크고 진한 테두리(옅은 갑각 몸 위에서도 보이게) · 살짝 반짝임
+ cryBTex(){if(this.textures.exists('cryB'))return;tex(this,'cryB',9,12,2,x=>{const P=[[4,0],[7,4],[6,10],[4,11],[2,10],[1,4]];x.fillStyle='#14203a';x.beginPath();x.moveTo(P[0][0]+.5,P[0][1]);P.forEach(q=>x.lineTo(q[0]+.5,q[1]+.5));x.closePath();x.fill();
+  x.fillStyle='#2f86d0';x.fillRect(2,4,5,6);x.fillRect(3,2,3,9);x.fillStyle='#6fc8ff';x.fillRect(3,3,2,7);x.fillStyle='#dff6ff';x.fillRect(3,3,1,4);x.fillStyle='#ffffff';x.fillRect(4,1,1,2)})}
+ wormDeco(){const L=this.lin;if(L.c<2){if(this.cryS)this.cryS.forEach(o=>o.setVisible(false));return}this.cryBTex();if(!this.cryS||!this.cryS[0].scene)this.cryS=[0,1,2].map(()=>this.add.image(0,0,'cryB').setDepth(9.6));const now=this.time.now;
+  this.cryS.forEach((o,i)=>{const sg=this.sg[i];o.setVisible(i<this.cry).setPosition(sg.x,sg.y-8*this.bsc).setScale(this.bsc*(1+.07*Math.sin(now/260+i*1.3)))})}
  hud(){
   const g=this.gfx;g.clear();const GL=this.gL,GR=this.gR;GL.clear();GR.clear();
   GL.fillStyle(0x3a2f57).fillRoundedRect(44,13,96,6,3);{const gr=this.enG=this.enG==null||this.enG<this.en?this.en:this.enG-Math.max(.15,(this.enG-this.en)*.05);if(gr>this.en)GL.fillStyle(0xffffff,.5).fillRect(44,13,96*Math.min(1,gr/this.emax),6)}

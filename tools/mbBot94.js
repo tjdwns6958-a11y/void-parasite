@@ -68,6 +68,6 @@ for(let r=0;r<runs;r++){const p=await b.newPage({viewport:{width:844,height:390}
    if((bite||rb)&&s.bcd<=0){s.req=1;bites++}
    G.scene.update(T,dt)}
   return {win:!!s.mbRO,st:window.__gst&&Object.keys(window.__gst).length?window.__gst:window.__st,dead:s.over,time:+t.toFixed(1),hp:s.cur.en.map(m=>m.k+':'+Math.round(Math.max(0,m.hp))+'/'+m.mh).join(' '),minE:Math.round(minE),emax:s.emax,bdmg:+s.bdmg.toFixed(1),dmg,bites,lin:Object.entries(s.lin).map(([a,b])=>a+b).join('')}},[plv,K,mode,LIN]);
- out.errors=errs.slice(0,3);out.vpErr=await p.evaluate(()=>window.__vpErrN||0).catch(()=>-1);res.push(out);await p.close()}
+ out.errors=errs.slice(0,3);out.vpErr=await p.evaluate(()=>window.__vpErrN||0).catch(()=>-1);out.blk=await p.evaluate(()=>{const s=GAME.scene.scenes[0];return [s.blkN||0,Math.round(s.rflD||0),s.cry]}).catch(()=>null);res.push(out);await p.close()}
 for(const r of res)console.log(JSON.stringify(r));
 console.log(K,mode,plv,'WIN',res.filter(r=>r.win).length+'/'+res.length,'avgTime',(res.reduce((a,r)=>a+r.time,0)/res.length).toFixed(1));await b.close()})();
