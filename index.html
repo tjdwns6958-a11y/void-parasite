@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v84</title>
+<title>공허 기생충 v85</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v84';
+window.VP_VER='v85';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -404,15 +404,16 @@ class G extends Phaser.Scene{
   this.t1=this.add.text(16,10,'',ST({fontSize:'13px'})).setDepth(60);
   this.t2=this.add.text(784,10,'',ST({fontSize:'13px',align:'right'})).setOrigin(1,0).setDepth(60);
   this.atx=this.add.text(752,226,'공격',ST({fontSize:'13px',color:'#ffffff',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.etx=this.add.text(752,310,'섭취',ST({fontSize:'12px',color:'#ffffff',fontStyle:'bold'})).setOrigin(.5).setDepth(61);this.mtx=this.add.text(636,296,'탈피',ST({fontSize:'14px',color:'#12091f',fontStyle:'bold'})).setOrigin(.5).setDepth(61).setVisible(false);
-  this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 위 버튼: 공격 · 아래 버튼: 먹이 곁에서 누르고 있으면 섭취':'WASD·방향키: 이동  ·  Shift: 살금살금\nSpace: 공격  ·  F: 섭취 (먹이 곁에서 누르고 있기)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
+  this.hint=this.add.text(400,100,this.sys.game.device.input.touch?'왼쪽 조이스틱: 이동 (반만 밀면 살금살금)\n오른쪽 위 버튼: 공격 · 아래 버튼: 먹이 곁에서 누르고 있으면 섭취 · 작은 버튼: 대시(회피)':'WASD·방향키: 이동  ·  Shift: 살금살금  ·  C: 대시(회피)\nSpace: 공격  ·  F: 섭취 (먹이 곁에서 누르고 있기)  ·  E: 둥지에서 탈피',ST({fontSize:'13px',backgroundColor:'#241c38',padding:{x:10,y:6}})).setOrigin(.5).setDepth(60);
   this.time.delayedCall(8000,()=>this.hint&&this.hint.destroy());
   if(window.__vpCodeQ){const q=window.__vpCodeQ;window.__vpCodeQ=null;this.time.delayedCall(30,()=>this.codeRun(q))}else if(!window.__vpNoTree)this.time.delayedCall(30,()=>{const sv=this.loadSave();if(sv)this.resumeAsk(sv);else this.bsOpen(1)});this.glWatch();
   this.input.addPointer(2);
   this.input.on('pointerdown',P=>{const p={x:P.x/VZ,y:P.y/VZ};if(this.over||this.rsO)return;if(this.cine){if(this.cine.t>.6)this.cine.t=this.cine.dur;return}if(this.bsO){this.bsTap(p.x,p.y);return}if(this.treeO){this.treeTap(p.x,p.y);return}if(this.paused)return;if(!this.molt&&this.lqTap(p.x,p.y))return;if(!this.molt&&Phaser.Math.Distance.Between(p.x,p.y,264,30)<24){this.pz();return}if(this.molt){this.moltTap(p.x,p.y);return}if(this.cur&&this.cur.tr=='haven'&&Phaser.Math.Distance.Between(p.x,p.y,636,296)<34){this.moltOpen();return}
    if(this.skl&&Phaser.Math.Distance.Between(p.x,p.y,676,228)<28){this.skUse();return}
+   if(Phaser.Math.Distance.Between(p.x,p.y,690,318)<25){this.dshReq=1;return}
    if(Phaser.Math.Distance.Between(p.x,p.y,752,226)<42){this.atk=P;this.req=1}else if(Phaser.Math.Distance.Between(p.x,p.y,752,310)<36){this.eat=P}else if(p.x<420&&(!this.joy||!this.joy.isDown)){this.joy=P;this.jo={x:Phaser.Math.Clamp(p.x,61,400),y:Phaser.Math.Clamp(p.y,61,299)};window.__vpJoyUsed=1}});
   this.input.on('pointerup',p=>{if(this.bsO)this.bsUp(p);if(this.joy===p)this.joy=null;if(this.eat===p)this.eat=null;if(this.atk===p)this.atk=null});
-  this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,F,E,ONE,TWO,THREE,FOUR,ENTER,ESC,SHIFT,Q');
+  this.k=this.input.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE,F,E,ONE,TWO,THREE,FOUR,ENTER,ESC,SHIFT,Q,C');
   this.enter(this.lv.start);
  }
  enter(a){
@@ -501,7 +502,7 @@ class G extends Phaser.Scene{
   // 이미 장애물과 겹쳐 있으면(산호가 다시 자란 경우 등) 빠져나올 수 있게 그대로 움직인다
   if(this.blk(o.x,o.y,m,nc)){o.x=x;o.y=y;return}
   if(!this.blk(x,y,m,nc)){o.x=x;o.y=y}else if(!this.blk(x,o.y,m,nc))o.x=x;else if(!this.blk(o.x,y,m,nc))o.y=y}
- hurt(d,src,m){if(this.wallT>0){if(m&&m.on&&!this.wallR){this.wallR=1;this.time.delayedCall(250,()=>{this.wallR=0});if(m.k=='em'&&m.ph==2)this.dmgM(m,d*.8,1);else this.dmgM(m,d);this.dtx(m.x,m.y-18,'방벽 반사 '+Math.round(d),'#9fd8ff')}return}if(this.inv>0)return;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
+ hurt(d,src,m){if(this.dshI>0){this.dshDodge(src);return}if(this.wallT>0){if(m&&m.on&&!this.wallR){this.wallR=1;this.time.delayedCall(250,()=>{this.wallR=0});if(m.k=='em'&&m.ph==2)this.dmgM(m,d*.8,1);else this.dmgM(m,d);this.dtx(m.x,m.y-18,'방벽 반사 '+Math.round(d),'#9fd8ff')}return}if(this.inv>0)return;this.inv=.5;this.lastHit={src:src||'공격',t:this.time.now};const L=this.lin;
   let cb=1;if(L.c>=2&&this.cry>0){this.cry--;this.shard();cb=.4;this.dtx(this.pl.x,this.pl.y-22,'수정이 막았다','#9fd8ff')}
   const dd=d*this.dmt*cb;this.en-=dd;this.bd.forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(150,()=>this.bd.forEach(o=>o.clearTint()));this.cameras.main.shake(70,.0015);
   if(L.c>=1&&m&&m.on&&dd>0){const rd=dd/cb*(L.c>=3?.75:.4),kd=m.k=='em'&&m.ph==2?this.dmgM(m,rd*.8,1):this.dmgM(m,rd);this.dtx(m.x,m.y-18,'반사 '+Math.round(rd),'#9fd8ff');if(kd&&L.c>=3&&this.cry<3)this.cry++}}
@@ -985,9 +986,27 @@ class G extends Phaser.Scene{
  // ===== v61: 공격 버튼과 섭취 버튼 분리 · 갑각 차지 박치기 =====
  // 공격: 터치 = 오른쪽 위 '공격'(752,226) · 키보드 = Space / 섭취: 터치 = 그 아래 '섭취'(752,310)를 누르고 있기 · 키보드 = F 누르고 있기
  // 갑각(가장 높은 계통): 기본 박치기가 느리지만(재사용 0.9초) 피해 ×1.3. 누르고 있으면 차지(최대 1.2초) — 차지할수록 이동이 느려지고(최대 −55%) 떼면 피해 최대 ×2.8 · 더 멀리 들이받음 · 파편 더 많이
- atkU(dt,k){const dn=(this.atk&&this.atk.isDown)||k.SPACE.isDown,jd=this.req||Phaser.Input.Keyboard.JustDown(k.SPACE);
+ atkU(dt,k){this.dshU(dt,k);const dn=(this.atk&&this.atk.isDown)||k.SPACE.isDown,jd=this.req||Phaser.Input.Keyboard.JustDown(k.SPACE);
   if(this.domK()!='c'){this.chg=null;if(jd&&this.bcd<=0)this.bite();return}
   this.chg=null;if(jd&&this.bcd<=0)this.slamF(0)}
+ // ===== v85: 기본 대시 (처음부터) — C 키 / 터치 '대시' 버튼(690,318) =====
+ // 앞으로 78px(0.16초) · 0.3초 무적 → 공격 1회를 피함 · 재사용 2.5초
+ // 완벽 회피: 공격이 닿기 직전(대시 시작 0.2초 안)에 피하면 '완벽 회피!' — 0.25초 느려지는 연출 + 재사용 절반 즉시 회복
+ dshU(dt,k){this.dshCd=Math.max(0,(this.dshCd||0)-dt);if(this.dshI>0)this.dshI-=dt;
+  const jd=this.dshReq||Phaser.Input.Keyboard.JustDown(k.C);this.dshReq=0;
+  if(jd&&this.dshCd<=0&&!this.molt&&!this.tr&&!this.cine&&!this.over){const p=this.pl;let a=this.ang;if(Math.hypot(this.jx||0,this.jy||0)>.2)a=Math.atan2(this.jy,this.jx);
+   this.dshA=a;this.dshT=.16;this.dshI=.3;this.dshT0=this.time.now;this.dshP=0;this.dshCd=2.5;this.ang=a;this.dshFx(p.x,p.y,a)}
+  this.dshBtn()}
+ dshFx(x,y,a){const parts=[this.hd,...this.sg].filter(o=>o&&o.visible);
+  for(let i=0;i<3;i++)this.time.delayedCall(i*45,()=>{for(const o of parts){const g=this.add.image(o.x,o.y,o.texture.key).setRotation(o.rotation).setScale(o.scaleX,o.scaleY).setDepth(8.7).setTintFill(0xc8a8ff).setAlpha(.45-.1*i);this.tweens.add({targets:g,alpha:0,duration:260,onComplete:()=>g.destroy()})}});
+  for(let i=0;i<5;i++){const s=this.add.rectangle(x-Math.cos(a)*(6+i*5)+(Math.random()-.5)*10,y-Math.sin(a)*(6+i*5)+(Math.random()-.5)*10,10+Math.random()*8,1.6,0xffffff,.7).setRotation(a).setDepth(12);this.tweens.add({targets:s,x:s.x-Math.cos(a)*24,y:s.y-Math.sin(a)*24,alpha:0,duration:240,onComplete:()=>s.destroy()})}}
+ dshDodge(src){const now=this.time.now,p=this.pl;if(!(this.dshDt>now)){this.dshDt=now+250;this.dtx(p.x,p.y-24,'회피','#d8c8ff')}
+  if(!this.dshP&&now-(this.dshT0||0)<=200){this.dshP=1;this.dshCd=Math.max(0,this.dshCd-1.25);this.slowMo=.25;this.dtx(p.x,p.y-40,'완벽 회피!','#ffe066');this.cameras.main.flash(120,255,240,190);
+   const r=this.add.circle(p.x,p.y,10).setStrokeStyle(3,0xffe066,.9).setDepth(12);this.tweens.add({targets:r,scale:3.2,alpha:0,duration:380,onComplete:()=>r.destroy()})}}
+ dshBtn(){const g=this.dshG||(this.dshG=this.add.graphics().setDepth(60));g.clear();if(!this.dshTx)this.dshTx=this.add.text(690,318,'',ST({fontSize:'10px',fontStyle:'bold',color:'#ffffff',align:'center'})).setOrigin(.5).setDepth(61);
+  const vis=!this.cine&&!this.molt&&!this.over&&!!(this.atx&&this.atx.visible);this.dshTx.setVisible(vis);if(!vis)return;const x=690,y=318,r=22,cd=this.dshCd||0,rd=cd<=0;
+  g.fillStyle(rd?0x7a5ad0:0x241c38,rd?.75:.55).fillCircle(x,y,r);g.lineStyle(1.5,rd?0xe0c8ff:0x5a4a7a,.9).strokeCircle(x,y,r);if(!rd)g.lineStyle(3,0x9ff0ff,.9).beginPath().arc(x,y,r-2,-Math.PI/2,-Math.PI/2+6.283*(1-cd/2.5),false).strokePath();
+  const t=this.sys.game.device.input.touch?'대시':'대시\nC';if(this.dshTx.text!==t)this.dshTx.setText(t);this.dshTx.setAlpha(rd?1:.55)}
  slamF(f){const b0=this.bdmg;this.bdmg=b0*(1.3+1.5*f);this.slamS=f;this.bite();this.bdmg=b0;this.slamS=0;this.bcd=.9+.3*f;if(this.mo&&this.mo.k=='bite')this.mo.sf=f;if(this.brFx)this.brFx.sf=f}
  // 차지 그림: 머리 둘레 수정 고리가 커지고 수정 셋이 빨라짐, 다 차면 하얗게 깜빡
  chgDraw(g){const C2=this.chg,hd=this.hd;if(!C2||!hd||!hd.visible)return;const f=C2.t/1.2,S=this.bsc||1,a=this.ang,fx=Math.cos(a),fy=Math.sin(a),now=this.time.now/1000;
@@ -1214,7 +1233,7 @@ class G extends Phaser.Scene{
   tex(this,'emM',12,14,2,x=>mask(x,6,7,4,5,1));
   tex(this,'emc',16,24,2,x=>{for(const[b,h,lean]of[[8,20,0],[4,12,-2],[12,14,2]]){for(let k=0;k<h;k++){const w=Math.max(0,Math.round(2.2-k/h*2.2));for(let i=-w;i<=w;i++)P(x,b+i+lean*k/h,23-k,k>h-3?'#ffd0ff':i<0?'#9a34d8':'#e080ff')}D(x,b+lean,23-h,1.3,'#fff0ff')}});
   tex(this,'emo',8,8,2,x=>{D(x,4,4,3.5,'#ff9af4');D(x,4,4,2.4,'#fff0ff')})}
- hudVis(v){[this.gfx,this.gL,this.gR,this.pnL,this.pnR,this.t1,this.t2,this.etx,this.atx,this.gQ,this.xpT,this.xpL].concat(Object.values(this.lqT||{})).concat(this.rgT||[],[this.rgL,this.rwNm,this.swNm,this.skG,this.skT,this.mqT]).forEach(o=>{if(o)o.setVisible(v)});if(this.mtx&&!v)this.mtx.setVisible(false)}
+ hudVis(v){[this.gfx,this.gL,this.gR,this.pnL,this.pnR,this.t1,this.t2,this.etx,this.atx,this.dshG,this.dshTx,this.gQ,this.xpT,this.xpL].concat(Object.values(this.lqT||{})).concat(this.rgT||[],[this.rgL,this.rwNm,this.swNm,this.skG,this.skT,this.mqT]).forEach(o=>{if(o)o.setVisible(v)});if(this.mtx&&!v)this.mtx.setVisible(false)}
  cineStart(dur,fn,end){this.cine={t:0,dur,fn,end,skip:1};this.pl.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.joy=null;this.eat=null;this.hudVis(false);if(this.hint){this.hint.destroy();this.hint=null}}
  cineU(dt){const c=this.cine;this.pl.setVelocity(0,0);const k=this.k;if(Phaser.Input.Keyboard.JustDown(k.SPACE)||Phaser.Input.Keyboard.JustDown(k.ENTER))c.t=c.dur;
   c.t=Math.min(c.dur,c.t+dt);c.fn(c.t,dt);this.worm(dt,this.time.now,0,1);if(c.t>=c.dur){this.cine=null;this.hudVis(true);c.end()}}
@@ -1653,7 +1672,7 @@ class G extends Phaser.Scene{
     else{m.ns++;m.st='inhaleW';m.tm=.8;m.inc=now+9000;this.dtx(m.x,m.y-50,'들숨 — 유충을 먼저 먹을 것!','#ff9ac0')}}break;
   case 'spinW':{const k=1-m.tm/.8;m.spR=54*sc;const R=m.spR+12;g.lineStyle(2,0xff3a5a,.35+.5*k).strokeEllipse(m.x,m.y,R*2,R*1.5);m.srot=(m.srot||0)+dt*(3+6*k);if(m.tm<=0){m.st='spin';m.tm=4}}break;
   case 'spin':{m.srot=(m.srot||0)+dt*11;const ph=(4-m.tm)%1,base=54*sc;m.spR+=((ph>=.7?base+30:base)-m.spR)*Math.min(1,dt*18);if(ph>=.45&&ph<.7)g.lineStyle(2,0xffffff,.35+.5*Math.sin((ph-.45)/.25*Math.PI)).strokeEllipse(m.x,m.y,(base+42)*2,(base+42)*1.5);const R=m.spR+12,inr=((p.x-m.x)/R)**2+((p.y-m.y)/(R*.75))**2<1;g.lineStyle(2,0xff3a5a,.4).strokeEllipse(m.x,m.y,R*2,R*1.5);
-   if(inr){const n=D(18);this.en-=n*dt*(this.dmt||1);this.lastHit={src:'허기의 회전 베기',t:now};m.spT=(m.spT||0)-dt;if(m.spT<=0){m.spT=.5;this.dtx(p.x,p.y-22,'-'+Math.round(n/2),'#ff5a7a');(this.bd||[]).forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(120,()=>(this.bd||[]).forEach(o=>o.clearTint()))}}
+   if(inr&&!(this.dshI>0)){const n=D(18);this.en-=n*dt*(this.dmt||1);this.lastHit={src:'허기의 회전 베기',t:now};m.spT=(m.spT||0)-dt;if(m.spT<=0){m.spT=.5;this.dtx(p.x,p.y-22,'-'+Math.round(n/2),'#ff5a7a');(this.bd||[]).forEach(o=>o.setTint(0xff6a8a));this.time.delayedCall(120,()=>(this.bd||[]).forEach(o=>o.clearTint()))}}
    if(m.tm<=0){m.st='crown';m.cd=1;m.spR=0;m.jw.forEach(j=>{j.st='ring'})}}break;
   case 'scatter':if(m.pt&&m.tm>.9)for(let k=0;k<3;k++){m.pt[k]-=dt;const A=m.jw[k],B=m.jw[k+3];if(m.pt[k]<=0&&[A,B].every(j=>j.st=='rest'&&j.t<=0&&!(j.rep>0))){const lvl=(m.df>=2.1?2:m.df>=1.5?1:0)+(m.hp<m.mh*.5?1:0);m.pt[k]=[2.6,3.2,2.8][k]*en-(k==2?.2*lvl:0);this.hcPair(m,k,en)}}
    if(m.tm<=0){m.st='crown';m.cd=1.2;m.jw.forEach(j=>{j.st='ring'})}break;
@@ -1662,7 +1681,7 @@ class G extends Phaser.Scene{
   case 'inhale':{if(this.emPull)this.emPull.v=40+38*(1-m.tm/2.2);g.lineStyle(2,0xff5a7a,.5).strokeEllipse(m.x,m.y,150*bs,104*bs);
    for(let i=0;i<3;i++){const a=Math.random()*6.283,r=60+Math.random()*180,b=this.add.circle(m.x+Math.cos(a)*r,m.y+Math.sin(a)*r*.6,1.5,0xe8d8ff,.8).setDepth(12);this.tweens.add({targets:b,x:m.x,y:m.y,alpha:0,duration:450,onComplete:()=>b.destroy()})}
    for(const f of this.cur.food)if(f.on&&f.spr){const fx=m.x-f.x,fy=m.y-f.y,fd=Math.hypot(fx,fy);if(fd<320){f.x+=fx/fd*95*dt;f.y+=fy/fd*95*dt;f.spr.setPosition(f.x,f.y)}if(((f.x-m.x)/(75*bs))**2+((f.y-m.y)/(52*bs))**2<1){f.on=0;f.spr.destroy();f.spr=null;m.gr=Math.min(3,gr+1);m.hp=Math.min(m.mh,m.hp+m.mh*.04);this.dtx(m.x,m.y-56,'유충을 삼켰다 — 턱이 커지고 체력 회복','#ff7a9a')}}
-   if(m.tm<=0){this.emPull=null;if(((p.x-m.x)/(75*bs))**2+((p.y-m.y)/(52*bs))**2<1){this.hurt(D(26),'허기의 들숨',m);m.hp=Math.min(m.mh,m.hp+m.mh*.08);this.dtx(m.x,m.y-56,'흡수 — 왕관의 체력 +8%','#7be0a8')}if(!m.on)return;m.st='crown';m.cd=1}}break}}
+   if(m.tm<=0){this.emPull=null;if(((p.x-m.x)/(75*bs))**2+((p.y-m.y)/(52*bs))**2<1){this.hurt(D(26),'허기의 들숨',m);if(!(this.dshI>0)){m.hp=Math.min(m.mh,m.hp+m.mh*.08);this.dtx(m.x,m.y-56,'흡수 — 왕관의 체력 +8%','#7be0a8')}}if(!m.on)return;m.st='crown';m.cd=1}}break}}
  hcLunge(m,j,en){const p=this.pl;j.st='aim';j.t=.5*en;j.v=500;j.tx=Phaser.Math.Clamp(p.x+p.body.velocity.x*.1+(Math.random()-.5)*44,60,740);j.ty=Phaser.Math.Clamp(p.y+p.body.velocity.y*.1+(Math.random()-.5)*34,60,300);this.telAdd({k:'l',x:j.x,y:j.y,x2:j.tx,y2:j.ty,w:30,t:j.t,src:'',fx:0})}
  hcClamp(m,D,en){const p=this.pl,ring=m.jw.filter(j=>j.st=='ring');if(ring.length<2){m.st='crown';m.cd=.5;return}const a=Math.random()*3.14,L=120,ax=Math.cos(a),ay=Math.sin(a)*.8,
   x1=Phaser.Math.Clamp(p.x+ax*L,60,740),y1=Phaser.Math.Clamp(p.y+ay*L,60,300),x2=Phaser.Math.Clamp(p.x-ax*L,60,740),y2=Phaser.Math.Clamp(p.y-ay*L,60,300),A=ring[0],B=ring[Math.floor(ring.length/2)];
@@ -1701,7 +1720,7 @@ class G extends Phaser.Scene{
  // 1페이즈: 등의 정동이 갑주 — 물기 ×0.2. 돌진을 수정 기둥에 박게 하면 기절(×1.6)
  // 2페이즈(체력 50%): 정동을 뜯어 굴린다 — 돌알이 벽·기둥에 튕기며 굴러다니고, 가끔 불러들여 던진다. 몸은 맨살(×1.05), 돌진 2연속
  gdkTex(){for(const k of['A','B','G','P']){const key='gdk'+k;if(this.textures.exists(key))continue;const im=window.__gdkIm&&__gdkIm[k];if(im&&im.complete&&im.naturalWidth){const t=this.textures.addImage(key,im);t.setFilter(Phaser.Textures.FilterMode.NEAREST)}}}
- gdkKb(vx,vy,t){this.gkb={vx,vy,t}}
+ gdkKb(vx,vy,t){if(this.dshI>0)return;this.gkb={vx,vy,t}}
  gdkAI(m,dt,p){const now=this.time.now,D=v=>Math.round(v*m.df),P2=m.ph==2,en=m.hp<m.mh*.25?.85:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
   if(!m.pt){m.ph=1;m.br=46;m.gone=0;m.pt=[[170,128],[630,128],[240,272],[560,272]].map(([x,y])=>({x,y,hp:2,on:1,rt:0,o:this.add.image(x,y+14,'gdkP').setOrigin(.5,.86).setDepth(8.4)}))}
   // 수정 기둥: 다시 자람 · 금 · 플레이어 밀어내기
@@ -1811,7 +1830,7 @@ class G extends Phaser.Scene{
     else{m.st='sweepW';m.tm=.9;m.ga=Math.atan2(p.y-o.ey,p.x-o.ex)-.9*(Math.random()<.5?1:-1);m.sd=Phaser.Math.Angle.Wrap(ta-m.ga)>0?1:-1}}break;
   case 'spiral':m.st2-=dt;if(m.st2<=0){m.st2=.11;m.sa+=.38*(m.fl);for(const k of[0,2.094,4.189]){const q=this.mbShot(o.ax,o.ay,m.sa+k,190,D(16),'나선 구체',m,'emo');q.o.setTint(0x6a3ab0)}}if(m.tm<=0){m.st='idle';m.cd=.8*en}break;
   case 'grabW':if(m.tm<=0){m.st='grab';m.tm=2;m.tn.forEach(q=>{q.on=1;q.k=0});this.cameras.main.shake(120,.005);
-    for(const q of m.tn){const ux=q.tx-o.ax,uy=q.ty-o.ay,L=Math.hypot(ux,uy)||1,t=((p.x-o.ax)*ux+(p.y-o.ay)*uy)/(L*L),n=Math.abs((p.x-o.ax)*uy-(p.y-o.ay)*ux)/L;if(t>0&&t<1.05&&n<19&&!(m.root>0)){this.hurt(D(26),'공허 촉수',m);if(!m.on)return;m.root=1;m.rx=p.x;m.ry=p.y;this.dtx(p.x,p.y-24,'붙잡혔다!','#c8a8ff')}}
+    for(const q of m.tn){const ux=q.tx-o.ax,uy=q.ty-o.ay,L=Math.hypot(ux,uy)||1,t=((p.x-o.ax)*ux+(p.y-o.ay)*uy)/(L*L),n=Math.abs((p.x-o.ax)*uy-(p.y-o.ay)*ux)/L;if(t>0&&t<1.05&&n<19&&!(m.root>0)){this.hurt(D(26),'공허 촉수',m);if(!m.on)return;if(!(this.dshI>0)){m.root=1;m.rx=p.x;m.ry=p.y;this.dtx(p.x,p.y-24,'붙잡혔다!','#c8a8ff')}}}
     this.dtx(m.x,m.y-72,'촉수를 물어 끊을 것!','#ffe066')}break;
   case 'grab':if(en<1){m.st2=(m.st2||0)-dt;if(m.st2<=0){m.st2=.35;m.sa=(m.sa||0)+.5;const q=this.mbShot(o.ax,o.ay,m.sa,150,D(12),'나선 구체',m,'emo');q.o.setTint(0x6a3ab0)}}if(m.tm<=0||!m.tn.some(q=>q.on)){if(!m.tn.some(q=>q.on)&&m.tm>0){m.st='stun';m.tm=1.6;this.dtx(m.x,m.y-70,'촉수가 모두 끊겼다 — 기절!','#ffe066');this.cameras.main.shake(250,.01)}else{m.st='idle';m.cd=.9*en}m.tn=null}break;
   case 'stun':for(let i=0;i<4;i++){const a=now/260+i*1.571;g.fillStyle(0xffe066,.9).fillCircle(m.x+Math.cos(a)*40,m.y-66+Math.sin(a)*8,2.6)}if(m.tm<=0){m.st='idle';m.cd=.6}break;
@@ -2695,7 +2714,7 @@ class G extends Phaser.Scene{
  update(t,ms){try{this.upd(t,ms)}catch(e){this.errN=(this.errN||0)+1;vpErr(e,'update')}}
  upd(t,ms){
   if(this.over||this.paused)return;
-  const dt=Math.min(ms/1000,.05),p=this.pl,a=this.cur,k=this.k,L=this.lv;this.fxLow=this.children.list.length>520;this.hkT=(this.hkT||0)-dt;if(this.hkT<=0){this.hkT=5;this.dec=this.dec.filter(o=>o&&o.scene);this.svN=(this.svN||0)+1;if(this.svN%3==0)this.saveG()}if(this.cine){this.cineU(dt);return}if(this.tr){this.tunnel(dt);return}if(this.molt){this.moltU(t);return}if(a.tr=='haven'&&Phaser.Input.Keyboard.JustDown(k.E))this.moltOpen();
+  if(this.slowMo>0)this.slowMo-=ms/1000;const dt=Math.min(ms/1000,.05)*(this.slowMo>0?.35:1),p=this.pl,a=this.cur,k=this.k,L=this.lv;this.fxLow=this.children.list.length>520;this.hkT=(this.hkT||0)-dt;if(this.hkT<=0){this.hkT=5;this.dec=this.dec.filter(o=>o&&o.scene);this.svN=(this.svN||0)+1;if(this.svN%3==0)this.saveG()}if(this.cine){this.cineU(dt);return}if(this.tr){this.tunnel(dt);return}if(this.molt){this.moltU(t);return}if(a.tr=='haven'&&Phaser.Input.Keyboard.JustDown(k.E))this.moltOpen();
   let ix=0,iy=0,fr=0;
   const J0=this.joy,J=J0&&{x:J0.x/VZ,y:J0.y/VZ,isDown:J0.isDown};
   if(J&&J.isDown){const o=this.jo||(this.jo={x:J.x,y:J.y});let vx=J.x-o.x,vy=J.y-o.y,l=Math.hypot(vx,vy);if(l>58){const k=(l-58)/l;o.x+=vx*k;o.y+=vy*k;vx=J.x-o.x;vy=J.y-o.y;l=58}fr=Math.min(1,Math.max(0,(l-6)/40));if(l>0){ix=vx/l;iy=vy/l}}
@@ -2704,7 +2723,8 @@ class G extends Phaser.Scene{
   // 가속/감속
   this.slow=(this.slow||0)-dt;if(this.slow>0&&Math.random()<.2){const b=this.add.circle(p.x+(Math.random()-.5)*20,p.y,1.8,0xc070ff,.7).setDepth(12);this.tweens.add({targets:b,y:p.y+14,alpha:0,duration:400,onComplete:()=>b.destroy()})}const sp=this.spd*C.T*(this.slow>0?.6:1)*(this.hasteT>0?1.3:1)*(this.chg?1-.55*this.chg.t/1.2:1);{const bx=p.body.velocity.x,by=p.body.velocity.y,lx=this.lgX||0,ly=this.lgY||0;this.vx=lx&&Math.abs(bx)<Math.abs(lx)*.99&&Math.sign(bx)!==Math.sign(lx)?0:bx-lx;this.vy=ly&&Math.abs(by)<Math.abs(ly)*.99&&Math.sign(by)!==Math.sign(ly)?0:by-ly;if(lx&&Math.sign(bx)!==Math.sign(lx)&&Math.abs(bx)<1)this.vx=0;if(ly&&Math.sign(by)!==Math.sign(ly)&&Math.abs(by)<1)this.vy=0}const kk=Math.min(1,dt*22);this.jx+=(ix*fr-this.jx)*kk;this.jy+=(iy*fr-this.jy)*kk;const fw=this.flowAt(p.x,p.y),tx=this.jx*sp+fw[0],ty=this.jy*sp+fw[1],dx=tx-this.vx,dy=ty-this.vy,l2=Math.hypot(dx,dy),m=sp/C.ACC*dt;
   if(l2<=m){this.vx=tx;this.vy=ty}else{this.vx+=dx/l2*m;this.vy+=dy/l2*m}
-  if(this.lgT>0){this.lgT-=dt;this.lgX=Math.cos(this.lgA)*110;this.lgY=Math.sin(this.lgA)*110;p.setVelocity(this.vx+this.lgX,this.vy+this.lgY)}else{this.lgX=this.lgY=0;p.setVelocity(this.vx,this.vy)}
+  if(this.dshT>0){this.dshT-=dt;const c=Math.cos(this.dshA),sn=Math.sin(this.dshA),v=this.dshT>0?490:sp;p.setVelocity(c*v,sn*v);this.lgX=this.lgY=0;if(this.dshT<=0){this.vx=c*sp;this.vy=sn*sp}}
+  else if(this.lgT>0){this.lgT-=dt;this.lgX=Math.cos(this.lgA)*110;this.lgY=Math.sin(this.lgA)*110;p.setVelocity(this.vx+this.lgX,this.vy+this.lgY)}else{this.lgX=this.lgY=0;p.setVelocity(this.vx,this.vy)}
   // 모서리 미끄러짐: 한 축으로 밀다 바위 모서리에 살짝 걸리면 옆으로 비켜 지나감
   {const B=p.body,bl=B.blocked,hx=Math.abs(this.jx)>Math.abs(this.jy)*1.4,hy=Math.abs(this.jy)>Math.abs(this.jx)*1.4;if(fr>.3&&(hx&&(this.jx>0?bl.right:bl.left)||hy&&(this.jy>0?bl.down:bl.up))){const sx=hx?Math.sign(this.jx):0,sy=hy?Math.sign(this.jy):0;let sd=0;for(let k=2;k<=14&&!sd;k+=2)for(const s of [1,-1]){const ox=hy?s*k:sx*3,oy=hx?s*k:sy*3;if(!this.physics.overlapRect(B.x+ox,B.y+oy,B.width,B.height,false,true).length){sd=s;break}}if(sd){const v=sp*.9;if(hx)p.setVelocity(sx*sp*.4,sd*v);else p.setVelocity(sd*v,sy*sp*.4)}}}
   // 방향 (경계 10도 떨림 방지)
