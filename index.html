@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v92</title>
+<title>공허 기생충 v93</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v92';
+window.VP_VER='v93';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -1448,7 +1448,7 @@ class G extends Phaser.Scene{
   for(const[c,r]of[[2,2],[17,2],[2,6],[17,6]])room.food.push({t:'s',c,r,p:0,on:1});
   const plv=this.plv,lv=Math.min(18,plv+2),df=1+.06*(lv-1),E=(kk,x,y,mh,o)=>Object.assign({k:kk,x,y,on:1,mh,hp:mh,lv,df,mb:1,st:'intro',cd:1,tm:0,gone:0},o||{});
   if(k=='p')room.en.push(E('hcr',400,160,Math.round(380+42*plv),{br:44,nm:'허기의 왕관',bi:0,gone:1}));
-  if(k=='c')room.en.push(E('gdk',400,150,Math.round(520+60*plv),{br:46,nm:'정동 집게왕',bi:0,gone:0}));
+  if(k=='c')room.en.push(E('gdk',400,150,Math.round(490+56*plv),{br:46,nm:'정동 집게왕',bi:0,gone:0}));
   if(k=='v')room.en.push(E('obs',400,116,Math.round(460+50*plv),{br:44,nm:'틈 너머의 관찰자',bi:0,gone:1}));
   this.lv={rooms:[room],start:room,exit:null,at:()=>null};this.mbOn=k;this.mbRO=0;this.mbT=0;
   p.setPosition(400,300);p.setVelocity(0,0);this.vx=this.vy=this.jx=this.jy=0;this.ang=-Math.PI/2;this.sp.forEach((q,i)=>{q.x=400;q.y=304+7*(i+1)});this.inv=2;this.en=Math.min(this.emax,Math.max(this.en+30,this.emax*.75));
@@ -1476,7 +1476,7 @@ class G extends Phaser.Scene{
   if(m.k=='wdb'){const df=Math.abs(Phaser.Math.Angle.Wrap(Math.atan2(p.y-m.y,p.x-m.x)-m.fa));if(m.st=='cool')return df>1.9?1.8:1.3;if(df>1.9){if(!(m.wkT>now)){m.wkT=now+600;this.dtx(m.x,m.y-44,'약점!','#ffb070')}return 1.5}if(df<.9){if(!(m.wkT>now)){m.wkT=now+900;this.dtx(m.x,m.y-44,'단단한 앞껍질','#a0a0b8')}return .3}return 1}
   return 1}
  mbDie(m){if(!m.on)return;m.on=0;m.gone=1;this.kc=(this.kc||0)+1;const x=m.x,y=m.y,s=m.spr;m.spr=null;if(m.g){m.g.destroy();m.g=null}if(m.gb){m.gb.destroy();m.gb=null}if(m.ball){m.ball.o.destroy();m.ball=null}this.gkb=null;m.latch=0;if(m.nmT){m.nmT.destroy();m.nmT=null}if(m.lvT){m.lvT.destroy();m.lvT=null}
-  if(m.pl)m.pl.forEach(q=>{if(q.o){q.o.destroy();q.o=null}q.on=0});this.tel=this.tel.filter(q=>q.m!==m);for(const kk of['jw','po','cs','rg','pt','ey','eggs','kids','lt'])if(m[kk])m[kk].forEach(q=>{if(q.o)q.o.destroy();if(q.oe)q.oe.destroy()});for(const kk of['rf','pu','lag','N'])if(m[kk]){m[kk].destroy();m[kk]=null}this.emPull=null;
+  if(m.pl)m.pl.forEach(q=>{if(q.o){q.o.destroy();q.o=null}q.on=0});this.tel=this.tel.filter(q=>q.m!==m);for(const kk of['jw','po','cs','rg','pt','ey','eggs','kids','lt','bub'])if(m[kk])m[kk].forEach(q=>{if(q.o)q.o.destroy();if(q.oe)q.oe.destroy()});for(const kk of['rf','pu','lag','N'])if(m[kk]){m[kk].destroy();m[kk]=null}this.emPull=null;
   if(s){s.setTintFill(0xffffff);this.tweens.add({targets:s,alpha:0,scale:1.4,duration:900,onComplete:()=>s.destroy()})}
   for(let i=0;i<22;i++){const a=Math.random()*6.283,b=this.add.circle(x,y,2+Math.random()*2,i%2?0xffffff:LCN[this.mbOn||'v'],.9).setDepth(12);this.tweens.add({targets:b,x:x+Math.cos(a)*(60+Math.random()*80),y:y+Math.sin(a)*(40+Math.random()*50),alpha:0,duration:900,onComplete:()=>b.destroy()})}
   this.cameras.main.shake(400,.008);this.gainXp(m.k=='rkb'?50:120);this.en=Math.min(this.emax,this.en+25);this.dtx(x,y-40,m.nm+' 처치','#ffe066');
@@ -1745,7 +1745,7 @@ class G extends Phaser.Scene{
    const dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);if(d<30){const nx=d>.01?dx/d:0,ny=d>.01?dy/d:1,pen=30-d,B=p.body,vn=B.velocity.x*nx+B.velocity.y*ny;p.x+=nx*pen;p.y+=ny*pen;if(vn<0){B.velocity.x-=vn*nx;B.velocity.y-=vn*ny;this.vx-=vn*nx;this.vy-=vn*ny}if(this.gkb&&this.gkb.t>0&&this.gkb.vx*nx+this.gkb.vy*ny<0)this.gkb.t=0}}
   if(this.gkb&&this.gkb.t>0){this.gkb.t-=dt;p.x=Phaser.Math.Clamp(p.x+this.gkb.vx*dt,60,740);p.y=Phaser.Math.Clamp(p.y+this.gkb.vy*dt,62,300)}
   const S=m.spr;if(m.st=='intro'){S.setPosition(m.x,m.y);return}
-  if(!m.eggs){m.eggs=[];m.kids=[];m.lt=[];m.latch=0}this.gdkKidsU(m,dt,p,D);if(!m.on)return;
+  if(!m.eggs){m.eggs=[];m.kids=[];m.lt=[];m.latch=0;m.bub=[]}this.gdkKidsU(m,dt,p,D);if(!m.on)return;this.gdkBubU(m,dt,p,D);if(!m.on)return;
   m.cd-=dt;m.tm-=dt;const dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy)||1,busy=m.st!='idle';let sx=0,sy=0;
   // 2페이즈로
   if(!P2&&m.hp<=m.mh*.5&&m.st=='idle'){m.st='rip';m.tm=1.4;this.tel=this.tel.filter(q=>q.m!==m);this.dtx(m.x,m.y-70,'등의 정동을 뜯어낸다!','#ff9ac0');this.cameras.main.shake(1200,.006)}
@@ -1753,14 +1753,17 @@ class G extends Phaser.Scene{
   case 'idle':{const sp=P2?70:46,far=P2?165:210,near=P2?105:125;if(d>far){m.x+=dx/d*sp*dt;m.y+=dy/d*sp*dt*.7}else if(d<near){m.x-=dx/d*34*dt;m.y-=dy/d*24*dt}m.x=Phaser.Math.Clamp(m.x,110,690);m.y=Phaser.Math.Clamp(m.y,96,250)
     if(m.cd<=0){const r=Math.random();
      if(d<88&&r<.3&&!(m.snc>now)){m.snc=now+2600;this.gdkSnap(m,D)}
-     else{const CY=P2?['egg','throw','climb']:['climb','egg','strike'],step=(m.ci||0)<3?CY[m.ci||0]:'charge';
+     else{const CY=P2?['egg','bubble','climb']:['climb','egg','bubble'],step=(m.ci||0)<3?CY[m.ci||0]:'charge';
       if(step=='charge'){const inLine=m.pt.some(q=>{if(!q.on)return false;const ux=p.x-m.x,uy=p.y-m.y,L2=ux*ux+uy*uy||1,t=((q.x-m.x)*ux+(q.y-m.y)*uy)/L2;return t>0&&t<1.3&&Math.hypot(q.x-m.x-ux*t,q.y-m.y-uy*t)<40});
        if(!P2&&inLine&&!m.dodged&&Math.random()<.35){m.dodged=1;m.cd=.5;m.x=Phaser.Math.Clamp(m.x+(Math.random()<.5?-1:1)*40,110,690)}else{m.dodged=0;m.ci=0;this.gdkCharge(m,en,P2?1:0)}}
       else{m.ci=(m.ci||0)+1;
        if(step=='climb')this.gdkClimb(m);
        else if(step=='egg')this.gdkEgg(m);
+       else if(step=='bubble')this.gdkBubble(m);
        else if(step=='throw'&&m.ball&&m.ball.st=='roll'){m.st='call';m.tm=2.5;m.ball.st='ret';this.dtx(m.x,m.y-60,'돌알을 불러들인다','#ffd0a0')}
        else if(d<130)this.gdkSlam(m,D,en);else this.gdkWave(m,D,en)}}}}break;
+  case 'bubW':sy=Math.sin(now/50)*1;if(Math.random()<.5){const b=this.add.circle(m.x+(Math.random()-.5)*36,m.y+30,1.5+Math.random()*2.5,0xffffff,.8).setDepth(12);this.tweens.add({targets:b,y:b.y-8,alpha:0,duration:350,onComplete:()=>b.destroy()})}if(m.tm<=0){m.st='bub';m.tm=2.6;m.bt=0}break;
+  case 'bub':m.bt-=dt;if(m.bt<=0){m.bt=.42;this.gdkBubFire(m)}if(m.tm<=0){m.st='idle';m.cd=.8*en}break;
   case 'egg':sy=Math.sin(now/60)*1.5;if(!m.lay&&m.tm<=.5){m.lay=1;this.gdkLay(m)}if(m.tm<=0){m.st='idle';m.cd=.7*en}break;
   case 'chW':sx=(Math.random()-.5)*3;if(m.tm<=0){m.st='ch';m.cl=560;m.hp0=0}break;
   case 'ch':{const v=(P2?660:600)*dt;m.x+=m.cdx*v;m.y+=m.cdy*v;m.cl-=v;
@@ -1788,7 +1791,7 @@ class G extends Phaser.Scene{
      for(const q of m.pt)if(q.on){const qx=b.x-q.x,qy=b.y-q.y,qd=Math.hypot(qx,qy);if(qd<R+18&&qd>0){const nx=qx/qd,ny=qy/qd,dp=b.vx*nx+b.vy*ny;if(dp<0){b.vx-=2*dp*nx;b.vy-=2*dp*ny;bn=1}b.x=q.x+nx*(R+18);b.y=q.y+ny*(R+18)}}
      if(bn){this.cameras.main.shake(60,.003);this.gdkDust(b.x,b.y,4);if(Math.random()<.3)this.gdkShard(b.x,b.y)}
      const L=70;for(let i=1;i<=6;i++){const t=i/6;g.fillStyle(0xffd080,.65-.08*i).fillCircle(b.x+b.vx*(R+L*t),b.y+b.vy*(R+L*t),2)}
-     if(Math.hypot(p.x-b.x,p.y-b.y)<R+9&&!(b.hc>now)){b.hc=now+900;this.hurt(D(b.spd>380?30:24),'구르는 정동',m);if(!m.on)return;this.gdkKb(b.vx*260,b.vy*260,.2)}}
+     if(Math.hypot(p.x-b.x,p.y-b.y)<R+9&&!(b.hc>now)){b.hc=now+900;this.hurt(D(b.spd>380?26:20),'구르는 정동',m);if(!m.on)return;this.gdkKb(b.vx*260,b.vy*260,.2)}}
    else if(b.st=='ret'){const qx=m.x-b.x,qy=m.y-40-b.y,qd=Math.hypot(qx,qy)||1;if(qd<12){b.st='held'}else{const v=Math.min(qd,460*dt);b.x+=qx/qd*v;b.y+=qy/qd*v}}
    else if(b.st=='held'){b.x=m.x;b.y=m.y-40}
    b.o.setPosition(b.x,b.y).setRotation(b.o.rotation+(b.st=='held'?0:b.spd*dt/R*Math.sign(b.vx||1)))}
@@ -1971,7 +1974,7 @@ class G extends Phaser.Scene{
   case 'cl':{const k=1-Math.max(0,m.tm)/.9;m.cyo=k*k*80;m.ca=1-k;m.wd=(m.wd||0)+dt*60;if(Math.random()<.4)this.gdkDust(m.x+(Math.random()-.5)*80,m.y-10-m.cyo,1);if(m.tm<=0){m.st='ceil';m.tm=3.4;m.dn=0;m.ca=0;this.cameras.main.shake(3400,.004);this.dtx(400,70,'천장이 울린다 — 그림자를 피할 것','#ffd0a0')}}return 1;
   case 'ceil':{m.ca=0;m.x+=Phaser.Math.Clamp(p.x-m.x,-1,1)*Math.min(Math.abs(p.x-m.x),40*dt);const e=3.4-m.tm;while(m.dn<12&&e>=.2+m.dn*.23){this.gdkDrop(m,D,m.dn);m.dn++}
     if(Math.random()<.3){const x=60+Math.random()*680,b=this.add.circle(x,40,1.5,0x8a80a8,.8).setDepth(12);this.tweens.add({targets:b,y:40+60+Math.random()*200,alpha:0,duration:600,onComplete:()=>b.destroy()})}
-    if(m.tm<=0){m.st='dropW';m.tm=1.35;m.x=Phaser.Math.Clamp(p.x,110,690);m.y=Phaser.Math.Clamp(p.y-10,96,262);this.telAdd({k:'c',x:m.x,y:m.y+10,r:60,sy:.8,t:1.35,dmg:D(20),src:'떨어지는 집게왕',m});m.cyo=320;m.ca=0}}return 1;
+    if(m.tm<=0){m.st='dropW';m.tm=1.35;m.x=Phaser.Math.Clamp(p.x,110,690);m.y=Phaser.Math.Clamp(p.y-10,96,262);this.telAdd({k:'c',x:m.x,y:m.y+10,r:60,sy:.8,t:1.35,dmg:D(16),src:'떨어지는 집게왕',m});m.cyo=320;m.ca=0}}return 1;
   case 'dropW':{const k=Math.max(0,m.tm)/1.35;m.ca=k<.3?1:0;m.cyo=k<.3?320*(k/.3)**2:320;if(m.tm<=0){m.st='land';m.tm=1.1;m.air=0;m.cyo=0;m.ca=1;this.cameras.main.shake(350,.014);this.gdkDust(m.x,m.y+40,16);const w=this.add.ellipse(m.x,m.y+34,60,30).setStrokeStyle(3,0xd8d0f0,.9).setDepth(9);this.tweens.add({targets:w,scaleX:3.5,scaleY:3.5,alpha:0,duration:450,onComplete:()=>w.destroy()})}}return 1;
   case 'land':m.cyo=0;m.ca=1;if(m.tm<=0){m.st='idle';m.cd=.8}return 1}
   return 0}
@@ -2010,6 +2013,24 @@ class G extends Phaser.Scene{
   for(const e of m.eggs){if(!e.live||e.dead)continue;const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.1){this.gdkEggBreak(m,e);hit=1}}
   for(const k of m.kids){if(k.dead)continue;const dx=k.x-p.x,dy=k.y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.1){this.gdkKidKill(k);hit=1}}
   m.eggs=m.eggs.filter(e=>!e.dead);m.kids=m.kids.filter(k=>!k.dead);return hit}
+ // ===== v93: 정동 집게왕 — 거품 분사(천천히 밀려오는 거품 탄막) · 사이클: 벽 오르기 → 수정 알 → 거품 분사 → 돌진 =====
+ // bubW 0.6초(입가에 거품이 부글) → bub 2.6초: 0.42초마다 플레이어 쪽 부채꼴(±1.05rad)로 거품 11개(2페이즈 13개)를 엇갈리게 뿜음
+ // 거품: 55~80px/s로 흔들리며 천천히 다가옴 · 닿으면 톡 터지며 피해 7 + 잠깐 느려짐 · 수정 기둥·벽에 닿으면 터짐 · 물거나 구체로 터뜨릴 수 있음 · 8초 뒤 사라짐
+ gdkBubTex(){if(this.textures.exists('gdkBub'))return;tex(this,'gdkBub',12,12,2,x=>{const g=x.createRadialGradient(6,6,2,6,6,6);g.addColorStop(0,'rgba(160,220,255,.08)');g.addColorStop(.8,'rgba(170,220,255,.28)');g.addColorStop(1,'rgba(220,245,255,.9)');x.fillStyle=g;x.beginPath();x.arc(6,6,5.6,0,6.283);x.fill();
+  x.strokeStyle='rgba(255,255,255,.9)';x.lineWidth=.8;x.beginPath();x.arc(6,6,5.4,0,6.283);x.stroke();x.fillStyle='#ffffff';x.fillRect(3,3,2,1);x.fillRect(3,4,1,1);x.fillStyle='rgba(200,160,255,.8)';x.fillRect(8,8,1,1)})}
+ gdkBubble(m){this.gdkBubTex();m.st='bubW';m.tm=.6;m.bv=0;this.dtx(m.x,m.y-70,'거품을 뿜는다','#bff0ff')}
+ gdkBubFire(m){const p=this.pl,n=m.ph==2?13:11,a0=Math.atan2(p.y-(m.y+30),p.x-m.x),sp=1.05,off=(m.bv%2)*.5;m.bv++;
+  for(let i=0;i<n;i++){const a=a0-sp+(i+off)/(n-1)*sp*2,v=(m.bv%2?60:76)+Math.random()*6,r=7+Math.random()*2.5,x=m.x+Math.cos(a)*40,y=m.y+30+Math.sin(a)*24;
+   m.bub.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v*.85,r,ph:Math.random()*6.283,t:8,o:this.add.image(x,y,'gdkBub').setDepth(11).setScale(r/6)})}
+  for(let i=0;i<5;i++){const b=this.add.circle(m.x+(Math.random()-.5)*30,m.y+30,2+Math.random()*2,0xffffff,.7).setDepth(12);this.tweens.add({targets:b,y:b.y+14,alpha:0,duration:300,onComplete:()=>b.destroy()})}}
+ gdkBubPop(b,big){b.dead=1;const o=b.o;this.tweens.add({targets:o,scale:o.scale*1.6,alpha:0,duration:140,onComplete:()=>o.destroy()});for(let i=0;i<(big?6:4);i++){const a=Math.random()*6.283,s=this.add.circle(b.x,b.y,1.2,0xffffff,.9).setDepth(12);this.tweens.add({targets:s,x:b.x+Math.cos(a)*(b.r+8),y:b.y+Math.sin(a)*(b.r+6),alpha:0,duration:220,onComplete:()=>s.destroy()})}}
+ gdkBubU(m,dt,p,D){if(!m.bub||!m.bub.length)return;const now=this.time.now;
+  for(const b of m.bub){if(b.dead)continue;b.t-=dt;const l=Math.hypot(b.vx,b.vy)||1,w=Math.sin(now/260+b.ph)*14;b.x+=(b.vx+(-b.vy/l)*w)*dt;b.y+=(b.vy+(b.vx/l)*w)*dt;b.o.setPosition(b.x,b.y+Math.sin(now/180+b.ph)*1.5);
+   if(Math.hypot(p.x-b.x,p.y-b.y)<b.r+7){this.gdkBubPop(b,1);if(this.dshI>0){this.dshDodge('거품');continue}this.hurt(D(7),'거품 분사',m);this.slow=Math.max(this.slow||0,.6);continue}
+   if(b.t<=0||b.x<46||b.x>754||b.y<56||b.y>316||m.pt.some(q=>q.on&&Math.hypot(q.x-b.x,q.y-b.y)<22+b.r)){this.gdkBubPop(b,0);continue}
+   if(this.pprj)for(const q of this.pprj)if(q.t>0&&Math.hypot(q.x-b.x,q.y-b.y)<b.r+4){this.gdkBubPop(b,0);break}}
+  m.bub=m.bub.filter(b=>!b.dead)}
+ gdkBubBite(m,fx,fy){if(!m.bub)return 0;const p=this.pl,R=C.BITE.range+14;let hit=0;for(const b of m.bub){if(b.dead)continue;const dx=b.x-p.x,dy=b.y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>0){this.gdkBubPop(b,0);hit=1}}m.bub=m.bub.filter(b=>!b.dead);return hit}
  // ===== 숨 쉬는 산호 환초 =====
  atlGap(m,a){for(const q of m.gp)if(Math.abs(Phaser.Math.Angle.Wrap(a-q.a))<q.w/2)return true;for(const q of m.cg)if(Math.abs(Phaser.Math.Angle.Wrap(a-q.a))<q.w/2)return true;return false}
  atlAI(m,dt,p){if(m.st=='intro'&&m.cs)return;const now=this.time.now,D=v=>Math.round(v*m.df),en=m.hp<m.mh*.35?.8:1;if(!m.g)m.g=this.add.graphics().setDepth(1.5);const g=m.g;g.clear();
@@ -2089,6 +2110,7 @@ class G extends Phaser.Scene{
    if(m.k=='hcr'&&m.gone){const dx=m.x-p.x,dy=m.y-p.y,d=Math.hypot(dx,dy);if(d<C.BITE.range+50&&(dx*fx+dy*fy)/(d||1)>.3&&!(this.hcT>this.time.now)){this.hcT=this.time.now+1500;this.dtx(p.x,p.y-26,'턱이 막고 있다 — 흩어질 때 물 것','#ffb0d0')}}
    if(m.k=='atl'&&m.po)for(const q of m.po)if(q.on){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<R&&(dx*fx+dy*fy)/(d||1)>.2){q.hp--;hit=1;q.o.setTintFill(0xffffff);this.time.delayedCall(80,()=>q.o.clearTint());if(q.hp<=0)this.atCut(m,q)}}
    if(m.k=='gdk'&&m.eggs&&this.gdkBite(m,fx,fy))hit=1;
+   if(m.k=='gdk'&&this.gdkBubBite(m,fx,fy))hit=1;
    if(m.k=='obs'&&m.ph==2&&this.obsNBite(m,fx,fy))hit=1;
    if(m.k=='obs'&&m.ey)for(const q of m.ey)if(q.open){const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<R+10&&(dx*fx+dy*fy)/(d||1)>.1){hit=1;this.obsClose(m,q)}}}
   return hit}
@@ -2923,7 +2945,7 @@ class G extends Phaser.Scene{
   // 에너지/종료
   
   if(this.en<=0&&this.lin.c>=3&&!this.rvU)this.revive();
-  if(this.en<=0){this.en=0;this.hud();const n=L.rooms.filter(r=>r.seen).length,lh=this.lastHit,byHit=lh&&this.time.now-lh.t<1500,pz=!byHit&&this.time.now-(this.lpz??-9e9)<1500,tm=Math.round((this.time.now-this.t0)/1000);return this.end(byHit?lh.src+'에 쓰러졌다':pz?'독 웅덩이에 쓰러졌다':'힘이 다해 쓰러졌다',(this.zi>1?this.zi+'구역  ·  ':'')+'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+n+' / 16','다시 시작',byHit?({'낫그늘의 할퀴기':'붉은 부채꼴이 보이면 뒤로 빠질 것 · 바위나 나무 곁에서 싸우면 고립 추가 피해가 없다','낫그늘의 도약':'바닥에 발톱 자국이 뜨면 그 자리를 벗어날 것','낫그늘의 공허 가시':'보랏빛 조준선이 보이면 옆으로 비킬 것 · 바위 뒤에 숨으면 가시가 막힌다','땅울음의 솟구치기':'붉은 원이 퍼지면 원 밖으로 · 천천히 움직이면(조이스틱 반만 / Shift) 땅울음이 못 느낀다','땅울음의 물기':'솟아오른 땅울음은 느리다 — 체력이 적으면 거리를 벌릴 것','보이드링 무리':'소용돌이의 보이드링은 수가 정해져 있다 — 방 가장자리에서 하나씩 상대할 것','가시 산호충의 가시':'노란 조준선이 보이면 옆으로 비킬 것 · 산호를 물어 부수면 산호충이 끌려 나온다','빛 포자의 빛 화살':'빛 포자는 빛줄기에 닿아 있을 때만 쏜다 — 기둥 그림자나 덤불로 숨을 것','산호 여왕의 물기':'붉은 부채꼴이 보이면 옆으로 비킬 것 · 분홍 원이 보이면 원 밖으로 빠질 것','감시자의 광선':'빛이 붉게 좁아지면 빛줄기 밖으로 · 뒤로 돌아가 등의 발광 기관을 물 것','여제의 돌진':'붉은 띠가 깔리면 띠 밖으로 — 꺼진 불빛 쪽으로는 다시 돌진하지 않는다','여제의 꼬리':'붉은 선이 그어지면 선에서 옆으로 비킬 것','산호 가시':'발밑에 붉은 원이 생기면 계속 움직일 것 — 멈추면 연달아 맞는다','수면의 파문':'여제가 다시 잠길 때 머리 근처의 물결이 터진다 — 물고 나서 바로 빠질 것','가면의 합창':'가면에서 부채꼴로 쏟아진다 — 나와 거울 속의 나 둘 다 탄을 피해야 한다','틈의 이빨':'들숨 동안 여제 곁(나 또는 거울 속의 나)에 있으면 이빨에 베인다','여제의 들숨 — 삼켜짐':'붉은 점이 모이면 들숨 — 여제 반대쪽 끝으로 헤엄칠 것','떨어지는 가면':'붉은 원은 나와 거울 속의 나 양쪽에 생긴다 — 둘 다 원 밖으로','거울 뒤집기':'거울이 하얗게 번쩍이면 곧 자리가 바뀐다 — 바뀐 뒤 바로 들숨이나 합창이 온다','여제의 날개':'여제 몸 근처에 머물면 날개에 베인다 — 반대편에서 거울로 공격할 것','낫그늘의 매복':'낫그늘이 덤불 속에서 사라지면 곧 덮친다 — 붉은 선이 깔리면 옆으로 비킬 것','땅울음의 굴 줄기':'붉은 원이 줄지어 생기면 줄에서 옆으로 비킬 것','각성한 땅울음의 솟구치기':'발밑에 큰 붉은 원이 생기면 원 밖으로 — 둔덕이 다가오는 쪽을 볼 것','각성한 땅울음의 물기':'솟아오른 땅울음 앞의 붉은 부채꼴을 피할 것','여왕의 산호 가시':'날아오는 가시를 마주 보고 물면 되받아친다 — 결정 갑옷을 깨는 유일한 방법','산호 감옥':'산호 고리가 생기면 가시가 없는 틈으로 빠져나갈 것','산호 감옥의 가시':'고리의 가시를 그냥 넘으면 긁힌다 — 틈으로 나갈 것','여왕의 촉수':'여왕 앞에 긴 붉은 부채꼴이 깔리면 옆으로','결정 비':'붉은 원 밖으로 — 계속 움직일 것','각성한 감시자의 광선':'광선 여러 줄이 방을 쓴다 — 등불 기둥 뒤에 숨거나 광선 사이로 빠질 것','각성한 감시자의 집중 광선':'붉은 선이 깜빡이면 옆으로 비킬 것','감시자의 갑주 가시':'감시자 곁에 오래 붙어 있으면 갑주 가시가 솟는다 — 큰 붉은 원이 보이면 물러날 것','눈부신 섬광':'화면이 밝아지면 등불 기둥 뒤 어두운 그림자로 숨을 것','허기의 턱':'떠다니는 턱에 닿으면 물린다 — 붉은 선이 깔리면 그 줄에서 비킬 것','허기의 턱 — 맞물림':'두 턱 사이에 붉은 줄이 생기면 줄 밖으로','허기의 들숨':'붉은 점이 모이면 들숨 — 구멍 반대쪽으로 헤엄치고, 유충을 먼저 먹어 둘 것','정동 집게왕의 돌진':'넓은 붉은 띠가 깔리면 옆으로 — 수정 기둥 뒤에 서 있으면 돌진이 기둥에 박혀 기절한다','수정 집게 내리찍기':'집게가 들리면 원 밖으로 — 이어서 앞쪽으로 수정 가시가 줄지어 솟는다','수정 가시':'내리찍기 뒤 앞쪽으로 솟는 가시 줄에서 옆으로 비킬 것','정동 파편':'정동이 빛나면 발밑의 보라 원들을 피할 것','작은 집게':'집게왕에게 바짝 붙어 있으면 작은 집게가 부채꼴로 휩쓴다','수정 새끼 게':'수정 알은 깨어나기 전에 물거나 쏴서 깨면 무기물 — 새끼 게가 달라붙으면 공격 버튼으로 하나씩 떼거나 대시로 한 번에 털어낼 것','달라붙은 새끼 게':'달라붙은 새끼 게는 공격 버튼으로 하나씩 떼거나 대시로 한 번에 털어낼 것','떨어지는 종유석':'집게왕이 천장에 매달리면 바닥의 붉은 그림자 원을 피할 것 — 떨어진 종유석은 잠시 기둥이 된다','떨어지는 집게왕':'종유석이 그치면 집게왕이 내 위로 떨어진다 — 큰 그림자 밖으로, 착지 직후가 빈틈','구르는 정동':'굴러오는 돌알 앞의 점선 방향을 보고 옆으로 비킬 것 — 불러들여 던질 때는 붉은 띠를 피할 것','환초의 숨':'고리가 부풀 때는 점선 밖으로 멀리 가거나 고리 안으로 들어갈 것','묶인 산호충':'산호충이 붉은 선을 그으면 옆으로 — 물어서 끊으면 고리가 무너진다','가면의 눈빛':'고리 안에서는 가면이 두 줄의 눈빛을 쏜다 — 붉은 선 사이로 비킬 것','석호의 물방울':'고리 안에서는 발밑에 물방울 원이 떨어진다 — 붉은 원 밖으로','가면의 들숨':'들숨이 끝날 때 가면 곁에 있으면 물린다 — 고리 밖으로 빠질 것','나선 구체':'껍데기 입구에서 검은 구체가 나선으로 퍼진다 — 구체 사이 빈틈으로 비킬 것','공허 촉수':'붉은 줄 세 개가 깔리면 줄 밖으로 — 뻗은 촉수는 물어서 끊을 수 있고, 셋 다 끊으면 기절한다','껍데기 속 공허':'껍데기에 숨으면 입구가 끌어당긴다 — 입구에서 멀리 헤엄칠 것','앵무조개의 눈빛':'눈빛이 방을 쓸 때는 떠 있는 갑주 조각 뒤로','먹물 파동':'앵무조개에게 바짝 붙으면 먹물 파동으로 밀쳐낸다 — 2페이즈는 멀리서 구체로 눈을 노릴 것','튕겨 나온 구체':'껍데기에 숨은 동안 쏜 구체는 튕겨서 돌아온다 — 숨었을 땐 쏘지 말고 피할 것','관찰자의 응시':'시선 안에 있으면 응시(점 5개)가 찬다 — 떠 있는 갑주 조각 그림자에 숨을 것','관찰자의 광선':'광선이 방을 쓸 때는 갑주 조각 뒤에 숨을 것','가장자리 눈의 빛살':'뜬 눈은 빛살을 쏜다 — 다가가 물어서 감길 것','공허를 걷는 자의 칼날':'바닥에 틈과 붉은 원이 열리면 그 자리를 벗어날 것 — 잠시 뒤 그곳에 나타나 벤다','어긋난 몸 사이의 선':'몸이 둘로 갈라지면 한가운데 초록 원(틈)으로 갈 것 — 가운데만 선이 끊겨 있다','메아리':'보스 곁에서 물거나 침을 쏠수록 메아리가 찬다(점 5개) — 다 차면 멀리 떨어질 것','떨어진 칼날':'붉은 점선을 따라 칼날이 날아갔다 돌아온다 — 점선 밖으로 비킬 것','무의 구체':'검은 구체는 몸에 닿으면 침묵, 물면 삼킨다 — 마주 보고 물 것','감시자의 꼬리':'감시자 등 뒤에 오래 머물면 꼬리치기가 온다 — 붉은 부채꼴이 보이면 물러날 것'})[lh.src]||null:pz?'독 웅덩이 위에서는 체력이 초당 1.5씩 빠진다 — 오래 머물지 말 것':'체력은 먹이를 섭취하거나 탈피하면 회복된다')}
+  if(this.en<=0){this.en=0;this.hud();const n=L.rooms.filter(r=>r.seen).length,lh=this.lastHit,byHit=lh&&this.time.now-lh.t<1500,pz=!byHit&&this.time.now-(this.lpz??-9e9)<1500,tm=Math.round((this.time.now-this.t0)/1000);return this.end(byHit?lh.src+'에 쓰러졌다':pz?'독 웅덩이에 쓰러졌다':'힘이 다해 쓰러졌다',(this.zi>1?this.zi+'구역  ·  ':'')+'생존 '+Math.floor(tm/60)+':'+String(tm%60).padStart(2,'0')+'  ·  Lv.'+this.plv+'  ·  탈피 '+this.molts+'회  ·  처치 '+(this.kc||0)+'  ·  방 '+n+' / 16','다시 시작',byHit?({'낫그늘의 할퀴기':'붉은 부채꼴이 보이면 뒤로 빠질 것 · 바위나 나무 곁에서 싸우면 고립 추가 피해가 없다','낫그늘의 도약':'바닥에 발톱 자국이 뜨면 그 자리를 벗어날 것','낫그늘의 공허 가시':'보랏빛 조준선이 보이면 옆으로 비킬 것 · 바위 뒤에 숨으면 가시가 막힌다','땅울음의 솟구치기':'붉은 원이 퍼지면 원 밖으로 · 천천히 움직이면(조이스틱 반만 / Shift) 땅울음이 못 느낀다','땅울음의 물기':'솟아오른 땅울음은 느리다 — 체력이 적으면 거리를 벌릴 것','보이드링 무리':'소용돌이의 보이드링은 수가 정해져 있다 — 방 가장자리에서 하나씩 상대할 것','가시 산호충의 가시':'노란 조준선이 보이면 옆으로 비킬 것 · 산호를 물어 부수면 산호충이 끌려 나온다','빛 포자의 빛 화살':'빛 포자는 빛줄기에 닿아 있을 때만 쏜다 — 기둥 그림자나 덤불로 숨을 것','산호 여왕의 물기':'붉은 부채꼴이 보이면 옆으로 비킬 것 · 분홍 원이 보이면 원 밖으로 빠질 것','감시자의 광선':'빛이 붉게 좁아지면 빛줄기 밖으로 · 뒤로 돌아가 등의 발광 기관을 물 것','여제의 돌진':'붉은 띠가 깔리면 띠 밖으로 — 꺼진 불빛 쪽으로는 다시 돌진하지 않는다','여제의 꼬리':'붉은 선이 그어지면 선에서 옆으로 비킬 것','산호 가시':'발밑에 붉은 원이 생기면 계속 움직일 것 — 멈추면 연달아 맞는다','수면의 파문':'여제가 다시 잠길 때 머리 근처의 물결이 터진다 — 물고 나서 바로 빠질 것','가면의 합창':'가면에서 부채꼴로 쏟아진다 — 나와 거울 속의 나 둘 다 탄을 피해야 한다','틈의 이빨':'들숨 동안 여제 곁(나 또는 거울 속의 나)에 있으면 이빨에 베인다','여제의 들숨 — 삼켜짐':'붉은 점이 모이면 들숨 — 여제 반대쪽 끝으로 헤엄칠 것','떨어지는 가면':'붉은 원은 나와 거울 속의 나 양쪽에 생긴다 — 둘 다 원 밖으로','거울 뒤집기':'거울이 하얗게 번쩍이면 곧 자리가 바뀐다 — 바뀐 뒤 바로 들숨이나 합창이 온다','여제의 날개':'여제 몸 근처에 머물면 날개에 베인다 — 반대편에서 거울로 공격할 것','낫그늘의 매복':'낫그늘이 덤불 속에서 사라지면 곧 덮친다 — 붉은 선이 깔리면 옆으로 비킬 것','땅울음의 굴 줄기':'붉은 원이 줄지어 생기면 줄에서 옆으로 비킬 것','각성한 땅울음의 솟구치기':'발밑에 큰 붉은 원이 생기면 원 밖으로 — 둔덕이 다가오는 쪽을 볼 것','각성한 땅울음의 물기':'솟아오른 땅울음 앞의 붉은 부채꼴을 피할 것','여왕의 산호 가시':'날아오는 가시를 마주 보고 물면 되받아친다 — 결정 갑옷을 깨는 유일한 방법','산호 감옥':'산호 고리가 생기면 가시가 없는 틈으로 빠져나갈 것','산호 감옥의 가시':'고리의 가시를 그냥 넘으면 긁힌다 — 틈으로 나갈 것','여왕의 촉수':'여왕 앞에 긴 붉은 부채꼴이 깔리면 옆으로','결정 비':'붉은 원 밖으로 — 계속 움직일 것','각성한 감시자의 광선':'광선 여러 줄이 방을 쓴다 — 등불 기둥 뒤에 숨거나 광선 사이로 빠질 것','각성한 감시자의 집중 광선':'붉은 선이 깜빡이면 옆으로 비킬 것','감시자의 갑주 가시':'감시자 곁에 오래 붙어 있으면 갑주 가시가 솟는다 — 큰 붉은 원이 보이면 물러날 것','눈부신 섬광':'화면이 밝아지면 등불 기둥 뒤 어두운 그림자로 숨을 것','허기의 턱':'떠다니는 턱에 닿으면 물린다 — 붉은 선이 깔리면 그 줄에서 비킬 것','허기의 턱 — 맞물림':'두 턱 사이에 붉은 줄이 생기면 줄 밖으로','허기의 들숨':'붉은 점이 모이면 들숨 — 구멍 반대쪽으로 헤엄치고, 유충을 먼저 먹어 둘 것','정동 집게왕의 돌진':'넓은 붉은 띠가 깔리면 옆으로 — 수정 기둥 뒤에 서 있으면 돌진이 기둥에 박혀 기절한다','수정 집게 내리찍기':'집게가 들리면 원 밖으로 — 이어서 앞쪽으로 수정 가시가 줄지어 솟는다','수정 가시':'내리찍기 뒤 앞쪽으로 솟는 가시 줄에서 옆으로 비킬 것','정동 파편':'정동이 빛나면 발밑의 보라 원들을 피할 것','작은 집게':'집게왕에게 바짝 붙어 있으면 작은 집게가 부채꼴로 휩쓴다','거품 분사':'거품은 천천히 밀려온다 — 사이 빈틈으로 빠지거나 물어서 터뜨려 길을 낼 것 · 수정 기둥 뒤에 숨으면 거품이 기둥에 터진다','수정 새끼 게':'수정 알은 깨어나기 전에 물거나 쏴서 깨면 무기물 — 새끼 게가 달라붙으면 공격 버튼으로 하나씩 떼거나 대시로 한 번에 털어낼 것','달라붙은 새끼 게':'달라붙은 새끼 게는 공격 버튼으로 하나씩 떼거나 대시로 한 번에 털어낼 것','떨어지는 종유석':'집게왕이 천장에 매달리면 바닥의 붉은 그림자 원을 피할 것 — 떨어진 종유석은 잠시 기둥이 된다','떨어지는 집게왕':'종유석이 그치면 집게왕이 내 위로 떨어진다 — 큰 그림자 밖으로, 착지 직후가 빈틈','구르는 정동':'굴러오는 돌알 앞의 점선 방향을 보고 옆으로 비킬 것 — 불러들여 던질 때는 붉은 띠를 피할 것','환초의 숨':'고리가 부풀 때는 점선 밖으로 멀리 가거나 고리 안으로 들어갈 것','묶인 산호충':'산호충이 붉은 선을 그으면 옆으로 — 물어서 끊으면 고리가 무너진다','가면의 눈빛':'고리 안에서는 가면이 두 줄의 눈빛을 쏜다 — 붉은 선 사이로 비킬 것','석호의 물방울':'고리 안에서는 발밑에 물방울 원이 떨어진다 — 붉은 원 밖으로','가면의 들숨':'들숨이 끝날 때 가면 곁에 있으면 물린다 — 고리 밖으로 빠질 것','나선 구체':'껍데기 입구에서 검은 구체가 나선으로 퍼진다 — 구체 사이 빈틈으로 비킬 것','공허 촉수':'붉은 줄 세 개가 깔리면 줄 밖으로 — 뻗은 촉수는 물어서 끊을 수 있고, 셋 다 끊으면 기절한다','껍데기 속 공허':'껍데기에 숨으면 입구가 끌어당긴다 — 입구에서 멀리 헤엄칠 것','앵무조개의 눈빛':'눈빛이 방을 쓸 때는 떠 있는 갑주 조각 뒤로','먹물 파동':'앵무조개에게 바짝 붙으면 먹물 파동으로 밀쳐낸다 — 2페이즈는 멀리서 구체로 눈을 노릴 것','튕겨 나온 구체':'껍데기에 숨은 동안 쏜 구체는 튕겨서 돌아온다 — 숨었을 땐 쏘지 말고 피할 것','관찰자의 응시':'시선 안에 있으면 응시(점 5개)가 찬다 — 떠 있는 갑주 조각 그림자에 숨을 것','관찰자의 광선':'광선이 방을 쓸 때는 갑주 조각 뒤에 숨을 것','가장자리 눈의 빛살':'뜬 눈은 빛살을 쏜다 — 다가가 물어서 감길 것','공허를 걷는 자의 칼날':'바닥에 틈과 붉은 원이 열리면 그 자리를 벗어날 것 — 잠시 뒤 그곳에 나타나 벤다','어긋난 몸 사이의 선':'몸이 둘로 갈라지면 한가운데 초록 원(틈)으로 갈 것 — 가운데만 선이 끊겨 있다','메아리':'보스 곁에서 물거나 침을 쏠수록 메아리가 찬다(점 5개) — 다 차면 멀리 떨어질 것','떨어진 칼날':'붉은 점선을 따라 칼날이 날아갔다 돌아온다 — 점선 밖으로 비킬 것','무의 구체':'검은 구체는 몸에 닿으면 침묵, 물면 삼킨다 — 마주 보고 물 것','감시자의 꼬리':'감시자 등 뒤에 오래 머물면 꼬리치기가 온다 — 붉은 부채꼴이 보이면 물러날 것'})[lh.src]||null:pz?'독 웅덩이 위에서는 체력이 초당 1.5씩 빠진다 — 오래 머물지 말 것':'체력은 먹이를 섭취하거나 탈피하면 회복된다')}
   if(this.cur===L.exit&&Math.hypot(p.x-400,p.y-180)<30){this.exT=(this.exT||0)+dt;if(this.exT>=1){if(this.zi<2)return this.nextZone();return this.bossStart()}}else this.exT=0;
   if(!this.boss&&!this.exR&&this.time.now-this.zt0>(this.zi>1?240000:300000)){this.exR=1;this.pop('출구의 기척이 느껴진다 — 지도를 확인할 것',400,140)}
   this.hud();this.skHud();
