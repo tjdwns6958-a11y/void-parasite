@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#120e1a;color:#e8dcff;font-family:sans-serif;width:1640px}
+h1{font-size:30px;margin:14px 20px 4px}h2{font-size:19px;margin:6px 0 2px;color:#ffe9a8}p{margin:3px 0 6px;font-size:14.5px;color:#c9c0de;line-height:1.42}
+.row{display:flex;gap:14px;padding:0 20px 10px}.c{width:215px}canvas{display:block;border-radius:6px}
+.sub{font-size:15px;color:#a99fc2;margin:0 20px 10px}.new{color:#7be0a8;font-size:13px;font-weight:bold}b{color:#ece6f7}
+</style></head><body>
+<h1>소용돌이 생태계 — 들숨과 날숨에 맞춰 사는 공허 생명체 (안)</h1>
+<div class="sub">소용돌이가 먹이를 끌어모으고 토해 내는 리듬(들숨 7초 · 날숨 2초)을 생명체마다 다르게 이용한다. 플레이어도 리듬을 읽으면 같은 힘을 이용할 수 있다.</div>
+<div style="padding:0 20px 8px"><canvas id="eco" width="1600" height="300"></canvas></div>
+<div class="row" id="cards"></div>
+<script src="lib_v.js"></script><script src="lib_d.js"></script>
+<script>
+// 새 생명체 스프라이트
+const g4=grid();for(let j=0;j<G;j++)for(let i=0;i<G;i++){const u=(i-13.5)/8,v=(j-9)/7;if(v<.15&&u*u+v*v<1)P(g4,i,j,u*u+v*v>.72?'#9a70ff':'#2a1458')}[[11,6],[15,5],[13,8],[17,8],[10,9]].forEach(([i,j])=>star(g4,i,j));
+ for(let k=0;k<5;k++){const x0=8+k*2.6;for(let j=11;j<26;j++){const i=Math.round(x0+Math.sin(j*.6+k)*1.2);P(g4,i,j,j%3?'#6a3fc0':'#c8a0ff')}}for(let i=6;i<22;i++)P(g4,i,10,'#4a2a90');
+const g5=grid();for(let k=0;k<8;k++){const sd=k<4?-1:1,q=k%4,a0=(q-1.5)*.45;let x=13.5+sd*3,y=13+(q-1.5)*1.6;for(let s=0;s<9;s++){x+=sd*Math.cos(a0)*1;y+=Math.sin(a0)*1+(s<4?-.55:.85);P(g5,Math.round(x),Math.round(y),s>6?'#c8a0ff':'#3a2070')}}
+ for(let j=0;j<G;j++)for(let i=0;i<G;i++){const d=Math.hypot(i-13.5,(j-14)*1.2),d2=Math.hypot(i-13.5,j-9.5);if(d<4.6)P(g5,i,j,d<3.6?'#2a1458':'#120824');if(d2<2.6)P(g5,i,j,'#1a0c2e')}
+ [[12,9],[15,9],[13,8],[14,8]].forEach(([i,j])=>P(g5,i,j,'#ff6a9a'));for(let j=18;j<28;j++)P(g5,13+(j%2),j,'#7ff0ff');star(g5,14,14);
+const g6=grid();for(let j=0;j<G;j++)for(let i=0;i<G;i++){const u=(i-13.5)/11,vt=(j-12)/7,vb=(j-14)/6;if(j<=12&&u*u+vt*vt<1&&vt<0)P(g6,i,j,u*u+vt*vt>.75?'#8a7aa8':(j%3?'#4a4060':'#5a5070'));if(j>=14&&u*u+vb*vb<1&&vb>0)P(g6,i,j,u*u+vb*vb>.75?'#8a7aa8':(j%3?'#4a4060':'#5a5070'))}
+ for(let j=12;j<15;j++)for(let i=4;i<24;i++)P(g6,i,j,'#05020c');for(let j=0;j<G;j++)for(let i=0;i<G;i++){const d=Math.hypot(i-13.5,j-13);if(d<2.2)P(g6,i,j,d<1?'#ffffff':'#c8a0ff')}
+ for(let i=5;i<23;i+=3){P(g6,i,12,'#e8e0f0');P(g6,i+1,14,'#e8e0f0')}
+const g7=grid();for(let j=0;j<G;j++)for(let i=0;i<G;i++){const dx=i-13.5,dy=(j-13.5)/.8,r=Math.hypot(dx,dy);if(r>9.5)continue;const th=Math.atan2(dy,dx),arm=Math.cos(3*(th-Math.log(r+1)*1.7));let c=null;if(r<2.2)c='#000';else if(arm>.3)c=r<5?'#c090ff':'#7a4ac0';else if(r<6.5)c='#2a1048';if(c)P(g7,i,j,c)}
+ for(let k=0;k<12;k++){const a=k/12*6.283;P(g7,Math.round(13.5+Math.cos(a)*10.5),Math.round(13.5+Math.sin(a)*8.6),'#b07aff')}P(g7,13,13,'#7ff0ff');P(g7,14,13,'#05020c');
+const D=[
+ ['D1 공허 가오리',g1,0,'<b>해류 타기</b> — 흐름 방향으로만 빠르게 돌격하고 거슬러서는 느리다. 흐름 반대편에 서면 피하기 쉽다.'],
+ ['D2 틈 박쥐',g2,0,'<b>날숨에 흩어짐</b> — 날숨 때 구멍에서 쏟아져 나와 흩어지고, 들숨 때 둥지(구멍)로 돌아가며 길목을 스친다.'],
+ ['D3 공허 칠성장어',g3,0,'<b>테두리 기생</b> — 가장자리 고리에 붙어 있다가 가까이 오면 튀어나와 물고 구멍 쪽으로 끌어당긴다.'],
+ ['D4 심연 종',g4,1,'<b>먹이 가로채기</b> — 구멍 위를 떠다니며 빨려 드는 먹이를 먹는다. 촉수에 닿으면 느려짐 · 물면 삼킨 먹이를 토해 낸다.'],
+ ['D5 궤도 직조자',g5,1,'<b>흐름에 그물</b> — 고리 사이에 빛 실을 쳐 둔다. 흐름에 실려 온 것이 걸린다 · 실은 물어서 끊는다.'],
+ ['D6 테두리 조개',g6,1,'<b>들숨에 열림</b> — 가장자리에 박힌 조개. 들숨 때 입을 열어 공허 정수가 보인다 — 그때 물면 정수, 닫힐 때 물리면 피해.'],
+ ['D7 회오리 새끼',g7,1,'<b>날숨이 낳는 작은 소용돌이</b> — 떠돌며 먹이를 먹고 자라 큰 소용돌이로 돌아간다. 자라기 전에 물면 터진다.']];
+const box=document.getElementById('cards');D.forEach(([n,g,nw,t],k)=>{const d=document.createElement('div');d.className='c';d.innerHTML='<h2>'+n+(nw?' <span class="new">새로</span>':'')+'</h2>';const cv=document.createElement('canvas');cv.width=cv.height=224;cv.style.width=cv.style.height='196px';draw(cv,g);d.appendChild(cv);const p=document.createElement('p');p.innerHTML=t;d.appendChild(p);box.appendChild(d)});
+// 생태계 그림
+function spr(x,g,X,Y,sc,rot){const tmp=document.createElement('canvas');tmp.width=G;tmp.height=G;const t=tmp.getContext('2d');for(let j=0;j<G;j++)for(let i=0;i<G;i++)if(g[j][i]){t.fillStyle=g[j][i];t.fillRect(i,j,1,1)}x.save();x.imageSmoothingEnabled=false;x.translate(X,Y);x.rotate(rot||0);x.drawImage(tmp,-G*sc/2,-G*sc/2,G*sc,G*sc);x.restore()}
+function lab(x,X,Y,t,c){x.font='bold 13px sans-serif';const w=x.measureText(t).width+12;x.fillStyle='rgba(10,6,20,.82)';x.fillRect(X-w/2,Y-11,w,20);x.fillStyle=c||'#ece6f7';x.fillText(t,X-w/2+6,Y+4)}
+{const x=eco.getContext('2d');seed=31;
+ for(const[L,ttl,col,inh] of [[0,'들숨 7초 — 끌어당김',  '#c8b8ff',1],[800,'날숨 2초 — 토해 냄','#ffd0f0',0]]){x.save();x.beginPath();x.rect(L,0,798,300);x.clip();x.translate(L,0);floor(x,800,300,'#1a1630','#1e1934',1);
+  funnel(x,400,130,inh?140:150,1,inh?'#9ff0ff':'#ffffff',inh?1:1.6);
+  if(inh){x.strokeStyle='rgba(200,170,255,.45)';x.lineWidth=2;for(let i=0;i<16;i++){const an=i/16*6.283,r1=290,r2=200;x.beginPath();x.moveTo(400+Math.cos(an)*r1,140+Math.sin(an)*r1*.55);x.lineTo(400+Math.cos(an+.3)*r2,140+Math.sin(an+.3)*r2*.55);x.stroke()}
+   spr(x,g1,170,120,1.6,1.9);lab(x,170,84,'가오리: 흐름 타고 돌격');spr(x,g6,560,212,1.5,0);lab(x,560,250,'조개: 입 열림 → 지금 물기!','#7be0a8');
+   spr(x,g4,430,70,1.4,0);lab(x,430,36,'심연 종: 먹이 가로챔');spr(x,g2,640,90,1.1,-1.2);spr(x,g2,680,120,1.1,-1.4);lab(x,660,58,'박쥐: 둥지로 귀환');
+   spr(x,g5,265,200,1.3,0);x.strokeStyle='rgba(127,240,255,.7)';x.lineWidth=1;x.beginPath();x.moveTo(275,190);x.lineTo(330,150);x.moveTo(275,190);x.lineTo(300,230);x.stroke();lab(x,240,250,'직조자: 흐름에 그물');
+   x.fillStyle='#3fd08a';for(let i=0;i<5;i++)x.fillRect(R(300,500),R(100,180),6,3);worm(x,90,240,-.6)}
+  else{for(let k=0;k<3;k++){x.strokeStyle=`rgba(255,220,255,${.7-k*.2})`;x.lineWidth=3-k;x.beginPath();x.ellipse(400,140,190+k*40,(190+k*40)*.55,0,0,7);x.stroke()}
+   for(let i=0;i<5;i++){const an=-2.6+i*.55;spr(x,g2,400+Math.cos(an)*230,140+Math.sin(an)*120,1.1,an+1.57)}lab(x,400,22,'박쥐: 쏟아져 나와 흩어짐');
+   spr(x,g7,600,200,1.5,0);spr(x,g7,215,215,1.2,0);lab(x,600,250,'회오리 새끼 탄생 → 자라기 전에 물기','#7be0a8');
+   spr(x,g3,300,170,1.4,2.3);lab(x,300,138,'칠성장어: 튀어나와 문다');
+   worm(x,700,110,.4);lab(x,690,80,'플레이어도 밀려남 · 적은 벽에 쾅');}
+  x.restore();x.fillStyle='rgba(10,6,20,.85)';x.fillRect(L+10,10,200,30);x.fillStyle=col;x.font='bold 18px sans-serif';x.fillText(ttl,L+20,31)}
+ x.fillStyle='#120e1a';x.fillRect(798,0,4,300)}
+</script></body></html>
