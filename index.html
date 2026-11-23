@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v121</title>
+<title>공허 기생충 v122</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v121';
+window.VP_VER='v122';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -782,9 +782,9 @@ class G extends Phaser.Scene{
   M.sub.setText('쓸 수 있는 재료: 유기물 '+this.lavail('p')+' · 무기물 '+this.lavail('c')+' · 공허 정수 '+this.lavail('v')+'   ·   변이 '+this.molts+' / '+this.lmax()+((this.zi||1)<2?' (2구역부터 5)':'')+' — 탈피할수록 재료가 더 든다');
   LK.forEach((k,i)=>{const x0=24+i*254,sel=M.sel==k,lk=this.nodeLock(k);g.fillStyle(sel?0x2a2040:0x1d1726,1).fillRoundedRect(x0,72,246,272,8);g.lineStyle(sel?3:1,sel?LCN[k]:0x3a2f57,1).strokeRoundedRect(x0,72,246,272,8);
    M.tt[i].setText(LN[k]+' 계통  ·  '+LRS[k]);
-   for(let t=0;t<3;t++){const tx=M.rw[i][t],[nm,ds]=ND[k][t];let head,col;
+   let yy=106;for(let t=0;t<3;t++){const tx=M.rw[i][t],[nm,ds]=ND[k][t];let head,col;
     if(t<L[k]){head='✔ '+(t+1)+'단계 · '+nm;col='#7be0a8'}else if(t==L[k]){head=(lk?'· ':'▶ ')+(t+1)+'단계 · '+nm+(lk?'   ['+lk+']':'   [선택 가능]');col=lk?'#a99fc2':(sel?'#ffe066':'#ece6f7')}else{head='잠김 · '+(t+1)+'단계 · '+nm;col='#6b6280'}
-    tx.setText(head+'\n'+ds).setColor(col);if(t==L[k]&&!lk){g.fillStyle(LCN[k],sel?.22:.1).fillRoundedRect(x0+6,100+t*80,234,78,6)}}});
+    tx.setText(t==L[k]?head+'\n'+ds:head).setColor(col).setFontSize(11).setLineSpacing(2).setY(yy);if(t==L[k]&&!lk){g.fillStyle(LCN[k],sel?.22:.1).fillRoundedRect(x0+6,yy-5,234,tx.height+10,6)}yy+=tx.height+12}});
   const pl=M.sel?{...L,[M.sel]:L[M.sel]+1}:L,key=this.skinKey(pl);if(key!='p0c0v0')skinTex(this,key,pl);
   M.pv.forEach((o,i)=>{const n=4-i;o.setTexture(key=='p0c0v0'?(n?'ws'+n:'wh'):(n?'ws'+n+'_'+key:'wh_'+key))});M.pvT.setText(M.sel?'진화 후 모습':'지금 모습');
   M.bs=1+.04*(this.feast||0)+(pl.p>=3?.08:0)+(pl.c>=3?.06:0)}
