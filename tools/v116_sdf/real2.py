@@ -29,11 +29,13 @@ MC={ # 땅울음 땅강아지
 SKN=22;SPT=23
 def caterpillar():
     S=Scene()
-    for i in range(6):S.add(sphere(P(0,4.2,9-i*4.2),4.6-abs(i-2)*.3),SKN,1.2,'b')
-    S.add(sphere(P(0,5,12.5),3.8),SH2,1,'b')
-    for i in range(6):
-        for s in(-1,1):S.add(sphere(P(s*2.8,7.4,9-i*4.2),1.0),SPT,0)
-    for s in(-1,1):S.add(sphere(P(s*1.5,7.2,14),.8),EYB,0)
+    for i in range(4):S.add(sphere(P(0,5,6-i*4.6),5.6-abs(i-1.2)*.5),SKN,1.6,'b')
+    S.add(sphere(P(0,5.6,10),4.2),SH2,1.2,'b')
+    for i in range(4):
+        for s in(-1,1):S.add(sphere(P(s*3.4,8.6,6-i*4.6),1.2),SPT,0)
+    for s in(-1,1):S.add(sphere(P(s*1.8,8.4,12),1.0),EYB,0)
+    for i in range(3):
+        for s in(-1,1):legs(S,[P(s*4.4,3,5-i*4.6),P(s*6,0,4.5-i*4.6)],1.0,.8,SH2)
     return S
 def grub():
     S=Scene()
