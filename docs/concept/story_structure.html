@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공허 기생충 이야기형 구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 게임과 같은 공허 밤색 한 가지 테마. 결론 → 장르 지도 → 전체 흐름 → 한 장의 지도 → 퀘스트 사슬 → 퀘스트 종류 순서 */
+  --bg:#14101e; --surface:#1d1730; --line:#3a3052; --ink:#ebe5f6; --muted:#a99fc2;
+  --pick:#6fd0ff; --void:#b48cff; --warn:#ff98a8; --gold:#ffd98a;
+  --display:'IBM Plex Sans KR','Noto Sans KR',system-ui,sans-serif;
+  --body:'Noto Sans KR',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7}
+main{max-width:880px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:40px}
+h1,h2{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:30px}
+h2{font-size:22px;padding-top:8px;border-top:1px solid var(--line)}
+p{margin:0;max-width:65ch}
+.lead{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+.verdict{background:var(--surface);border-left:4px solid var(--pick);padding:18px 20px;border-radius:6px;display:flex;flex-direction:column;gap:8px}
+.verdict strong{color:var(--pick)}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;overflow-x:auto}
+figure svg{width:100%;height:auto;display:block;color:var(--ink);min-width:560px}
+figcaption{font-size:14px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cards div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-size:15px}
+.cards b{display:block;font-family:var(--display);margin-bottom:4px}
+.cards .good b{color:var(--pick)} .cards .bad b{color:var(--warn)}
+ul{margin:0;padding-left:20px}
+li{margin:2px 0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:15px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td:first-child{white-space:nowrap}
+th{font-family:var(--display);background:var(--surface);font-weight:700}
+tr:last-child td{border-bottom:none}
+.k{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+@media (max-width:640px){.cards{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<main>
+
+<header style="display:flex;flex-direction:column;gap:10px">
+  <h1>공허 기생충 이야기형 구조</h1>
+  <p class="lead">숲 → 기계 문명 → 수정 동굴 → 실험실 → 공허로 이어지는 짧고 완결된 이야기 게임이 지금 장르와 맞는지 따져 보고, 장(章) 하나의 지도와 메인 퀘스트를 어떻게 짤지 그림으로 보인다.</p>
+</header>
+
+<div class="verdict">
+  <p><strong>잘 맞는다. 장르 이름으로는 '탑다운 액션 어드벤처 + 로그라이트 요소'가 된다.</strong></p>
+  <p>위에서 보는 한 화면 방 전투, 기믹을 찾아 깨는 보스, 몸이 변하는 성장은 이야기형 액션 어드벤처의 핵심 재료와 같다. 바뀌는 것은 '판마다 처음부터'가 '장마다 이어서'로 바뀌는 것 하나다. 장 안의 일반 방을 지금처럼 무작위로 두면 로그라이크의 다시 하는 맛도 남는다.</p>
+</div>
+
+<section>
+  <h2>장르 지도에서 어디로 옮겨 가나</h2>
+  <figure>
+    <svg viewBox="0 0 660 330" role="img" aria-label="장르 지도: 가로는 무작위에서 고정된 이야기, 세로는 짧은 판 반복에서 하나의 긴 여정. 지금 공허 기생충은 무작위·짧은 판 쪽에 있고, 목표는 고정 뼈대와 하나의 여정 쪽으로 옮겨 간다.">
+      <defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6fd0ff"/></marker></defs>
+      <g stroke="currentColor" stroke-width="1" fill="none" opacity=".55">
+        <line x1="60" y1="290" x2="630" y2="290"/><line x1="60" y1="290" x2="60" y2="20"/>
+        <line x1="345" y1="290" x2="345" y2="20" stroke-dasharray="3 4"/><line x1="60" y1="155" x2="630" y2="155" stroke-dasharray="3 4"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif">
+        <text x="70" y="310">지도·이야기가 무작위</text><text x="630" y="310" text-anchor="end">지도·이야기가 고정</text>
+        <text x="68" y="32">↑ 하나의 긴 여정</text>
+        <text x="68" y="282">↓ 짧은 판 반복</text>
+      </g>
+      <g font-size="12" font-family="Noto Sans KR, sans-serif">
+        <circle cx="100" cy="252" r="5" fill="#a99fc2"/><text x="110" y="256" fill="#a99fc2">아이작</text>
+        <circle cx="250" cy="190" r="5" fill="#a99fc2"/><text x="260" y="194" fill="#a99fc2">하데스 (판마다 이야기가 조금씩)</text>
+        <circle cx="330" cy="120" r="5" fill="#a99fc2"/><text x="320" y="124" fill="#a99fc2" text-anchor="end">칠드런 오브 모르타</text>
+        <circle cx="540" cy="72" r="5" fill="#a99fc2"/><text x="530" y="66" fill="#a99fc2" text-anchor="end">하이퍼 라이트 드리프터</text>
+        <circle cx="585" cy="96" r="5" fill="#a99fc2"/><text x="575" y="100" fill="#a99fc2" text-anchor="end">데스 도어</text>
+        <circle cx="160" cy="232" r="8" fill="none" stroke="#b48cff" stroke-width="2.5"/><text x="172" y="250" fill="#b48cff" font-weight="700">지금 공허 기생충</text>
+        <circle cx="430" cy="84" r="9" fill="#6fd0ff"/><text x="446" y="104" fill="#6fd0ff" font-weight="700">목표: 고정 뼈대 + 무작위 방</text>
+        <line x1="168" y1="226" x2="420" y2="90" stroke="#6fd0ff" stroke-width="2" marker-end="url(#m1)"/>
+      </g>
+    </svg>
+    <figcaption>회색 점은 비슷한 구조의 게임이다(분위기·구조 참고만). 목표 지점은 이야기와 핵심 방은 고정하고 일반 방은 무작위로 두는 자리로, '무작위 던전 + 고정 이야기'로 잘 알려진 게임들과 같은 칸이다.</figcaption>
+  </figure>
+  <div class="cards">
+    <div class="good"><b>그대로 살아나는 것</b>한 화면 방 전투, 기믹 보스, 진화·탈피, 퀘스트 창, 엔딩 2개</div>
+    <div class="good"><b>새로 생기는 것</b>장 단위 저장과 이어하기, 고정 이야기 방, 메인 퀘스트 사슬, 짧은 대사와 기록 조각</div>
+    <div class="bad"><b>조심할 것</b>다시 할 이유가 줄어든다. 엔딩 분기, 계통 빌드, 숨은 기록, 일반 방 무작위로 채운다</div>
+  </div>
+</section>
+
+<section>
+  <h2>게임 전체 흐름</h2>
+  <figure>
+    <svg viewBox="0 0 660 266" role="img" aria-label="다섯 장이 왼쪽에서 오른쪽으로 이어진다. 아래 막대에서 공허 농도가 장마다 짙어지고, 장마다 얻는 성장과 보스가 표시된다.">
+      <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+        <linearGradient id="vg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2a3a2a"/><stop offset=".25" stop-color="#3a3448"/><stop offset=".5" stop-color="#3c2a5a"/><stop offset=".75" stop-color="#5a2a8a"/><stop offset="1" stop-color="#b48cff"/></linearGradient></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="14" y="30" width="110" height="64" rx="6"/><rect x="142" y="30" width="110" height="64" rx="6"/><rect x="270" y="30" width="110" height="64" rx="6"/><rect x="398" y="30" width="110" height="64" rx="6"/><rect x="526" y="30" width="120" height="64" rx="6" stroke="#b48cff" stroke-width="2"/>
+        <line x1="124" y1="62" x2="140" y2="62" marker-end="url(#m2)"/><line x1="252" y1="62" x2="268" y2="62" marker-end="url(#m2)"/><line x1="380" y1="62" x2="396" y2="62" marker-end="url(#m2)"/><line x1="508" y1="62" x2="524" y2="62" marker-end="url(#m2)"/>
+      </g>
+      <rect x="14" y="108" width="632" height="12" rx="6" fill="url(#vg)"/>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="69" y="56" font-weight="700">1장 숲</text><text x="69" y="74" fill="#a99fc2">깨어남</text>
+        <text x="197" y="56" font-weight="700">2장 기계 문명</text><text x="197" y="74" fill="#a99fc2">공허를 처음 봄</text>
+        <text x="325" y="56" font-weight="700">3장 수정 동굴</text><text x="325" y="74" fill="#a99fc2">근원을 쫓음</text>
+        <text x="453" y="56" font-weight="700">4장 실험실</text><text x="453" y="74" fill="#a99fc2">진실 조각</text>
+        <text x="586" y="56" font-weight="700" fill="#b48cff">5장 공허</text><text x="586" y="74" fill="#a99fc2">공허의 진실</text>
+        <text x="330" y="140" fill="#a99fc2">공허 농도 — 1장 없음 → 5장 가득</text>
+        <text x="14" y="156" text-anchor="start" fill="#a99fc2" font-size="11">성장</text>
+        <text x="69" y="176">포식 열림</text><text x="197" y="176">탈피 · 껍질</text><text x="325" y="176">갑각 열림</text><text x="453" y="176">공허 열림</text><text x="586" y="176">셋 중 무엇을 키웠나</text>
+        <text x="14" y="198" text-anchor="start" fill="#a99fc2" font-size="11">보스</text>
+        <text x="69" y="216">숲의 주인 (새)</text><text x="197" y="216">먹힌 기계 (새)</text><text x="325" y="216" fill="#6fd0ff">정동 집게왕</text><text x="453" y="216" fill="#6fd0ff">틈 너머의 관찰자</text><text x="586" y="216" fill="#6fd0ff">허기의 왕관</text>
+        <text x="586" y="234" fill="#6fd0ff">한 몸의 무리</text>
+        <text x="586" y="252" fill="#a99fc2">→ 엔딩 2갈래</text>
+      </g>
+    </svg>
+    <figcaption>장이 넘어갈 때마다 공허가 짙어지고, 그 지역 생물을 흡수해 계통이 하나씩 열린다. 파란 보스는 지금 있는 보스를 이야기 속 자리에 다시 쓴 것이다.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>장 하나의 지도: 2장 기계 문명 예</h2>
+  <figure>
+    <svg viewBox="0 0 660 330" role="img" aria-label="2장 지도. 고정 이야기 방(입구, 기록 단말, 발전기 세 곳, 보스, 출구)이 정해진 자리에 있고, 그 사이를 무작위 일반 방이 채운다. 저장 지점과 숨은 방이 있다.">
+      <g stroke="currentColor" stroke-width="1" fill="none" opacity=".5">
+        <line x1="85" y1="85" x2="465" y2="85"/><line x1="85" y1="165" x2="465" y2="165"/><line x1="85" y1="245" x2="465" y2="245"/>
+        <line x1="85" y1="85" x2="85" y2="245"/><line x1="180" y1="85" x2="180" y2="245"/><line x1="275" y1="85" x2="275" y2="245"/><line x1="370" y1="85" x2="370" y2="245"/><line x1="465" y1="85" x2="465" y2="245"/>
+        <line x1="465" y1="165" x2="560" y2="165"/><line x1="275" y1="245" x2="275" y2="300"/>
+      </g>
+      <g stroke="currentColor" stroke-width="1.2">
+        <rect x="50" y="62" width="70" height="46" rx="4" fill="#2c3a2c"/>
+        <rect x="145" y="62" width="70" height="46" rx="4" fill="#4a4230" stroke="#ffd98a"/>
+        <rect x="240" y="62" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="335" y="62" width="70" height="46" rx="4" fill="#1e3e52" stroke="#6fd0ff"/>
+        <rect x="430" y="62" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="50" y="142" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="145" y="142" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="240" y="142" width="70" height="46" rx="4" fill="#4a4230" stroke="#ffd98a"/>
+        <rect x="335" y="142" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="430" y="142" width="70" height="46" rx="4" fill="#241d36" stroke-dasharray="3 2"/>
+        <rect x="50" y="222" width="70" height="46" rx="4" fill="#1e3e52" stroke="#6fd0ff"/>
+        <rect x="145" y="222" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="240" y="222" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="335" y="222" width="70" height="46" rx="4" fill="#3a3052"/>
+        <rect x="430" y="222" width="70" height="46" rx="4" fill="#1e3e52" stroke="#6fd0ff"/>
+        <rect x="525" y="138" width="90" height="54" rx="4" fill="#3e2c5e" stroke="#b48cff" stroke-width="2"/>
+        <rect x="240" y="282" width="70" height="40" rx="4" fill="#2c2440" stroke-dasharray="4 3"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="85" y="89">입구</text>
+        <text x="180" y="83">기록 단말</text><text x="180" y="99" font-size="11">저장</text>
+        <text x="370" y="89">발전기 A</text>
+        <text x="275" y="163">잠긴 문</text><text x="275" y="179" font-size="11">공장 심장부</text>
+        <text x="85" y="249">발전기 B</text>
+        <text x="465" y="249">발전기 C</text>
+        <text x="465" y="169" font-size="11">지름길</text>
+        <text x="570" y="162" font-weight="700" fill="#b48cff">보스</text><text x="570" y="178" font-size="11">먹힌 기계</text>
+        <text x="275" y="306" font-size="11">숨은 방</text>
+        <text x="570" y="214" font-size="11">→ 3장 출구</text>
+      </g>
+      <g font-size="12" font-family="Noto Sans KR, sans-serif">
+        <rect x="50" y="14" width="12" height="12" rx="2" fill="#4a4230" stroke="#ffd98a"/><text x="68" y="25" fill="currentColor">고정 이야기 방</text>
+        <rect x="170" y="14" width="12" height="12" rx="2" fill="#1e3e52" stroke="#6fd0ff"/><text x="188" y="25" fill="currentColor">퀘스트 목표 방</text>
+        <rect x="290" y="14" width="12" height="12" rx="2" fill="#3a3052"/><text x="308" y="25" fill="currentColor">무작위 일반 방</text>
+        <rect x="410" y="14" width="12" height="12" rx="2" fill="#3e2c5e" stroke="#b48cff"/><text x="428" y="25" fill="currentColor">보스</text>
+        <rect x="470" y="14" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-dasharray="3 2"/><text x="488" y="25" fill="currentColor">숨은 방·지름길</text>
+      </g>
+    </svg>
+    <figcaption>색칠한 방은 장마다 자리와 내용이 고정이고, 어두운 방은 지금처럼 생물·지형을 무작위로 만든다. 다시 하면 일반 방이 달라지고, 발전기 세 곳의 자리는 장 안에서 섞을 수 있다.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>메인 퀘스트 사슬: 2장 예</h2>
+  <figure>
+    <svg viewBox="0 0 660 270" role="img" aria-label="2장 퀘스트 사슬. 공장에 들어가기, 기록 단말 읽기, 발전기 세 곳 켜기(순서 자유), 잠긴 문 열기, 보라 살 추적, 보스, 기록에서 공허라는 말을 처음 보기로 이어진다. 옆 갈래로 선택 퀘스트가 있다.">
+      <defs><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="10" y="40" width="96" height="44" rx="22"/>
+        <rect x="126" y="40" width="96" height="44" rx="22" stroke="#ffd98a"/>
+        <rect x="246" y="6" width="96" height="36" rx="18" stroke="#6fd0ff"/><rect x="246" y="46" width="96" height="36" rx="18" stroke="#6fd0ff"/><rect x="246" y="86" width="96" height="36" rx="18" stroke="#6fd0ff"/>
+        <rect x="366" y="40" width="96" height="44" rx="22" stroke="#ffd98a"/>
+        <rect x="486" y="40" width="74" height="44" rx="22"/>
+        <rect x="580" y="40" width="70" height="44" rx="6" stroke="#b48cff" stroke-width="2"/>
+        <rect x="486" y="150" width="164" height="44" rx="22" stroke="#ffd98a"/>
+        <line x1="106" y1="62" x2="124" y2="62" marker-end="url(#m3)"/>
+        <line x1="222" y1="56" x2="244" y2="26" marker-end="url(#m3)"/><line x1="222" y1="62" x2="244" y2="64" marker-end="url(#m3)"/><line x1="222" y1="68" x2="244" y2="102" marker-end="url(#m3)"/>
+        <line x1="342" y1="24" x2="364" y2="54" marker-end="url(#m3)"/><line x1="342" y1="64" x2="364" y2="62" marker-end="url(#m3)"/><line x1="342" y1="104" x2="364" y2="70" marker-end="url(#m3)"/>
+        <line x1="462" y1="62" x2="484" y2="62" marker-end="url(#m3)"/><line x1="560" y1="62" x2="578" y2="62" marker-end="url(#m3)"/>
+        <line x1="615" y1="84" x2="580" y2="148" marker-end="url(#m3)"/>
+        <g stroke-dasharray="4 3" opacity=".8"><rect x="40" y="200" width="150" height="40" rx="20"/><rect x="226" y="200" width="150" height="40" rx="20"/><line x1="174" y1="84" x2="120" y2="198" marker-end="url(#m3)"/><line x1="294" y1="122" x2="300" y2="198" marker-end="url(#m3)"/></g>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="58" y="66">공장에 들어감</text>
+        <text x="174" y="59">기록 단말</text><text x="174" y="75" font-size="11" fill="#a99fc2">목표가 뜸</text>
+        <text x="294" y="29">발전기 A 켜기</text><text x="294" y="69">발전기 B 켜기</text><text x="294" y="109">발전기 C 켜기</text>
+        <text x="414" y="59">잠긴 문 열림</text><text x="414" y="75" font-size="11" fill="#a99fc2">짧은 연출</text>
+        <text x="523" y="59">보라 살</text><text x="523" y="75">추적</text>
+        <text x="615" y="66" fill="#b48cff" font-weight="700">보스</text>
+        <text x="568" y="170">기록: '공허'를 처음 봄</text><text x="568" y="186" font-size="11" fill="#a99fc2">→ 3장 수정 동굴로</text>
+        <text x="115" y="224" font-size="11">선택: 녹슨 거미 기록 모으기</text>
+        <text x="301" y="224" font-size="11">선택: 숨은 방의 실험 메모</text>
+        <text x="420" y="140" font-size="11" fill="#a99fc2">순서 자유</text>
+      </g>
+    </svg>
+    <figcaption>노란 테두리는 이야기가 드러나는 지점, 파란 테두리는 지도 위 목표, 보라는 보스다. 발전기 세 곳은 순서를 자유롭게 해서 탐험에 선택지를 준다. 점선 갈래는 선택 퀘스트로, 모으면 실험실 진실의 실마리가 늘어난다.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>퀘스트 종류와 지금 있는 시스템</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>퀘스트 종류</th><th>예</th><th>지금 있는 것으로 되는가</th></tr></thead>
+      <tbody>
+        <tr><td><span class="k" style="background:#6fd0ff"></span>찾아가기·켜기</td><td>발전기 세 곳 켜기, 결정 근원 찾기</td><td>방 생성·퀘스트 창으로 됨. '켜는 물체'만 새로</td></tr>
+        <tr><td><span class="k" style="background:#7be0a8"></span>먹기·흡수</td><td>숲 생물 10마리 흡수 → 포식 열림</td><td>먹기·포식 퀘스트로 이미 있음</td></tr>
+        <tr><td><span class="k" style="background:#ff98a8"></span>처치·추적</td><td>보라 살이 붙은 기계 추적해 처치</td><td>몬스터 AI로 됨. 도망·추적 행동만 더함</td></tr>
+        <tr><td><span class="k" style="background:#b48cff"></span>보스 기믹</td><td>수정으로 막아 기절, 눈 감기기</td><td>이미 있음 (지금 게임의 강점)</td></tr>
+        <tr><td><span class="k" style="background:#ffd98a"></span>기록·대사</td><td>기록 단말, 벽화, 실험 메모</td><td>새로 만듦. 한두 줄 대사 + 기록 카드(엔딩의 기록 카드 재활용)</td></tr>
+        <tr><td><span class="k" style="background:#a99fc2"></span>장 넘김·저장</td><td>보스 뒤 출구 → 다음 장, 장 시작에서 이어하기</td><td>구역 넘김·저장이 있어 손보면 됨</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
