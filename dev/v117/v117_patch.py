@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """v116 -> v117: 플레이어 몸 음영 · 배경(방 한 장 바닥 + 동굴 벽) — 3안 시안(window.__vpW / __vpBg = 'A'|'B'|'C')
-사용: python3 dev/v117/v117_patch.py index.html [W=A] [B=A]"""
+사용: python3 dev/v117/v117_patch.py index.html  (개발자 선택: 지렁이 A · 배경 A — 기본값)"""
 import sys, os
 P = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
-A = dict(a.split('=') for a in sys.argv[2:])
+A = dict(W="A", B="A"); A.update(a.split("=") for a in sys.argv[2:])
 H = os.path.dirname(os.path.abspath(__file__))
 s = open(P, encoding='utf-8').read()
 def rep(old, new, cnt=1):

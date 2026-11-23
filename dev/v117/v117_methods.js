@@ -13,14 +13,14 @@
   x.putImageData(im,0,0);const t=this.textures.addCanvas(key,cv);t.setFilter(Phaser.Textures.FilterMode.NEAREST);return key}
  v117Frame(a){const st=this.v117Bg();if(!st)return;const z=this.zi>1?2:1,key='fr117'+st+z+'_'+(this.lv.rooms.indexOf(a))+'_'+a.r+'_'+a.c+(a.tr||'');
   if(!this.textures.exists(key)){const W=800,H=360,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d'),im=x.createImageData(W,H),d=im.data,S=(a.r*7+a.c*13+1)*3+st.charCodeAt(0);
-   const cvk=k=>a.d[k]&&(a.ct[k]=='cave'||a.ct[k]=='gate'),gN=cvk('N'),gS=cvk('S'),gW=cvk('W'),gE=cvk('E'),J=(t,s)=>(v117f(t/46,s,S)*2-1)*8+(v117n(t/9,s+3,S)-.5)*3;
+   const cvk=k=>a.d[k]&&(a.ct[k]=='cave'||a.ct[k]=='gate'),gN=cvk('N'),gS=cvk('S'),gW=cvk('W'),gE=cvk('E'),JT=[];for(let k=1;k<=8;k++){const a=new Float32Array(802);for(let t=0;t<802;t++)a[t]=(v117f(t/46,k,S)*2-1)*8+(v117n(t/9,k+3,S)-.5)*3;JT[k]=a}const J=(t,k)=>JT[k][Math.max(0,Math.min(801,t|0))];
    const dep=(px,py)=>{let m=-99;const top=40+J(px,1)-py,bot=py-(320-J(px,2)),lef=40+J(py,3)-px,rig=px-(760-J(py,4));
     const gx=(px<320?320-px:px>480?px-480:-Math.min(px-320,480-px)),gy=(py<120?120-py:py>240?py-240:-Math.min(py-120,240-py));
     m=Math.max(gN?Math.min(top,gx+J(px,5)*.5):top,gS?Math.min(bot,gx+J(px,6)*.5):bot,gW?Math.min(lef,gy+J(py,7)*.5):lef,gE?Math.min(rig,gy+J(py,8)*.5):rig);return m};
    const pal=st=='A'?(z==1?[[24,19,36],[42,34,60],[64,52,90],[110,94,148]]:[[20,20,38],[36,36,66],[56,56,98],[98,98,156]]):st=='B'?(z==1?[[26,12,32],[40,18,48],[56,26,66],[110,54,120]]:[[18,14,36],[30,22,56],[44,32,80],[90,66,140]]):(z==1?[[16,12,22],[34,26,42],[56,44,66],[92,76,104]]:[[12,14,24],[28,30,48],[46,50,76],[80,86,120]]);
    for(let py=0;py<H;py++)for(let px=0;px<W;px++){if(px>70&&px<730&&py>70&&py<290)continue;const o=(py*W+px)*4,m=dep(px,py);
     if(m<=0){if(m>-7){const sh=(dep(px-3,py-4)>0)?.45:0;if(sh){d[o+3]=sh*255*(1+m/7)}}continue}
-    const n=v117f(px/16,py/16,S+11),by=V117BAY[(py&3)*4+(px&3)];let c;
+    const n=v117n(px/9,py/9,S+11)*.7+v117h(px>>1,py>>1,S)*.3,by=V117BAY[(py&3)*4+(px&3)];let c;
     if(st=='A'){const lv=m<2.5?3:m<6?2:(n+by*.25>.55?1:0)+(m>22?-1:0);c=pal[Math.max(0,lv)];const lit=dep(px-2,py-2)<=0&&m<5;if(lit)c=pal[3]}
     else if(st=='B'){const rid=Math.sin(m*.3+n*4);let lv=m<2?3:rid>.75?2:rid>-.5?1:0;if(v117n(px/7,py/7,S+5)>.86&&m>6)lv=3;c=pal[lv]}
     else{const band=Math.floor((py*.8+px*.25+n*14)/7)%3;let lv=m<2.5?3:band==0?2:band==1?1:0;if(m>26)lv=Math.min(lv,1);c=pal[lv]}
