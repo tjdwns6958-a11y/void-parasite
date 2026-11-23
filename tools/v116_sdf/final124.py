@@ -13,14 +13,14 @@ def adc():  # 웅크린 쥐: 띠 두른 공 + 등 결정
 if __name__=='__main__':
     mon.ORI='up'
     for n,k in (('kha','sk_a'),('kha2','sk_c'),('kha3','sk_e')):
-        b,d,l,a,e=SC2[k];spr(SH.sc1(),96,108,.95,(0,6,-2),89,'v124_'+n,(),M=GLOSS2(b,d,l,a,e),light=(-.4,.8,-.45))
+        b,d,l,a,e=SC2[k];spr(SH.sc1(),96,108,.67,(0,6,-2),89,'v124_'+n,(),M=GLOSS2(b,d,l,a,e),light=(-.4,.8,-.45))
     for n,k in (('gna','rq_c'),('gna2','rq_e')):
         b,d,c=RT2[k];M=PAL(b,d,d[:4],c,(0x101010,0x202020,0x707070),CRY)
         mon.ORI='right';spr(SH.ad4(),70,50,.7,(0,5,0),89,'v124_'+n,(),M=M,light=LT)
-        mon.ORI='up';spr(adc(),40,40,.6,(0,7,0),89,'v124_'+n.replace('gna','gnac'),(),M=M,light=LT)
+        mon.ORI='up';spr(adc(),44,44,.54,(0,7,0),89,'v124_'+n.replace('gna','gnac'),(),M=M,light=LT)
     M=SOFT();mon.ORI='up'
-    spr(b1(),110,130,1.0,(0,6,0),89,'v124_rek',(),M=M,light=LT)
-    spr(mound(1),80,64,.85,(0,2,0),48,'v124_mound',(),M=M)
+    spr(b1(),110,130,.525,(0,6,0),89,'v124_rek',(),M=M,light=LT)
+    spr(mound(1),80,64,.425,(0,2,0),48,'v124_mound',(),M=M)
     MN.ORI='up'
     for n,k in (('f_s','fs_a'),('f_s2','fs_b'),('f_s3','fs_e')):
         sh,cr=MITE[k];M=FS();M[SHELL]=dict(M[SHELL]);M[SHELL]['ramp']=ramp(*sh);M[CRY]=dict(M[CRY]);M[CRY]['ramp']=ramp(*cr)
