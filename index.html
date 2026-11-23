@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>공허 기생충 v118</title>
+<title>공허 기생충 v119</title>
 <style>
 :root{--bg:#120e1a;--fg:#ece6f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120e1a;--fg:#ece6f7}}
@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Apple 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.80.1/phaser.min.js"></script>
 <script>
 // ===== 멈춤 대책: 오류 보고 · 루프 보호 · 감시견 (v33) =====
-window.VP_VER='v118';
+window.VP_VER='v119';
 // 전체 화면 (v41)
 window.vpFS={ok(){return !!(document.fullscreenEnabled||document.webkitFullscreenEnabled)},on(){return !!(document.fullscreenElement||document.webkitFullscreenElement)},
  toggle(){try{if(this.on()){const f=document.exitFullscreen||document.webkitExitFullscreen;f&&f.call(document);return true}if(!this.ok())return false;const e=document.documentElement,f=e.requestFullscreen||e.webkitRequestFullscreen;const r=f.call(e,{navigationUI:'hide'});
@@ -799,7 +799,7 @@ class G extends Phaser.Scene{
   this.bd.forEach(o=>{o.setTintFill(0xffffff);this.time.delayedCall(140,()=>o.clearTint())});
   this.pop(LN[k]+' 계통 '+this.lin[k]+'단계 · '+ND[k][this.lin[k]-1][0],p.x,p.y-10)}
  // ----- 계통 능력 -----
- dtx(x,y,t,c){const tx=this.add.text(x,y,t,ST({fontSize:'12px',color:c,fontStyle:'bold'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:tx,y:y-24,alpha:0,duration:700,onComplete:()=>tx.destroy()})}
+ dtx(x,y,t,c){if(x==400&&y<90&&t.length>12){if(this.bHint){this.tweens.killTweensOf(this.bHint);this.bHint.destroy()}const tx=this.bHint=this.add.text(400,66,t,ST({fontSize:'13px',color:c,fontStyle:'bold',backgroundColor:'#0c0816cc',padding:{x:10,y:5},align:'center',wordWrap:{width:620}})).setOrigin(.5).setDepth(72).setAlpha(0);this.tweens.add({targets:tx,alpha:1,duration:150});this.tweens.add({targets:tx,alpha:0,delay:2400,duration:400,onComplete:()=>{if(this.bHint===tx)this.bHint=null;tx.destroy()}});return}const tx=this.add.text(x,y,t,ST({fontSize:'12px',color:c,fontStyle:'bold'})).setOrigin(.5).setDepth(70);this.tweens.add({targets:tx,y:y-24,alpha:0,duration:700,onComplete:()=>tx.destroy()})}
  dmgM(m,d,q){if(!m.on)return 0;if(!q)d*=this.dmul(m);m.hp-=d;if(!q&&m.spr){m.spr.setTintFill(0xffffff);this.time.delayedCall(70,()=>{if(m.spr)m.spr.clearTint()})}if(m.hp<=0){this.kill(m);return 1}return 0}
  gulp(m){const x=m.x,y=m.y;this.kill(m);this.hasteT=3;this.dtx(x,y-16,'통째 삼키기!','#ff7a9a');for(let i=0;i<8;i++){const an=i/8*6.283,b=this.add.circle(x+Math.cos(an)*22,y+Math.sin(an)*22,2.5,0xff7a9a).setDepth(12);this.tweens.add({targets:b,x:this.pl.x,y:this.pl.y,alpha:0,duration:260,onComplete:()=>b.destroy()})}if(this.lin.p>=2)this.feed()}
  feed(){if(this.feast<5){this.feast++;this.recalc()}this.en=Math.min(this.emax,this.en+8);this.dtx(this.pl.x,this.pl.y-26,'포식 +8','#ff9ac0')}
@@ -2604,7 +2604,7 @@ class G extends Phaser.Scene{
    m.MC.splice(m.MC.indexOf(c),1);c.P.forEach(q=>q.on=0);if(!m.MC.length)m.MC=null;this.swFood(m,c.x,c.y,Math.min(3,Math.max(1,c.P.length/12|0)));this.dtx(c.x,c.y-16,'무리가 터졌다','#9fe8b0');
    for(let i=0;i<10;i++){const a=i/10*6.283,b=this.add.circle(c.x,c.y,2,0x7ae698).setDepth(12);this.tweens.add({targets:b,x:c.x+Math.cos(a)*30,y:c.y+Math.sin(a)*22,alpha:0,duration:300,onComplete:()=>b.destroy()})}return 1}}return 0}
  // ===== v39: 1페이즈 R1 — 회전하는 세 겹 고리 =====
- sw_ringr0(m,p,K){this.sw_ring30(m,p,K);const s0=Math.random()<.5?1:-1;K.R.forEach((r,i)=>{r.w=(i%2?-1:1)*s0*(.45+i*.1)});K.src='회전하는 세 겹 고리';K.wu=1.0;
+ sw_ringr0(m,p,K){m.r3N=9;this.sw_ring30(m,p,K);const s0=Math.random()<.5?1:-1;K.R.forEach((r,i)=>{r.w=(i%2?-1:1)*s0*(.45+i*.1)});K.src='회전하는 세 겹 고리';K.wu=1.0;
   if((m.rrN=(m.rrN||0)+1)<=2)this.dtx(400,64,'세 겹 고리의 틈이 돈다 — 화살표 방향으로 틈을 따라가며 빠질 것','#ffe066')}
  sw_ringr(m,dt,p,K){const g=m.tg,pu=.5+.5*Math.sin(this.time.now/70),tt=Math.max(0,K.t-K.wu);let alive=0;
   const rs=K.R.map(r=>{const R=r.R0-tt*K.v;if(R>14)alive++;return{R:Math.max(14,R),ga:r.ga+r.w*tt,w:r.w,on:R>14}});if(!alive)return 1;

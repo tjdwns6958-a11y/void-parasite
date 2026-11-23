@@ -13,7 +13,7 @@ window.botInstall=function(opt){opt=opt||{};const s=GAME.scene.getScene('G');s.h
  let stuckT=0,side=0,sdir=1,lastP=[0,0],eatHold=0,goal=null,hist=[];
  s.sys.events.on('preupdate',()=>{if(!S.on)return;const p=s.pl,a=s.cur;keys.forEach(k=>K[k].isDown=false);if(s.over||s.tr)return;
   if(s.molt){const k=S.pickK();if(k){s.molt.sel=k;s.moltDone()}else s.moltClose();return}
-  if(a.tr=='haven'&&S.pickK()){s.moltOpen();return}
+  if(S.pickK()&&(a.tr=='haven'||(s.moltSafe&&s.moltSafe()))&&!(S.moltTry>s.time.now)){S.moltTry=s.time.now+1500;s.moltOpen();return}
   S.energyMin=Math.min(S.energyMin,s.en);if(S.readyAt==null&&s.moltPts()>=3)S.readyAt=+S.t.toFixed(1);
   const now=s.time.now,foods=a.food.filter(f=>f.on&&f.spr&&!(f.ready>now)),ens=a.en.filter(m=>m.on&&m.spr&&!(m.k=='rek'&&(m.st=='under'||m.st=='warn'))&&!(m.k=='vdl'&&m.st!='dive'));
   let tx=null,ty=null,mode='explore';
