@@ -7,7 +7,7 @@ def hx(h):return ((h>>16)&255,(h>>8)&255,h&255)
 class C:
     def __init__(s,W,H,k=4):s.W,s.H,s.k=W,H,k;s.img=np.zeros((H*k,W*k,4),np.uint8);s.id=np.zeros((H*k,W*k),int);s.n=0
     def _shade(s,mask,nx,ny,ramp,base=.55):
-        nz=np.sqrt(np.clip(1-nx*nx-ny*ny,0,1));l=np.clip(base+.32*(-.55*nx-.65*ny)+.25*nz,0,.999);idx=(l*len(ramp)).astype(int)
+        nz=np.sqrt(np.clip(1-nx*nx-ny*ny,0,1));l=np.clip(base+.18*(-.55*nx-.65*ny)+.14*nz,0,.999);idx=(l*len(ramp)).astype(int)
         col=np.array([hx(c) for c in ramp])[idx];s.n+=1;s.img[mask,:3]=col[mask];s.img[mask,3]=255;s.id[mask]=s.n
     def ell(s,cx,cy,rx,ry,ramp,base=.55):
         k=s.k;Y,X=np.mgrid[0:s.H*k,0:s.W*k];x=(X+.5)/k;y=(Y+.5)/k;nx=(x-cx)/rx;ny=(y-cy)/ry;m=nx*nx+ny*ny<=1;s._shade(m,nx,ny,ramp,base)
@@ -39,11 +39,12 @@ def frog(pose,W=30,H=32):
             c.poly([(cx+s*4,20),(cx+s*8.5,17),(cx+s*6.5,26)],1.6,L);toes(c,cx+s*6.5,26.5,math.pi/2+s*-.4,2.4,L)
             c.poly([(cx+s*4,11),(cx+s*6,9),(cx+s*6.5,5.5)],.95,L);toes(c,cx+s*6.5,5,-math.pi/2+s*.4,1.8,L)
     c.ell(cx,17,6.8,7.6,D);c.ell(cx,10.5,6.4,4.8,D,.6)
-    c.ell(cx-1.6,15,2.6,3.4,G[3:6],.5)
     for s in(-1,1):
-        c.ell(cx+s*4.4,7.6,2.9,2.7,D,.66);c.ell(cx+s*4.6,7.2,1.6,1.6,[0x0e0c14,0x16141e],.3);c.ell(cx+s*4.0,6.6,.55,.55,[0xffffff],.9)
+        c.ell(cx+s*4.4,7.6,2.8,2.6,D,.62);c.ell(cx+s*4.4,7.3,1.3,1.3,[0x14121c],.3)
+    # 등 얼굴 무늬: 두 눈 점 + 웃는 입
+    for s in(-1,1):c.ell(cx+s*2.5,15.2,1.6,1.8,[0x3e3b4a],.3)
     for t in range(9):
-        a=math.pi*(.15+.7*t/8);c.ell(cx+math.cos(a)*3,11.2+math.sin(a)*1.3,.32,.32,[0x2a2834],.3)
+        a=math.pi*(.15+.7*t/8);c.ell(cx+math.cos(a)*2.8,18.2+math.sin(a)*1.6,.38,.38,[0x3e3b4a],.3)
     return c.done()
 if __name__=='__main__':
     for p in (1,2,3):frog(p).save(os.path.join(OUT,'vf%d.png'%p));print('vf%d'%p)
