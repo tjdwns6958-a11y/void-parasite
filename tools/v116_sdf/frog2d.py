@@ -26,25 +26,31 @@ class C:
 def toes(c,x,y,ang,ln,ramp,pad=.95):
     for d in(-.55,0,.55):
         a=ang+d;ex,ey=x+math.cos(a)*ln,y+math.sin(a)*ln;c.seg(x,y,ex,ey,.45,ramp);c.ell(ex,ey,pad,pad,ramp,.62)
-def frog(pose,W=30,H=32):
-    c=C(W,H);cx=W/2;D=G[1:5];L=G[0:4];E=G[3:6]
+def frog(pose,pat=0,W=30,H=32):
+    c=C(W,H);cx=W/2;D=G[1:5];L=G[0:4];DK=[0x2e2c38];LT=[0xb4b0c4]
     for s in(-1,1):
-        if pose==1:   # 앉음
+        if pose==1:
             c.poly([(cx+s*4.5,19),(cx+s*10,16),(cx+s*9,24)],1.5,L);toes(c,cx+s*9,24.5,math.pi/2+s*-.5,2.4,L)
             c.poly([(cx+s*4.5,11),(cx+s*8.5,12.5),(cx+s*9,8.5)],1.0,L);toes(c,cx+s*9,8,-math.pi/2+s*.6,2,L)
-        elif pose==2: # 엎드려 펼침
+        elif pose==2:
             c.poly([(cx+s*4.5,19),(cx+s*11.5,18.5),(cx+s*12,25)],1.3,L);toes(c,cx+s*12,25.5,math.pi/2+s*-.7,2.4,L)
             c.poly([(cx+s*4.5,11),(cx+s*10,10.5),(cx+s*11,6.5)],.95,L);toes(c,cx+s*11,6,-math.pi/2+s*.8,2,L)
-        else:         # 뛰기 직전
+        else:
             c.poly([(cx+s*4,20),(cx+s*8.5,17),(cx+s*6.5,26)],1.6,L);toes(c,cx+s*6.5,26.5,math.pi/2+s*-.4,2.4,L)
             c.poly([(cx+s*4,11),(cx+s*6,9),(cx+s*6.5,5.5)],.95,L);toes(c,cx+s*6.5,5,-math.pi/2+s*.4,1.8,L)
     c.ell(cx,17,6.8,7.6,D);c.ell(cx,10.5,6.4,4.8,D,.6)
+    if pat==1:   # 옆줄: 눈 뒤에서 몸 옆으로 이어지는 어두운 줄 + 밝은 테
+        for s in(-1,1):
+            for t in range(10):y=9+t*1.4;x=cx+s*(5.2-abs(t-4)*.18+ (0 if t<3 else .4));c.ell(x+s*.5,y+.4,.9,.9,LT,.3);c.ell(x,y,.95,.95,DK,.3)
+    elif pat==2: # 등 줄무늬: 가운데 밝은 줄 + 양옆 어두운 줄
+        for t in range(12):y=9.5+t*1.2;c.ell(cx,y,.8,.8,LT,.3)
+        for s in(-1,1):
+            for t in range(10):y=11+t*1.2;c.ell(cx+s*2.6,y,.85,.85,DK,.3)
+    elif pat==3: # 얼룩
+        for (x,y,r) in [(-2.6,14,1.6),(2.4,13.2,1.3),(.2,17.4,1.8),(-3.2,19.6,1.2),(3.4,19,1.5),(-.8,22,1.1),(1.8,10.6,.9)]:c.ell(cx+x,y,r+.45,r+.45,LT,.3);c.ell(cx+x,y,r,r*.9,DK,.3)
     for s in(-1,1):
-        c.ell(cx+s*4.4,7.6,2.8,2.6,D,.62);c.ell(cx+s*4.4,7.3,1.3,1.3,[0x14121c],.3)
-    # 등 얼굴 무늬: 두 눈 점 + 웃는 입
-    for s in(-1,1):c.ell(cx+s*2.5,15.2,1.6,1.8,[0x3e3b4a],.3)
-    for t in range(9):
-        a=math.pi*(.15+.7*t/8);c.ell(cx+math.cos(a)*2.8,18.2+math.sin(a)*1.6,.38,.38,[0x3e3b4a],.3)
+        c.ell(cx+s*4.9,7.4,2.9,2.7,G[2:6],.6);c.ell(cx+s*5.1,7.1,1.15,1.15,[0x14121c],.3)
     return c.done()
 if __name__=='__main__':
-    for p in (1,2,3):frog(p).save(os.path.join(OUT,'vf%d.png'%p));print('vf%d'%p)
+    for p in (1,2,3):frog(1,p).save(os.path.join(OUT,'vp%d.png'%p));print('vp%d'%p)
+    frog(3,1).save(os.path.join(OUT,'vj1.png'))
