@@ -53,5 +53,40 @@ def frog(pose,pat=0,W=30,H=32,pal=1):
     for s in(-1,1):
         c.ell(cx+s*4.4,7.6,2.9,2.7,Q['EYE'],.62);c.ell(cx+s*4.6,7.3,1.05,1.05,[0x0c0a12],.3)
     return c.done()
+def small(kind,pal):
+    if kind==1:  # 올챙이: 둥근 머리 + 흔들리는 꼬리
+        c=C(16,22);cx=8;B=pal['B']
+        c.poly([(cx,11),(cx+1.2,15),(cx-.6,18.5),(cx+.6,21)],1.6,pal['T']);c.poly([(cx,12),(cx+1,16),(cx-.4,19.5)],.9,pal['T2'])
+        c.ell(cx,7.6,4.6,5,B);c.ell(cx-1.4,6.2,1.6,1.6,pal['HL'],.6)
+        for s in(-1,1):c.ell(cx+s*2.4,4.6,.8,.8,[0x0c0a12],.3)
+        return c.done()
+    if kind==2:  # 반딧불이: 빛나는 꽁무니
+        c=C(18,22);cx=9;B=pal['B']
+        for s in(-1,1):c.ell(cx+s*3.2,9,2.8,4.2,pal['W'],.6)
+        c.ell(cx,13.6,3,4,pal['G']);c.ell(cx,9,3.2,3.6,B);c.ell(cx,5,2.6,2.2,pal['H'])
+        for s in(-1,1):c.poly([(cx+s*1,3.4),(cx+s*2.6,.8)],.45,pal['H'])
+        return c.done()
+    if kind==3:  # 무당벌레: 둥근 등딱지 + 무늬
+        c=C(18,20);cx=9;B=pal['B']
+        for s in(-1,1):
+            for y in(7,10,13):c.poly([(cx+s*4.4,y),(cx+s*6.4,y+.8)],.45,pal['L'])
+        c.ell(cx,10.6,5.4,6,B);c.ell(cx,4.6,3,2.2,pal['H'])
+        for (x,y,r) in[(-2.4,9,1.2),(2.4,9,1.2),(-2.6,13.4,1.0),(2.6,13.4,1.0),(0,6.6,.9)]:c.ell(cx+x,y,r,r,pal['S'],.4)
+        return c.done()
+    # 톡토기: 통통한 몸 + 짧은 더듬이 + 배 밑 도약 꼬리
+    c=C(16,22);cx=8;B=pal['B']
+    for s in(-1,1):c.poly([(cx+s*1,16),(cx+s*2,20.5)],.6,pal['L'])
+    for i,(y,r) in enumerate([(13,3.6),(10,4),(7,3.6)]):c.ell(cx,y,r,3.2,B)
+    c.ell(cx,4.4,2.8,2.4,pal['H'])
+    for s in(-1,1):c.poly([(cx+s*1,3),(cx+s*2.6,.6)],.5,pal['L']);c.ell(cx+s*1.4,4,.6,.6,[0x0c0a12],.3)
+    return c.done()
+SP={
+ 1:[dict(B=[0x2c2c44,0x3c3c5c,0x4e4e76,0x62628c],T=[0x3c3c5c,0x4e4e76],T2=[0x7a7aa8],HL=[0x8484b4]),dict(B=[0x1c4a52,0x2a6066,0x3c787c,0x509090],T=[0x2a6066,0x3c787c],T2=[0x7ad8d8],HL=[0x78b8b4])],
+ 2:[dict(B=[0x2a2440,0x3a3256],W=[0x6a6a9a,0x8a8ab8],G=[0xc0e040,0xe8ff80,0xfaffc8],H=[0x5a3a70,0x6e4a86]),dict(B=[0x2a2440,0x3a3256],W=[0x6a6a9a,0x8a8ab8],G=[0x40c8e0,0x80ecff,0xd0faff],H=[0x5a3a70,0x6e4a86])],
+ 3:[dict(B=[0x6a2a8a,0x8a40aa,0xa85ac4],H=[0x1c1428,0x281e38],S=[0x1c1428],L=[0x281e38]),dict(B=[0x2a7a8a,0x40a0aa,0x60c0c4],H=[0x1c1428,0x281e38],S=[0x1c1428],L=[0x281e38])],
+ 4:[dict(B=[0x5a5a86,0x7474a2,0x9090bc],H=[0x4a4a74,0x5a5a86],L=[0x3a3a5c]),dict(B=[0x3e7a6a,0x52968a,0x6cb0a2],H=[0x2e6658,0x3e7a6a],L=[0x2a5248])]}
 if __name__=='__main__':
+    for k in (1,2,3,4):
+        for j,pal in enumerate(SP[k]):small(k,pal).save(os.path.join(OUT,'sm%d%d.png'%(k,j+1)))
+
     for p in (1,2,3):frog(1,p,pal=p).save(os.path.join(OUT,'vc%d.png'%p));frog(3,p,pal=p).save(os.path.join(OUT,'vcj%d.png'%p))
