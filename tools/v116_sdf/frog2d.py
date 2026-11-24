@@ -34,7 +34,10 @@ PALS={
 def frog(pose,pat=0,W=30,H=32,pal=1):
     c=C(W,H);cx=W/2;Q=PALS[pal];D=Q['B'];L=Q['L'];DK=Q['DK'];LT=Q['LT']
     for s in(-1,1):
-        if pose==1:
+        if pose==4:  # 공중: 뒷다리를 뒤로 쭉 펴고 앞다리는 앞으로 뻗음
+            c.poly([(cx+s*4.2,21),(cx+s*6.5,26),(cx+s*5.5,31)],1.4,L);toes(c,cx+s*5.5,31.2,math.pi/2+s*-.25,2.2,L)
+            c.poly([(cx+s*4,10),(cx+s*6.5,6.5),(cx+s*6.8,3)],.95,L);toes(c,cx+s*6.8,2.6,-math.pi/2+s*.35,1.7,L)
+        elif pose==1:
             c.poly([(cx+s*4.5,19),(cx+s*10,16),(cx+s*9,24)],1.5,L);toes(c,cx+s*9,24.5,math.pi/2+s*-.5,2.4,L)
             c.poly([(cx+s*4.5,11),(cx+s*8.5,12.5),(cx+s*9,8.5)],1.0,L);toes(c,cx+s*9,8,-math.pi/2+s*.6,2,L)
         else:
