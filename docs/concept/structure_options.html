@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공허 기생충, 어떤 구조로 넓힐까</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 게임과 같은 공허 밤색 한 가지 테마. 결론 → 그림 4개 → 비교 표 → 근거 → 단계 순서로 읽는 한 단 문서 */
+  --bg:#14101e; --surface:#1d1730; --line:#3a3052; --ink:#ebe5f6; --muted:#a99fc2;
+  --pick:#6fd0ff; --void:#b48cff; --warn:#ff98a8;
+  --display:'IBM Plex Sans KR','Noto Sans KR',system-ui,sans-serif;
+  --body:'Noto Sans KR',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7}
+main{max-width:860px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:30px}
+h2{font-size:22px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:17px}
+p{margin:0;max-width:65ch}
+.lead{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+.verdict{background:var(--surface);border-left:4px solid var(--pick);padding:18px 20px;border-radius:6px;display:flex;flex-direction:column;gap:8px}
+.verdict strong{color:var(--pick)}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;overflow-x:auto}
+figure svg{width:100%;max-width:100%;height:auto;display:block;color:var(--ink);min-width:520px}
+figcaption{font-size:14px;color:var(--muted)}
+.opt{display:flex;flex-direction:column;gap:12px}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:8px;vertical-align:middle}
+.tag.pick{color:var(--bg);background:var(--pick);border-color:var(--pick)}
+.tag.no{color:var(--warn);border-color:var(--warn)}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-size:15px}
+.pc b{display:block;font-family:var(--display);margin-bottom:4px}
+.pc .good b{color:var(--pick)} .pc .bad b{color:var(--warn)}
+ul{margin:0;padding-left:20px}
+li{margin:2px 0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-family:var(--display);background:var(--surface);font-weight:700}
+tr:last-child td{border-bottom:none}
+td.hi{color:var(--pick);font-weight:700}
+td.lo{color:var(--warn)}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+ol.steps b{font-family:var(--display)}
+code{font-size:14px;background:var(--surface);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+@media (max-width:560px){.pc{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<main>
+
+<header style="display:flex;flex-direction:column;gap:10px">
+  <h1>공허 기생충, 어떤 구조로 넓힐까</h1>
+  <p class="lead">지금은 아이작처럼 한 화면짜리 방을 오가는 로그라이크다. 지역(수정 동굴·기계 도시·숲·바다)과 '공허가 문명을 흡수하는' 이야기를 담으려면 구조를 어떻게 넓혀야 할지, 네 가지 방식을 그림으로 비교한다.</p>
+</header>
+
+<div class="verdict">
+  <p><strong>결론: 방 구조는 그대로 두고, 그 위에 '둥지 허브 + 루트 원정 + 잠식되는 월드맵'(C안)을 얹는 것을 추천한다.</strong></p>
+  <p>지금 게임을 완전한 오픈 월드 RPG(B안)로 바꾸는 것은 기술적으로는 가능하지만, 사실상 새 게임을 만드는 일이다. 반면 C안은 지금 만든 보스·패턴·방을 거의 그대로 쓰면서 RPG가 주는 '이어지는 세계'와 '성장'을 얻는다. 공허가 지역을 잠식해 가는 이야기도 시스템으로 보여 줄 수 있다.</p>
+</div>
+
+<section>
+  <h2>지금 구조</h2>
+  <figure>
+    <svg viewBox="0 0 640 210" role="img" aria-label="지금 구조: 1구역 4×4 방 격자에서 출구로 2구역 4×4 격자, 그다음 최종 보스. 특수 퀘스트로 중간 보스 방에 다녀온다.">
+      <defs><marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <g transform="translate(30,40)"><rect x="0" y="0" width="26" height="18"/><rect x="30" y="0" width="26" height="18"/><rect x="60" y="0" width="26" height="18"/><rect x="90" y="0" width="26" height="18"/><rect x="0" y="22" width="26" height="18"/><rect x="30" y="22" width="26" height="18"/><rect x="60" y="22" width="26" height="18"/><rect x="90" y="22" width="26" height="18"/><rect x="0" y="44" width="26" height="18"/><rect x="30" y="44" width="26" height="18"/><rect x="60" y="44" width="26" height="18"/><rect x="90" y="44" width="26" height="18"/><rect x="0" y="66" width="26" height="18"/><rect x="30" y="66" width="26" height="18"/><rect x="60" y="66" width="26" height="18"/><rect x="90" y="66" width="26" height="18" stroke="#6fd0ff" stroke-width="2"/></g>
+        <g transform="translate(260,40)"><rect x="0" y="0" width="26" height="18"/><rect x="30" y="0" width="26" height="18"/><rect x="60" y="0" width="26" height="18"/><rect x="90" y="0" width="26" height="18"/><rect x="0" y="22" width="26" height="18"/><rect x="30" y="22" width="26" height="18"/><rect x="60" y="22" width="26" height="18"/><rect x="90" y="22" width="26" height="18"/><rect x="0" y="44" width="26" height="18"/><rect x="30" y="44" width="26" height="18"/><rect x="60" y="44" width="26" height="18"/><rect x="90" y="44" width="26" height="18"/><rect x="0" y="66" width="26" height="18"/><rect x="30" y="66" width="26" height="18"/><rect x="60" y="66" width="26" height="18"/><rect x="90" y="66" width="26" height="18" stroke="#6fd0ff" stroke-width="2"/></g>
+        <rect x="500" y="62" width="110" height="40" rx="4" stroke="#b48cff" stroke-width="2"/>
+        <rect x="70" y="160" width="110" height="30" rx="4" stroke-dasharray="4 3"/>
+        <line x1="150" y1="115" x2="252" y2="115" marker-end="url(#a0)"/>
+        <line x1="380" y1="115" x2="492" y2="90" marker-end="url(#a0)"/>
+        <line x1="90" y1="128" x2="110" y2="154" marker-end="url(#a0)"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif">
+        <text x="88" y="30" text-anchor="middle">1구역 (방 16개)</text>
+        <text x="318" y="30" text-anchor="middle">2구역 (방 16개)</text>
+        <text x="555" y="87" text-anchor="middle">최종 보스</text>
+        <text x="200" y="108" text-anchor="middle">출구</text>
+        <text x="436" y="96" text-anchor="middle">출구</text>
+        <text x="125" y="180" text-anchor="middle">중간 보스 방</text>
+        <text x="200" y="180">특수 퀘스트로 다녀옴</text>
+      </g>
+    </svg>
+    <figcaption>방 하나가 한 화면(800×360)이고, 판마다 4×4 지도를 새로 만든다. 보스 패턴, 경고 표시, 벽 판정이 모두 이 화면 크기에 맞춰져 있다.</figcaption>
+  </figure>
+</section>
+
+<section class="opt">
+  <h2>A. 지금 방식 + 루트 갈림길</h2>
+  <figure>
+    <svg viewBox="0 0 640 200" role="img" aria-label="A안: 1스테이지 뒤 출구가 수정 동굴과 기계 도시 두 갈래로 나뉘고, 각각 잠식 단계를 거쳐 공허에서 만난다.">
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="20" y="75" width="110" height="50" rx="4"/>
+        <rect x="200" y="20" width="130" height="44" rx="4" stroke="#6fd0ff"/>
+        <rect x="200" y="136" width="130" height="44" rx="4" stroke="#6fd0ff"/>
+        <rect x="380" y="20" width="110" height="44" rx="4" stroke="#b48cff" stroke-dasharray="5 3"/>
+        <rect x="380" y="136" width="110" height="44" rx="4" stroke="#b48cff" stroke-dasharray="5 3"/>
+        <rect x="530" y="75" width="90" height="50" rx="4" stroke="#b48cff" stroke-width="2"/>
+        <line x1="130" y1="92" x2="196" y2="48" marker-end="url(#a1)"/>
+        <line x1="130" y1="108" x2="196" y2="152" marker-end="url(#a1)"/>
+        <line x1="330" y1="42" x2="376" y2="42" marker-end="url(#a1)"/>
+        <line x1="330" y1="158" x2="376" y2="158" marker-end="url(#a1)"/>
+        <line x1="490" y1="42" x2="530" y2="88" marker-end="url(#a1)"/>
+        <line x1="490" y1="158" x2="530" y2="112" marker-end="url(#a1)"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="75" y="97">1스테이지</text><text x="75" y="113">바깥 (밝음)</text>
+        <text x="265" y="40">수정 동굴</text><text x="265" y="56">바깥 → 잠식 입구</text>
+        <text x="265" y="156">기계 도시</text><text x="265" y="172">바깥 → 잠식 입구</text>
+        <text x="435" y="40">공허 정동</text><text x="435" y="56">잠식</text>
+        <text x="435" y="156">잠식된 공장</text><text x="435" y="172">잠식</text>
+        <text x="575" y="97">3 · 공허</text><text x="575" y="113">최종 보스</text>
+        <text x="160" y="62">고르기</text>
+      </g>
+    </svg>
+    <figcaption>한 판 안에서 출구를 골라 루트가 갈린다. 지도 생성에 지역 종류만 더하면 되므로 지금 코드에 바로 넣을 수 있다.</figcaption>
+  </figure>
+  <div class="pc">
+    <div class="good"><b>좋은 점</b>가장 싸다. 보스, 패턴, 방 코드를 그대로 쓴다. 판마다 다른 루트라 다시 할 맛이 난다.</div>
+    <div class="bad"><b>아쉬운 점</b>판이 끝나면 세계가 원래대로 돌아간다. '공허가 문명을 흡수한다'는 흐름이 쌓이지 않는다.</div>
+  </div>
+</section>
+
+<section class="opt">
+  <h2>B. 오픈 월드 RPG로 전환<span class="tag no">비추천</span></h2>
+  <figure>
+    <svg viewBox="0 0 640 220" role="img" aria-label="B안: 하나로 이어진 큰 지도 위를 카메라 창이 플레이어를 따라 움직인다. 마을과 퀘스트가 있는 큰 세계.">
+      <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="20" y="14" width="600" height="192" rx="6"/>
+        <path d="M20 110 C120 90 160 130 230 120 S330 60 330 14"/>
+        <path d="M330 206 C340 150 420 140 470 120 S560 120 620 90"/>
+        <path d="M230 120 C260 150 300 170 330 206" stroke-dasharray="4 3"/>
+        <rect x="250" y="50" width="96" height="44" stroke="#6fd0ff" stroke-width="2" stroke-dasharray="6 3"/>
+        <circle cx="298" cy="72" r="4" fill="#6fd0ff" stroke="none"/>
+        <line x1="346" y1="72" x2="400" y2="72" marker-end="url(#a2)"/>
+        <rect x="80" y="40" width="14" height="14"/><rect x="100" y="48" width="14" height="14"/><rect x="88" y="62" width="14" height="14"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif">
+        <text x="70" y="96">숲 · 마을</text>
+        <text x="420" y="40">수정 동굴</text>
+        <text x="120" y="170">기계 도시</text>
+        <text x="500" y="180" fill="#b48cff">공허</text>
+        <text x="298" y="44" text-anchor="middle" fill="#6fd0ff">화면(카메라)</text>
+        <text x="406" y="76">따라감</text>
+        <text x="60" y="34">NPC·퀘스트</text>
+      </g>
+    </svg>
+    <figcaption>세계가 하나로 이어지고 화면이 플레이어를 따라 움직인다. 마을, NPC, 퀘스트, 영구 성장이 있다.</figcaption>
+  </figure>
+  <div class="pc">
+    <div class="good"><b>좋은 점</b>세계가 가장 넓고 이어져 있다. 이야기를 깊게 담을 수 있다.</div>
+    <div class="bad"><b>아쉬운 점</b>보스, 패턴, 방, 지도 생성, 저장을 거의 다시 짜야 한다. 손으로 만들 지도와 대사가 많이 필요하다. 지금의 '피해야 이기는' 짧고 굵은 재미가 옅어지기 쉽다.</div>
+  </div>
+</section>
+
+<section class="opt">
+  <h2>C. 둥지 허브 + 루트 원정 + 잠식되는 월드맵<span class="tag pick">추천</span></h2>
+  <figure>
+    <svg viewBox="0 0 640 260" role="img" aria-label="C안: 가운데 둥지 허브에서 네 지역으로 원정을 떠나고 돌아온다. 지역마다 바깥, 잠식, 공허 세 칸 막대가 판이 끝날 때마다 채워진다.">
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="320" cy="130" r="46" stroke="#6fd0ff" stroke-width="2"/>
+        <rect x="30" y="24" width="170" height="70" rx="5"/>
+        <rect x="440" y="24" width="170" height="70" rx="5"/>
+        <rect x="30" y="166" width="170" height="70" rx="5"/>
+        <rect x="440" y="166" width="170" height="70" rx="5"/>
+        <line x1="280" y1="108" x2="206" y2="70" marker-end="url(#a3)"/>
+        <line x1="360" y1="108" x2="434" y2="70" marker-end="url(#a3)"/>
+        <line x1="280" y1="152" x2="206" y2="190" marker-end="url(#a3)"/>
+        <line x1="360" y1="152" x2="434" y2="190" marker-end="url(#a3)"/>
+        <path d="M206 88 C240 110 250 120 272 126" stroke-dasharray="4 3" marker-end="url(#a3)"/>
+      </g>
+      <g stroke="none">
+        <rect x="44" y="66" width="46" height="12" fill="#6fd0ff"/><rect x="92" y="66" width="46" height="12" fill="#6fd0ff" opacity=".35"/><rect x="140" y="66" width="46" height="12" fill="#3a3052"/>
+        <rect x="454" y="66" width="46" height="12" fill="#6fd0ff"/><rect x="502" y="66" width="46" height="12" fill="#3a3052"/><rect x="550" y="66" width="46" height="12" fill="#3a3052"/>
+        <rect x="44" y="208" width="46" height="12" fill="#6fd0ff"/><rect x="92" y="208" width="46" height="12" fill="#b48cff"/><rect x="140" y="208" width="46" height="12" fill="#b48cff" opacity=".45"/>
+        <rect x="454" y="208" width="46" height="12" fill="#6fd0ff"/><rect x="502" y="208" width="46" height="12" fill="#b48cff"/><rect x="550" y="208" width="46" height="12" fill="#b48cff"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif">
+        <text x="320" y="126" text-anchor="middle" font-weight="700">둥지</text>
+        <text x="320" y="142" text-anchor="middle">허브 · 영구 성장</text>
+        <text x="44" y="46">수정 동굴</text><text x="454" y="46">기계 도시</text>
+        <text x="44" y="188">숲</text><text x="454" y="188">바다</text>
+        <text x="44" y="60" fill="#a99fc2" font-size="11">바깥 · 잠식 · 공허</text>
+        <text x="236" y="84">원정 (한 판)</text>
+        <text x="150" y="140" font-size="11">얻은 것을 가져옴</text>
+      </g>
+    </svg>
+    <figcaption>원정은 지금처럼 방 단위 로그라이크로 진행한다. 판이 끝날 때마다 그 지역 막대가 '바깥 → 잠식 → 공허'로 차오르고, 다음 원정에서는 잠식된 모습으로 나온다. 공허가 문명을 흡수해 가는 과정이 세계 지도에 쌓인다.</figcaption>
+  </figure>
+  <div class="pc">
+    <div class="good"><b>좋은 점</b>보스, 패턴, 방은 그대로 쓴다. 세계가 이어지고 쌓이는 RPG 느낌을 얻는다. 같은 지역이 원형 → 잠식형 → 적응형으로 변해 가는 구상과 딱 맞는다. 단계별로 나눠 만들 수 있다.</div>
+    <div class="bad"><b>아쉬운 점</b>허브 화면, 월드맵, 영구 성장, 저장 구조를 새로 만들어야 한다. 성장 균형(너무 쉬워지지 않게)을 따로 맞춰야 한다.</div>
+  </div>
+</section>
+
+<section class="opt">
+  <h2>D. 메트로배니아식 이어진 지역</h2>
+  <figure>
+    <svg viewBox="0 0 640 200" role="img" aria-label="D안: 방들이 고정된 지도로 이어져 있고, 진화 능력으로만 열리는 문이 길을 막는다.">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="20" y="70" width="70" height="44" rx="3"/><rect x="110" y="70" width="70" height="44" rx="3"/><rect x="200" y="70" width="70" height="44" rx="3"/>
+        <rect x="200" y="14" width="70" height="44" rx="3"/><rect x="290" y="14" width="70" height="44" rx="3"/>
+        <rect x="290" y="70" width="70" height="44" rx="3"/><rect x="380" y="70" width="70" height="44" rx="3"/><rect x="470" y="70" width="70" height="44" rx="3"/>
+        <rect x="200" y="136" width="70" height="44" rx="3"/><rect x="380" y="136" width="70" height="44" rx="3"/><rect x="560" y="70" width="64" height="44" rx="3" stroke="#b48cff" stroke-width="2"/>
+        <line x1="90" y1="92" x2="110" y2="92"/><line x1="180" y1="92" x2="200" y2="92"/><line x1="235" y1="70" x2="235" y2="58"/><line x1="270" y1="36" x2="290" y2="36"/>
+        <line x1="270" y1="92" x2="290" y2="92"/><line x1="235" y1="114" x2="235" y2="136"/><line x1="450" y1="92" x2="470" y2="92"/><line x1="540" y1="92" x2="560" y2="92"/><line x1="415" y1="114" x2="415" y2="136"/>
+      </g>
+      <g stroke="#6fd0ff" stroke-width="2.5"><line x1="368" y1="80" x2="368" y2="104"/><line x1="325" y1="62" x2="325" y2="66"/><line x1="458" y1="80" x2="458" y2="104"/></g>
+      <g fill="currentColor" font-size="12" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="55" y="96">시작</text>
+        <text x="592" y="96" fill="#b48cff">보스</text>
+        <text x="368" y="132" fill="#6fd0ff">수정 벽</text><text x="368" y="146" font-size="11">결정 방벽</text>
+        <text x="325" y="8" fill="#6fd0ff" font-size="11">협곡 · 균열 도약</text>
+        <text x="505" y="132" fill="#6fd0ff">철문·덩굴</text><text x="505" y="146" font-size="11">포식 돌진</text>
+      </g>
+    </svg>
+    <figcaption>지도가 고정되어 이어지고, 진화로 얻는 특수 스킬(결정 방벽, 균열 도약, 포식 돌진)이 막힌 길을 여는 열쇠가 된다. 방은 지금처럼 한 화면 단위다.</figcaption>
+  </figure>
+  <div class="pc">
+    <div class="good"><b>좋은 점</b>탐험하는 맛이 크다. 이미 있는 특수 스킬 세 개를 그대로 열쇠로 쓸 수 있다.</div>
+    <div class="bad"><b>아쉬운 점</b>지도를 손으로 설계해야 한다. 판마다 새 지도인 로그라이크의 장점과 부딪친다. C안 안에서 한 지역만 이렇게 만드는 정도가 알맞다.</div>
+  </div>
+</section>
+
+<section>
+  <h2>한눈에 비교</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>A 갈림길</th><th>B 오픈 월드</th><th>C 허브·월드맵</th><th>D 메트로배니아</th></tr></thead>
+      <tbody>
+        <tr><th>새로 짤 양</th><td class="hi">적음</td><td class="lo">매우 많음</td><td>보통</td><td>보통~많음</td></tr>
+        <tr><th>지금 코드 재사용</th><td class="hi">거의 전부</td><td class="lo">일부</td><td class="hi">거의 전부</td><td>대부분</td></tr>
+        <tr><th>지금 재미(피하기·보스)</th><td class="hi">그대로</td><td class="lo">옅어지기 쉬움</td><td class="hi">그대로</td><td>그대로</td></tr>
+        <tr><th>세계가 이어지는 느낌</th><td class="lo">약함</td><td class="hi">가장 강함</td><td class="hi">강함</td><td>강함</td></tr>
+        <tr><th>'공허가 흡수' 표현</th><td>판 안에서만</td><td>이야기로</td><td class="hi">지도에 쌓임</td><td>지역 안에서</td></tr>
+        <tr><th>필요한 콘텐츠</th><td class="hi">지역별 생물·지형</td><td class="lo">지도·NPC·대사·퀘스트</td><td>지역 + 허브·성장</td><td>손으로 짠 지도</td></tr>
+        <tr><th>폰 성능</th><td class="hi">지금과 같음</td><td class="lo">부담 커짐</td><td class="hi">지금과 같음</td><td class="hi">지금과 같음</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>B안이 지금 현실적으로 어려운 이유</h2>
+  <ul>
+    <li>화면 크기에 묶인 곳이 많다. 위치를 화면 안(가로 70~730 등)으로 묶는 곳이 44군데이고, 보스나 연출을 화면 가운데 좌표에 둔 곳도 60곳이 넘는다. 화면이 움직이는 큰 지도로 가면 이것을 하나하나 다시 짜야 한다.</li>
+    <li>지도 생성이 '4×4 방 격자' 하나로 되어 있다. 이어진 큰 지도는 타일맵 편집기나 새 생성기가 필요하다.</li>
+    <li>게임이 파일 하나(약 3,450줄, 735KB)에 패치를 덧대는 방식이다. RPG 규모가 되면 파일을 나누고 빌드하는 구조부터 바꿔야 한다.</li>
+    <li>RPG는 손으로 만드는 콘텐츠(지도, NPC, 대사, 퀘스트)가 많이 든다. 지금은 절차 생성 덕분에 적은 콘텐츠로 여러 번 놀 수 있다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>C안으로 가는 순서</h2>
+  <ol class="steps">
+    <li><b>루트 갈림길(A안)</b> — 1스테이지 출구를 두 갈래로 나누고 지역 종류를 더한다. 지금 코드에 바로 넣을 수 있고, C안의 바탕이 된다.</li>
+    <li><b>둥지 허브와 영구 성장</b> — 판 사이에 돌아오는 둥지 화면, 판마다 가져오는 것(해금, 흡수한 생물 기록), 저장을 만든다.</li>
+    <li><b>잠식되는 월드맵</b> — 지역마다 '바깥 → 잠식 → 공허' 상태를 두고, 판 결과에 따라 상태가 바뀌며, 다음 판 지도·생물이 그 상태를 따른다.</li>
+    <li><b>(선택) 한 지역만 메트로배니아로</b> — 특수 스킬로 길이 열리는 고정 지역 하나를 넣어 탐험 맛을 더한다.</li>
+  </ol>
+</section>
+
+</main>
+</body>
+</html>

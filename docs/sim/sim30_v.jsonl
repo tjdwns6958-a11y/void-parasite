@@ -1,0 +1,11 @@
+{"win":false,"st":{},"dead":true,"time":61.1,"hp":"obs:457/960","minE":6,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":45,"관찰자의 광선":12,"공허 촉수":39,"나선 구체":96},"bites":16,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":37.3,"hp":"obs:405/960","minE":9,"emax":145,"bdmg":29.4,"dmg":{"관찰자의 광선":12,"먹물 파동":27,"나선 구체":120},"bites":18,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":46,"hp":"obs:442/960","minE":10,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":45,"먹물 파동":54,"앵무조개의 눈빛":21,"나선 구체":24,"공허 촉수":39},"bites":13,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":56.9,"hp":"obs:296/960","minE":2,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":30,"관찰자의 광선":24,"먹물 파동":54,"나선 구체":24,"앵무조개의 눈빛":42},"bites":20,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":36.3,"hp":"obs:295/960","minE":14,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":15,"관찰자의 광선":24,"먹물 파동":81,"나선 구체":48},"bites":17,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":62.2,"hp":"obs:422/960","minE":6,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":15,"관찰자의 광선":12,"먹물 파동":54,"나선 구체":120,"앵무조개의 눈빛":21},"bites":13,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":45.4,"hp":"obs:409/960","minE":13,"emax":145,"bdmg":29.4,"dmg":{"먹물 파동":54,"앵무조개의 눈빛":84,"공허 촉수":39},"bites":15,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":44.4,"hp":"obs:398/960","minE":0,"emax":145,"bdmg":29.4,"dmg":{"가장자리 눈의 빛살":45,"관찰자의 광선":24,"먹물 파동":27,"나선 구체":48,"공허 촉수":39},"bites":19,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":45.8,"hp":"obs:240/960","minE":2,"emax":145,"bdmg":29.4,"dmg":{"관찰자의 광선":12,"먹물 파동":54,"나선 구체":120},"bites":19,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+{"win":false,"st":{},"dead":true,"time":32.9,"hp":"obs:459/960","minE":31,"emax":145,"bdmg":29.4,"dmg":{"관찰자의 광선":12,"먹물 파동":54,"나선 구체":48,"공허 촉수":39},"bites":14,"lin":"p1c1v3","errors":[],"vpErr":0,"blk":[0,0,0,0]}
+v human 10 WIN 0/10 avgTime 46.8

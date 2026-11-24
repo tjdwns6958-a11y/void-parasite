@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공허 심연, 장엄함으로 굴러가는 게임</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 공허 밤색 한 가지 테마. 결론 → 단면도 → 핵심 고리 → 가져올 것/버릴 것 → 지금까지 결정과의 연결 → 조심할 것 */
+  --bg:#14101e; --surface:#1d1730; --line:#3a3052; --ink:#ebe5f6; --muted:#a99fc2;
+  --pick:#6fd0ff; --void:#b48cff; --warn:#ff98a8; --gold:#ffd98a; --leaf:#7be0a8;
+  --display:'IBM Plex Sans KR','Noto Sans KR',system-ui,sans-serif;
+  --body:'Noto Sans KR',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7}
+main{max-width:900px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:40px}
+h1,h2{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:30px} h2{font-size:22px;padding-top:8px;border-top:1px solid var(--line)}
+p{margin:0;max-width:65ch}
+.lead{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+.verdict{background:var(--surface);border-left:4px solid var(--pick);padding:18px 20px;border-radius:6px;display:flex;flex-direction:column;gap:8px}
+.verdict strong{color:var(--pick)}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;overflow-x:auto}
+figure svg{width:100%;height:auto;display:block;color:var(--ink);min-width:600px}
+figcaption{font-size:14px;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-family:var(--display);background:var(--surface)}
+td:first-child{white-space:nowrap;font-weight:700}
+tr:last-child td{border-bottom:none}
+.take{color:var(--leaf)} .drop{color:var(--warn)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cards div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-size:15px}
+.cards b{display:block;font-family:var(--display);margin-bottom:4px;color:var(--gold)}
+ul{margin:0;padding-left:20px}
+li{margin:3px 0}
+@media (max-width:640px){.cards{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<main>
+
+<header style="display:flex;flex-direction:column;gap:10px">
+  <h1>공허 심연, 장엄함으로 굴러가는 게임</h1>
+  <p class="lead">공허의 생태계와, 그 생태계에 적응해 가는 인간. 세계의 장엄함 자체가 계속하게 만드는 장치가 될 수 있는지, 된다면 어떤 고리로 돌아가는지 정리했다. 참고 작품은 분위기와 구조만 빌린다.</p>
+</header>
+
+<div class="verdict">
+  <p><strong>된다. 다만 '보여 주는 장엄함'은 금방 익숙해지므로, '내려갈수록 알게 되고, 알아야 더 내려갈 수 있는' 고리로 바꿔야 지속 장치가 된다.</strong></p>
+  <p>이 방향은 지금까지 정한 것들을 한 그림으로 묶는다. 장 순서(숲 → 기계 → 수정 동굴 → 공허)는 공허가 삼킨 세계들이 쌓인 '층'이 된다. 공허 기생충은 인간이 깊은 층에서 버티기 위한 적응 수단이 된다. 1편의 끝은 '도달한 가장 깊은 층'이 되고, 떡밥은 '아직 더 아래가 있다'가 된다.</p>
+</div>
+
+<section>
+  <h2>단면도: 공허가 삼킨 세계들의 층</h2>
+  <figure>
+    <svg viewBox="0 0 700 470" role="img" aria-label="공허 심연 단면도. 위에 인간의 거점이 있고, 아래로 숲층, 기계층, 수정층, 공허층이 쌓여 있다. 내려갈수록 공허가 짙고, 층마다 작은 야영지가 있으며, 올라올 때 적응의 대가가 든다.">
+      <defs>
+        <linearGradient id="dg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3a4a3a"/><stop offset=".3" stop-color="#3a3448"/><stop offset=".55" stop-color="#2c2448"/><stop offset=".8" stop-color="#22123e"/><stop offset="1" stop-color="#0a0414"/></linearGradient>
+        <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6fd0ff"/></marker>
+        <marker id="au" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff98a8"/></marker>
+      </defs>
+      <path d="M150 50 L550 50 L520 130 L540 210 L500 290 L520 370 L430 455 L270 455 L180 370 L200 290 L160 210 L180 130 Z" fill="url(#dg)" stroke="currentColor" stroke-width="1.2"/>
+      <g stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".6">
+        <line x1="172" y1="130" x2="528" y2="130"/><line x1="160" y1="210" x2="540" y2="210"/><line x1="192" y1="290" x2="508" y2="290"/><line x1="190" y1="370" x2="510" y2="370"/>
+      </g>
+      <rect x="290" y="22" width="120" height="26" rx="4" fill="#4a4230" stroke="#ffd98a"/>
+      <g fill="#ffd98a" stroke="none"><circle cx="200" cy="120" r="5"/><circle cx="188" cy="200" r="5"/><circle cx="218" cy="280" r="5"/><circle cx="212" cy="360" r="5"/></g>
+      <path d="M425 52 C410 100 440 150 415 200 S445 300 420 350 S430 420 420 440" fill="none" stroke="#6fd0ff" stroke-width="2.5" marker-end="url(#ad)"/>
+      <path d="M490 425 C495 380 470 330 488 280 S468 180 485 120 S470 80 462 56" fill="none" stroke="#ff98a8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#au)"/>
+      <g fill="currentColor" font-size="13" font-family="Noto Sans KR, sans-serif">
+        <text x="350" y="40" text-anchor="middle" fill="#ffd98a" font-weight="700">인간의 거점</text>
+        <text x="245" y="96" font-weight="700">1층 · 삼켜진 숲</text><text x="245" y="114" font-size="11" fill="#a99fc2">아직 바깥 같음</text>
+        <text x="232" y="176" font-weight="700">2층 · 기계 문명의 잔해</text><text x="232" y="194" font-size="11" fill="#a99fc2">공허를 처음 알아봄</text>
+        <text x="240" y="256" font-weight="700">3층 · 수정 동굴과 실험실</text><text x="240" y="274" font-size="11" fill="#a99fc2">누가 공허를 열었나</text>
+        <text x="236" y="336" font-weight="700" fill="#b48cff">4층 · 진정한 공허</text><text x="236" y="354" font-size="11" fill="#a99fc2">바다 · 협곡 · 무리</text>
+        <text x="300" y="425" text-anchor="middle" fill="#b48cff">5층 이하 · 다음 편</text>
+      </g>
+      <g font-size="12" font-family="Noto Sans KR, sans-serif">
+        <text x="575" y="110" fill="#ffd98a">● 층마다 작은 야영지</text>
+        <text x="575" y="128" fill="#a99fc2" font-size="11">저장 · 정비 · 기록</text>
+        <text x="575" y="200" fill="#6fd0ff">내려감</text>
+        <text x="575" y="218" fill="#a99fc2" font-size="11">탐사 · 발견</text>
+        <text x="575" y="290" fill="#ff98a8">올라올 때 대가</text>
+        <text x="575" y="308" fill="#a99fc2" font-size="11">깊을수록 공허화가</text>
+        <text x="575" y="324" fill="#a99fc2" font-size="11">진행됨</text>
+        <text x="20" y="110" fill="#a99fc2">얕음</text><text x="20" y="440" fill="#a99fc2">깊음</text>
+        <line x1="40" y1="120" x2="40" y2="425" stroke="#a99fc2" stroke-width="1"/>
+      </g>
+    </svg>
+    <figcaption>공허는 세계를 '삼키는' 구덩이이고, 삼켜진 세계들이 층으로 쌓여 있다. 깊을수록 오래전에 삼켜져 더 많이 공허로 바뀌었다. 장 순서를 그대로 층으로 세운 그림이다.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>핵심 고리: 장엄함을 계속하게 만드는 장치로</h2>
+  <figure>
+    <svg viewBox="0 0 700 300" role="img" aria-label="핵심 고리. 내려가서 생물을 관찰하고, 도감과 지식이 쌓이고, 그 지식과 공허 기생충으로 몸이 적응하고, 그래서 더 깊이 내려가 새 장엄함을 본다. 가운데에 올라올 때의 대가가 긴장을 준다.">
+      <defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="270" y="14" width="160" height="56" rx="8" stroke="#6fd0ff" stroke-width="2"/>
+        <rect x="510" y="122" width="170" height="56" rx="8"/>
+        <rect x="270" y="230" width="160" height="56" rx="8"/>
+        <rect x="20" y="122" width="170" height="56" rx="8"/>
+        <path d="M430 50 C490 60 560 80 590 118" marker-end="url(#m)"/>
+        <path d="M590 180 C570 220 500 250 434 256" marker-end="url(#m)"/>
+        <path d="M270 256 C200 250 130 220 108 182" marker-end="url(#m)"/>
+        <path d="M108 120 C130 80 200 56 266 46" marker-end="url(#m)"/>
+        <circle cx="350" cy="150" r="52" stroke="#ff98a8" stroke-dasharray="5 4"/>
+      </g>
+      <g fill="currentColor" font-size="13" font-family="Noto Sans KR, sans-serif" text-anchor="middle">
+        <text x="350" y="38" font-weight="700" fill="#6fd0ff">① 내려가서 본다</text><text x="350" y="56" font-size="11" fill="#a99fc2">새 층 · 거대 생물 · 삼켜진 문명</text>
+        <text x="595" y="146" font-weight="700">② 관찰하고 밝혀낸다</text><text x="595" y="164" font-size="11" fill="#a99fc2">생물 습성 · 보스 기믹 · 기록</text>
+        <text x="350" y="254" font-weight="700">③ 도감과 지식이 쌓인다</text><text x="350" y="272" font-size="11" fill="#a99fc2">알면 피하고, 쓰고, 사냥한다</text>
+        <text x="105" y="146" font-weight="700">④ 몸이 적응한다</text><text x="105" y="164" font-size="11" fill="#a99fc2">공허 기생충 변이 · 장비</text>
+        <text x="350" y="146" fill="#ff98a8" font-weight="700">올라올 때</text><text x="350" y="164" fill="#ff98a8">대가</text>
+      </g>
+    </svg>
+    <figcaption>장엄함은 ①에서 주고, 계속할 이유는 ②~④에서 만든다. 새 층에 닿을 때마다 ①이 다시 커진다. 가운데 '올라올 때 대가'는 깊이 내려갈수록 돌아가기 아깝고 두려운 긴장을 준다.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>두 작품에서 가져올 것과 버릴 것</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>가져올 것</th><th>버릴 것</th></tr></thead>
+      <tbody>
+        <tr><td>메이드 인 어비스 쪽</td><td class="take">아래로 갈수록 이질적인 층 구조 · 아름다움과 공포가 함께 오는 생태계 · 올라올 때 대가 · 탐사자의 기록과 유물</td><td class="drop">작품 고유의 이름·설정(피리 등급, 저주 이름 등) · 지나치게 잔혹한 묘사</td></tr>
+        <tr><td>듀랑고 쪽</td><td class="take">낯선 생태계에 던져진 인간 · 생물을 관찰해 사냥·이용하는 생존 · 거점을 넓혀 가는 정착감</td><td class="drop">온라인 다인 플레이 · 큰 제작·건설 시스템 · 끝없는 채집</td></tr>
+        <tr><td>지금 게임에서 지킬 것</td><td class="take">한 화면 방 전투 · 피해야 이기는 보스 기믹 · 먹고 변하는 몸(공허 기생충) · 짧고 완결된 1편</td><td class="drop">판마다 처음부터 다시 하는 구조</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>지금까지 정한 것과 이렇게 이어진다</h2>
+  <div class="cards">
+    <div><b>장 순서 → 층</b>숲 → 기계 문명 → 수정 동굴·실험실 → 공허를 내려가는 층으로 세운다. 공허가 문명을 흡수한다는 설정이 '층이 쌓인 이유'가 된다.</div>
+    <div><b>주인공 → 적응하는 인간</b>사람(또는 지성 동물) 탐사자가 깊은 층에서 버티려고 공허 기생충을 몸에 받아들인다. 기생충의 변이가 곧 성장이고, 그만큼 인간에서 멀어진다.</div>
+    <div><b>성장 → 적응과 대가</b>지금의 먹기·탈피·계통은 '몸의 적응'으로 남는다. 적응할수록 깊이 갈 수 있지만, 올라올 때 대가와 인간다움이 걸린다(앞서 C안의 감염도 vs 자아와 같은 축).</div>
+    <div><b>1편의 끝 → 아직 더 아래</b>1편은 4층 공허의 한가운데에서 진실 하나를 보고 끝난다. 5층 이하와 공허를 연 자는 다음 편으로 남긴다.</div>
+  </div>
+</section>
+
+<section>
+  <h2>조심할 것</h2>
+  <ul>
+    <li><b>규모</b>: 생존·제작·건설을 다 넣으면 혼자 만들 수 없다. 거점은 층마다 작은 야영지(저장·정비·기록) 정도로, 제작은 몇 가지 장비로 줄인다.</li>
+    <li><b>장엄함을 보여 줄 화면</b>: 한 화면 방은 넓은 경치를 보여 주기 어렵다. 층에 처음 닿을 때의 내려다보는 연출, 층 사이 '하강' 장면, 방 밖으로 지나가는 거대 생물 같은 연출 장면을 따로 둔다.</li>
+    <li><b>도감이 숙제가 되지 않게</b>: 관찰은 전투 중 기믹을 알아내는 일과 같아야 한다. 도감 칸을 채우는 것만으로는 재미가 오래 가지 않는다.</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>
