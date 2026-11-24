@@ -45,7 +45,21 @@ def mD():  # 갈라진 구멍: 어두운 구멍 둘레로 흙덩이가 둘러싸
     for k in range(9):a=k/9*6.283+random.random()*.3;S.add(sphere((math.cos(a)*8.6,1.6,math.sin(a)*6.4),1.2+random.random()*.8),ROCK,.6)
     cracks(S,6,9.6,12.6,.1,11)
     return S
-if __name__=='__main__':
+if __name__=='__main__' and 'b2' not in sys.argv:
     M=M_(SL);m=dict(M[B1]);m.update(spec=10,rim=.4);M[B1]=m
     for n,f in (('mA',mA),('mB',mB),('mC',mC),('mD',mD)):
         spr(f(),90,72,.425,(0,2,0),60,'rkm_'+n,(),M=M,light=(-.4,.8,-.45))
+def mB2():  # B 다듬기: 가로를 줄이고 앞뒤로 길쭉·울퉁불퉁(앞 둔덕 + 뒤 흙더미 두 덩이), 낫 턱·눈·결정은 그대로
+    S=Scene()
+    S.add(lambda Q:np.minimum(ell((0,0,-1.6),(5.6,2.6,5.6))(Q),ell((.8,0,4),(4.4,2.2,4.2))(Q))+noise3(Q,.5)*1.2,ROCK,2.2,'m')
+    for s in(-1,1):
+        legs(S,[(s*2.0,1.6,-5.4),(s*3.4,2.2,-8.2),(s*2.2,1.8,-10.2)],1.0,.4,B1,'sk%d'%s,.6)
+        S.add(crystal((s*3.0,2.2,-8.4),(-s,0,-.2),1.4,.4,tip=.9),AC,0)
+        S.add(sphere((s*1.3,2.6,-5.8),.75),EY,0)
+    for k,(x,z,L,dx) in enumerate([(1.4,1.4,4.4,.5),(2.6,0,3,.8),(.4,3.4,2.6,.2)]):S.add(crystal((x,1.8,z),(dx,1,.4),L,1.1,tip=.55,tw=k),AC,0)
+    random.seed(4)
+    for k,(x,z) in enumerate([(-4.6,2),(4.4,-2.6),(-3.2,7),(3.4,6.6)]):S.add(sphere((x,.3,z),.8+random.random()*.5),ROCK,.5)
+    return S
+if __name__=='__main__' and 'b2' in sys.argv:
+    M=M_(SL);m=dict(M[B1]);m.update(spec=10,rim=.4);M[B1]=m
+    for pt in (60,75,89):spr(mB2(),90,80,.425,(0,2,0),pt,'rkm_mB2_%d'%pt,(),M=M,light=(-.4,.8,-.45))
